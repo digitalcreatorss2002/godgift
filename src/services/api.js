@@ -1,5 +1,21 @@
-// API Service Layer for God Gift Arts PHP Backend
-const API_BASE_URL = 'http://localhost/gga-backend/api';
+// API Service Layer for God Gift Arts PHP Backend & Production Vercel Deployment
+
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost/gga-backend/api' 
+    : 'https://hrntechsolutions.com/gga-backend/api');
+
+export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost/gga-backend' 
+    : 'https://hrntechsolutions.com/gga-backend');
+
+export function getImageSrc(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  if (path.startsWith('/uploads/')) return `${BACKEND_BASE_URL}${path}`;
+  return path;
+}
 
 export async function fetchProducts(params = {}) {
   try {

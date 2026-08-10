@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
-import { fetchCategories } from '../../services/api';
+import { fetchCategories, getImageSrc } from '../../services/api';
 
 const DEFAULT_COLLAGE = [
   {
@@ -60,7 +60,7 @@ export default function CategoryGrid({ onSelectCategory }) {
           id: cat.slug,
           title: cat.name,
           subtitle: cat.subtitle || 'Handcrafted Devotional Artifacts',
-          image: cat.image ? (cat.image.startsWith('/uploads/') ? `http://localhost/gga-backend${cat.image}` : cat.image) : DEFAULT_COLLAGE[idx].image,
+          image: cat.image ? getImageSrc(cat.image) : DEFAULT_COLLAGE[idx].image,
           size: sizes[idx],
           badge: badges[idx] || "Handcrafted Art"
         }));
@@ -68,13 +68,6 @@ export default function CategoryGrid({ onSelectCategory }) {
       }
     });
   }, []);
-
-  const getImageSrc = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/uploads/')) return `http://localhost/gga-backend${path}`;
-    return path;
-  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

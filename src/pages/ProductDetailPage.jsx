@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
-import { fetchProductById } from '../services/api';
+import { fetchProductById, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
 import { 
@@ -40,13 +40,6 @@ export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, 
     if (liveProduct) return liveProduct;
     return MOCK_PRODUCTS.find(p => p.id === Number(productId)) || MOCK_PRODUCTS[0];
   }, [productId, liveProduct]);
-
-  const getImageSrc = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/uploads/')) return `http://localhost/gga-backend${path}`;
-    return path;
-  };
 
   // Related products from same category
   const relatedProducts = useMemo(() => {

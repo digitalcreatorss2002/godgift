@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
-import { fetchCategories } from '../services/api';
+import { fetchCategories, getImageSrc } from '../services/api';
 
 const DEFAULT_CATEGORIES = [
   {
@@ -89,13 +89,6 @@ export default function CategoriesPage({ onSelectCategory }) {
       }
     });
   }, []);
-
-  const getImageSrc = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/uploads/')) return `http://localhost/gga-backend${path}`;
-    return path;
-  };
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">

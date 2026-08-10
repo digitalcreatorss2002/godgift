@@ -132,7 +132,7 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
         title: dbCat.name,
         subtitle: dbCat.subtitle || 'Handcrafted Devotional Artifacts',
         description: `Explore our handcrafted collection of ${dbCat.name}. Every artifact is individually made by master artisans using traditional techniques.`,
-        bannerImage: dbCat.image ? (dbCat.image.startsWith('/uploads/') ? `http://localhost/gga-backend${dbCat.image}` : dbCat.image) : '/col4.jpg',
+        bannerImage: dbCat.image ? getImageSrc(dbCat.image) : '/col4.jpg',
         artisanOrigin: "Master Artisan Guild",
         material: "Devotional Quality",
         badge: "Handcrafted"

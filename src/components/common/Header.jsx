@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SearchModal from './SearchModal';
-import { fetchCategories } from '../../services/api';
+import { fetchCategories, getImageSrc } from '../../services/api';
 import { 
   Search, 
   ShoppingBag, 
@@ -54,13 +54,6 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
       }
     });
   }, []);
-
-  const getImageSrc = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/uploads/')) return `http://localhost/gga-backend${path}`;
-    return path;
-  };
 
   // Shop Categories Mega Menu Data
   const shopCategories = [

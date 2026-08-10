@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, ShoppingBag, Heart, Eye, Check } from 'lucide-react';
+import { getImageSrc } from '../../services/api';
 
 export default function ProductCard({ product, onQuickView, onAddToCart }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -10,13 +11,6 @@ export default function ProductCard({ product, onQuickView, onAddToCart }) {
     setAddedToCart(true);
     if (onAddToCart) onAddToCart(product);
     setTimeout(() => setAddedToCart(false), 2000);
-  };
-
-  const getImageSrc = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/uploads/')) return `http://localhost/gga-backend${path}`;
-    return path;
   };
 
   return (
