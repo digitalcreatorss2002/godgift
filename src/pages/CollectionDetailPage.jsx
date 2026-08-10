@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
-import { fetchProducts, fetchCategories } from '../services/api';
+import { fetchProducts, fetchCategories, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';

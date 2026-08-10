@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
-import { fetchProducts } from '../services/api';
+import { fetchProducts, fetchCategories } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
 import { 
@@ -15,6 +15,7 @@ import {
 
 export default function ShopPage({ onAddToCart, onQuickView }) {
   const [productsList, setProductsList] = useState(MOCK_PRODUCTS);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [maxPrice, setMaxPrice] = useState(15000);
@@ -25,28 +26,53 @@ export default function ShopPage({ onAddToCart, onQuickView }) {
 
   useEffect(() => {
     fetchProducts().then((res) => {
-      if (res && Array.isArray(res) && res.length > 0) {
-        setProductsList(res);
-      }
+      if (res && Array.isArray(res) && res.length > 0) setProductsList(res);
+    });
+    fetchCategories().then((res) => {
+      if (res && Array.isArray(res) && res.length > 0) setCategoriesList(res);
     });
   }, []);
 
-  const categories = [
-    { id: 'all', label: 'All Artifacts', count: productsList.length },
-    { id: 'paintings', label: 'Spiritual Oil Paintings', count: productsList.filter(p => p.category === 'paintings').length },
-    { id: 'idols', label: 'Brass Idols & Murtis', count: productsList.filter(p => p.category === 'idols').length },
-    { id: 'pooja', label: 'Copper & Pooja Sets', count: productsList.filter(p => p.category === 'pooja').length },
-    { id: 'guruji', label: 'Guru Ji Devotional Line', count: productsList.filter(p => p.category === 'guruji').length },
-    { id: 'gifting', label: 'Festive Gift Hampers', count: productsList.filter(p => p.category === 'gifting').length }
-  ];
+  const categories = useMemo(() => {
+    const defaultCats = [
+      { id: 'paintings', slug: 'paintings', label: 'Spiritual Oil Paintings' },
+      { id: 'idols', slug: 'idols', label: 'Brass Idols & Murtis' },
+      { id: 'pooja', slug: 'pooja', label: 'Copper & Pooja Sets' },
+      { id: 'guruji', slug: 'guruji', label: 'Guru Ji Devotional Line' },
+      { id: 'gifting', slug: 'gifting', label: 'Festive Gift Hampers' }
+    ];
+
+    const source = categoriesList.length > 0
+      ? categoriesList.map(c => ({ id: c.slug, slug: c.slug, label: c.name }))
+      : defaultCats;
+
+    const mapped = source.map(c => {
+      const matchCount = productsList.filter(p => {
+        const pCat = (p.category || '').toLowerCase().trim();
+        const cSlug = (c.slug || c.id || '').toLowerCase().trim();
+        return pCat === cSlug || pCat.includes(cSlug) || cSlug.includes(pCat);
+      }).length;
+      return {
+        id: c.slug || c.id,
+        label: c.label,
+        count: matchCount
+      };
+    });
+
+    return [{ id: 'all', label: 'All Artifacts', count: productsList.length }, ...mapped];
+  }, [categoriesList, productsList]);
 
   const materials = ['all', 'Solid Brass', 'Pure Copper & Brass', 'Oil on Canvas', 'Sandalwood & Brass', 'Teak Wood'];
 
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
     return productsList.filter((product) => {
-      if (selectedCategory !== 'all' && product.category !== selectedCategory) return false;
-      if (selectedMaterial !== 'all' && !product.material?.toLowerCase().includes(selectedMaterial.toLowerCase()) && selectedMaterial !== 'all') return false;
+      if (selectedCategory !== 'all') {
+        const pCat = (product.category || '').toLowerCase().trim();
+        const selCat = selectedCategory.toLowerCase().trim();
+        if (pCat !== selCat && !pCat.includes(selCat) && !selCat.includes(pCat)) return false;
+      }
+      if (selectedMaterial !== 'all' && !product.material?.toLowerCase().includes(selectedMaterial.toLowerCase())) return false;
       if (Number(product.price) > maxPrice) return false;
       if (inStockOnly && !product.inStock) return false;
       if (searchQuery.trim() !== '') {
