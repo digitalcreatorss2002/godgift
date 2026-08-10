@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Primary Accent (Sophisticated Rich Maroon / Burgundy) */
+  --color-primary: #881337;
+  --color-primary-hover: #4c0519;
+  --color-primary-light: #fff1f2;
+
+  /* Brand Secondary Accent (Soft Warm Gold) */
+  --color-secondary: #d97706;
+  --color-secondary-hover: #b45309;
+
+  /* Neutrals & Base Colors */
+  --color-brand-dark: #111827;
+  --color-brand-body: #4b5563;
+  --color-brand-muted: #9ca3af;
+  --color-brand-bg: #FAF6F0;
+  --color-brand-surface: #FAF6F0;
+  --color-brand-border: #EADBCA;
+  --color-brand-border-dark: #D8C7B3;
+}
+
+/* Base resets & smooth transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-body);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
