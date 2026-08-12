@@ -14,7 +14,7 @@ import { DiyaIllustration, MandalaIllustration } from '../components/common/Back
 import ArtisanalIntentionSection from '../components/home/ArtisanalIntentionSection';
 import DeityCollectionGrid from '../components/home/DeityCollectionGrid';
 
-export default function HomePage({ onAddToCart, onSelectCollection, onQuickView }) {
+export default function HomePage({ onAddToCart, onSelectCollection, onQuickView, onToggleWishlist, wishlistItems = [] }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const handleSelectCategory = (catId) => {
@@ -65,6 +65,8 @@ export default function HomePage({ onAddToCart, onSelectCollection, onQuickView 
         <FeaturedProducts
           onQuickView={onQuickView}
           onAddToCart={onAddToCart}
+          onToggleWishlist={onToggleWishlist}
+          wishlistItems={wishlistItems}
         />
 
         {/* 5. Trust Badges Bar */}

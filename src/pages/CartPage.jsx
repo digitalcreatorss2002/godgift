@@ -360,7 +360,7 @@ export default function CartPage({
 
                 {/* Checkout Button */}
                 <button
-                  onClick={() => setIsCheckoutOpen(true)}
+                  onClick={() => onNavigate ? onNavigate('checkout') : setIsCheckoutOpen(true)}
                   className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-4 h-4" />

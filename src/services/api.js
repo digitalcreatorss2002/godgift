@@ -133,3 +133,32 @@ export async function userLogin(credentials) {
     return { status: 'error', message: error.message };
   }
 }
+
+export async function fetchUserOrders(email, phone) {
+  try {
+    const query = new URLSearchParams();
+    if (email) query.append('email', email);
+    if (phone) query.append('phone', phone);
+    const res = await fetch(`${API_BASE_URL}/user_orders.php?${query.toString()}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    return { status: 'error', message: error.message, data: [] };
+  }
+}
+
+export async function updateUserProfile(profileData) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/update_profile.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profileData)
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    return { status: 'error', message: error.message };
+  }
+}

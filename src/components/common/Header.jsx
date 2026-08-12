@@ -19,6 +19,7 @@ import {
 export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = 'home', onNavigate, currentUser, onOpenAuth, onLogout }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState(null); // 'shop' | 'collections' | null
 
   // Navigation Links
@@ -244,12 +245,75 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
               </a>
 
               {currentUser ? (
-                <div className="hidden sm:flex items-center gap-1.5 bg-amber-900/10 text-amber-900 px-3 py-1.5 rounded-full text-xs font-bold border border-amber-900/20">
-                  <User className="w-4 h-4 text-amber-800" />
-                  <span className="max-w-[100px] truncate">{currentUser.name.split(' ')[0]}</span>
-                  <button onClick={onLogout} title="Sign Out" className="text-stone-400 hover:text-rose-600 ml-1 text-xs cursor-pointer">
-                    &times;
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserDropdownOpen(prev => !prev)}
+                    className="hidden sm:flex items-center gap-2 bg-amber-900/10 hover:bg-amber-900/20 text-amber-950 px-3.5 py-2 rounded-full text-xs font-bold border border-amber-900/20 transition-all cursor-pointer"
+                  >
+                    <User className="w-4 h-4 text-amber-900" />
+                    <span className="max-w-[110px] truncate">{currentUser.name.split(' ')[0]}</span>
+                    <ChevronDown className={`w-3.5 h-3.5 text-amber-900 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
+
+                  {/* Dropdown Menu */}
+                  {isUserDropdownOpen && (
+                    <div 
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-2xl border border-stone-200 shadow-xl py-2 z-50 text-xs font-bold space-y-1 animate-fade-in"
+                      onMouseLeave={() => setIsUserDropdownOpen(false)}
+                    >
+                      <div className="px-4 py-2.5 border-b border-stone-100 space-y-0.5">
+                        <span className="text-[10px] uppercase font-bold text-stone-400 block">Signed In As</span>
+                        <span className="text-stone-900 font-bold block truncate">{currentUser.name}</span>
+                        <span className="text-[10px] text-stone-500 font-normal block truncate">{currentUser.email}</span>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setIsUserDropdownOpen(false);
+                          if (onNavigate) onNavigate('profile');
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-stone-700 hover:bg-amber-900/5 hover:text-amber-900 flex items-center gap-2.5 cursor-pointer"
+                      >
+                        <User className="w-4 h-4 text-amber-800" />
+                        <span>My Account Profile</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setIsUserDropdownOpen(false);
+                          if (onNavigate) onNavigate('profile');
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-stone-700 hover:bg-amber-900/5 hover:text-amber-900 flex items-center gap-2.5 cursor-pointer"
+                      >
+                        <ShoppingBag className="w-4 h-4 text-amber-800" />
+                        <span>My Orders History</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setIsUserDropdownOpen(false);
+                          if (onNavigate) onNavigate('wishlist');
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-stone-700 hover:bg-amber-900/5 hover:text-amber-900 flex items-center gap-2.5 cursor-pointer"
+                      >
+                        <Heart className="w-4 h-4 text-amber-800" />
+                        <span>My Wishlist ({wishlistCount})</span>
+                      </button>
+
+                      <div className="border-t border-stone-100 pt-1">
+                        <button
+                          onClick={() => {
+                            setIsUserDropdownOpen(false);
+                            if (onLogout) onLogout();
+                          }}
+                          className="w-full text-left px-4 py-2.5 text-rose-700 hover:bg-rose-50 flex items-center gap-2.5 cursor-pointer"
+                        >
+                          <X className="w-4 h-4" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <button

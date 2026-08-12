@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { MOCK_PRODUCTS } from '../../data/mockProducts';
 import { fetchProducts, fetchCategories } from '../../services/api';
 import ProductCard from '../ecommerce/ProductCard';
 import { ArrowRight } from 'lucide-react';
 
-export default function FeaturedProducts({ onQuickView, onAddToCart }) {
+export default function FeaturedProducts({ 
+  onQuickView, 
+  onAddToCart, 
+  onToggleWishlist,
+  wishlistItems = [] 
+}) {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [productsList, setProductsList] = useState(MOCK_PRODUCTS);
+  const [productsList, setProductsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([
-    { id: 'all', label: 'All Products', slug: 'all' },
-    { id: 'paintings', label: 'Oil Paintings', slug: 'paintings' },
-    { id: 'idols', label: 'Brass Statues', slug: 'idols' },
-    { id: 'pooja', label: 'Copper & Pooja Sets', slug: 'pooja' },
-    { id: 'guruji', label: 'Guru Ji Collection', slug: 'guruji' }
+    { id: 'all', label: 'All Products', slug: 'all' }
   ]);
 
   useEffect(() => {
@@ -71,9 +71,9 @@ export default function FeaturedProducts({ onQuickView, onAddToCart }) {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.slug)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 activeCategory === cat.slug
-                  ? 'bg-primary text-white shadow-xs'
+                  ? 'bg-amber-900 text-white shadow-xs'
                   : 'text-stone-600 hover:text-stone-900 hover:bg-stone-200/60'
               }`}
             >
@@ -91,6 +91,8 @@ export default function FeaturedProducts({ onQuickView, onAddToCart }) {
             product={product}
             onQuickView={onQuickView}
             onAddToCart={onAddToCart}
+            onToggleWishlist={onToggleWishlist}
+            isWishlisted={wishlistItems.some(w => w.id === product.id)}
           />
         ))}
       </div>
@@ -99,10 +101,10 @@ export default function FeaturedProducts({ onQuickView, onAddToCart }) {
       <div className="mt-10 text-center">
         <a
           href="#shop"
-          className="inline-flex items-center gap-2.5 bg-white hover:bg-stone-50 text-stone-900 font-bold text-sm sm:text-base px-8 py-3.5 rounded-full border border-stone-300 shadow-xs hover:border-primary transition-all group"
+          className="inline-flex items-center gap-2.5 bg-white hover:bg-stone-50 text-stone-900 font-bold text-sm sm:text-base px-8 py-3.5 rounded-full border border-stone-300 shadow-xs hover:border-amber-800 transition-all group"
         >
           <span>Explore All {productsList.length}+ Artifacts</span>
-          <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
+          <ArrowRight className="w-4 h-4 text-amber-800 group-hover:translate-x-1 transition-transform" />
         </a>
       </div>
 

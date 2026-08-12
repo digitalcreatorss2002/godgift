@@ -7,7 +7,8 @@ export default function WishlistPage({
   wishlistItems = [], 
   onAddToCart, 
   onSelectProduct, 
-  onNavigate 
+  onNavigate,
+  onToggleWishlist 
 }) {
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
@@ -75,6 +76,8 @@ export default function WishlistPage({
                   product={prod}
                   onQuickView={(p) => onSelectProduct && onSelectProduct(p.id)}
                   onAddToCart={onAddToCart}
+                  onToggleWishlist={onToggleWishlist}
+                  isWishlisted={true}
                 />
               ))}
             </div>

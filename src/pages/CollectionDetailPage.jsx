@@ -112,7 +112,7 @@ const normalizeCollectionId = (id) => {
 export default function CollectionDetailPage({ collectionId = 'paintings', onBackToCollections, onAddToCart, onSelectProduct }) {
   const normalizedKey = useMemo(() => normalizeCollectionId(collectionId), [collectionId]);
   const [categoriesList, setCategoriesList] = useState([]);
-  const [productsList, setProductsList] = useState(MOCK_PRODUCTS);
+  const [productsList, setProductsList] = useState([]);
 
   useEffect(() => {
     fetchCategories().then(res => {

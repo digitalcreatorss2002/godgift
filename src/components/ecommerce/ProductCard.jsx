@@ -2,15 +2,32 @@ import React, { useState } from 'react';
 import { Star, ShoppingBag, Heart, Eye, Check } from 'lucide-react';
 import { getImageSrc } from '../../services/api';
 
-export default function ProductCard({ product, onQuickView, onAddToCart }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+export default function ProductCard({ 
+  product, 
+  onQuickView, 
+  onAddToCart, 
+  onToggleWishlist,
+  isWishlisted: propIsWishlisted 
+}) {
+  const [localWishlisted, setLocalWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  const isWishlisted = propIsWishlisted !== undefined ? propIsWishlisted : localWishlisted;
 
   const handleCartClick = (e) => {
     e.stopPropagation();
     setAddedToCart(true);
     if (onAddToCart) onAddToCart(product);
     setTimeout(() => setAddedToCart(false), 2000);
+  };
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (onToggleWishlist) {
+      onToggleWishlist(product);
+    } else {
+      setLocalWishlisted(!localWishlisted);
+    }
   };
 
   return (
@@ -43,10 +60,7 @@ export default function ProductCard({ product, onQuickView, onAddToCart }) {
 
         {/* Wishlist Button */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsWishlisted(!isWishlisted);
-          }}
+          onClick={handleWishlistClick}
           className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all ${
             isWishlisted
               ? 'bg-rose-500 text-white'
@@ -93,11 +107,11 @@ export default function ProductCard({ product, onQuickView, onAddToCart }) {
         <div className="pt-2 flex items-center justify-between border-t border-stone-100">
           <div>
             <div className="text-base sm:text-lg font-extrabold text-stone-900">
-              ₹{product.price.toLocaleString('en-IN')}
+              ₹{Number(product.price).toLocaleString('en-IN')}
             </div>
-            {product.originalPrice && (
+            {(product.originalPrice || product.original_price) && (
               <div className="text-xs text-stone-400 line-through">
-                ₹{product.originalPrice.toLocaleString('en-IN')}
+                ₹{Number(product.originalPrice || product.original_price).toLocaleString('en-IN')}
               </div>
             )}
           </div>
@@ -105,7 +119,7 @@ export default function ProductCard({ product, onQuickView, onAddToCart }) {
           {/* Cart Action Button */}
           <button
             onClick={handleCartClick}
-            className={`p-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+            className={`p-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               addedToCart
                 ? 'bg-emerald-600 text-white'
                 : 'bg-primary hover:bg-primary-hover text-white shadow-xs'

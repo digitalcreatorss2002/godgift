@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
-import { fetchProductById, getImageSrc } from '../services/api';
+import { fetchProductById, fetchProducts, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
 import { 
@@ -24,37 +23,48 @@ import {
 
 export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, onSelectProduct }) {
   const [liveProduct, setLiveProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('specs'); // 'specs' | 'artisan' | 'vastu' | 'reviews'
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToast, setAddedToast] = useState(false);
 
   useEffect(() => {
+    setLiveProduct(null);
     fetchProductById(productId).then(res => {
-      if (res) setLiveProduct(res);
+      if (res) {
+        setLiveProduct(res);
+        if (res.category) {
+          fetchProducts({ category: res.category }).then(relRes => {
+            if (relRes && Array.isArray(relRes)) {
+              setRelatedProducts(relRes.filter(p => p.id !== res.id).slice(0, 4));
+            }
+          });
+        }
+      }
     });
   }, [productId]);
 
-  // Find product by ID with fallback
-  const product = useMemo(() => {
-    if (liveProduct) return liveProduct;
-    return MOCK_PRODUCTS.find(p => p.id === Number(productId)) || MOCK_PRODUCTS[0];
-  }, [productId, liveProduct]);
-
-  // Related products from same category
-  const relatedProducts = useMemo(() => {
-    return MOCK_PRODUCTS
-      .filter(p => p.category === product.category && p.id !== product.id)
-      .slice(0, 4);
-  }, [product]);
+  const product = liveProduct;
 
   const handleAdd = () => {
-    if (onAddToCart) {
+    if (onAddToCart && product) {
       onAddToCart(product, quantity);
       setAddedToast(true);
       setTimeout(() => setAddedToast(false), 3000);
     }
   };
+
+  if (!product) {
+    return (
+      <div className="min-h-[65vh] flex items-center justify-center bg-brand-bg">
+        <div className="text-center space-y-3 p-8">
+          <div className="w-10 h-10 border-4 border-amber-900 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-xs font-serif italic text-stone-600">Loading sacred artifact details...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">

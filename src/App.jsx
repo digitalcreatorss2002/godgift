@@ -12,6 +12,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
+import CheckoutPage from './pages/CheckoutPage';
+import ProfilePage from './pages/ProfilePage';
 import AuthModal from './components/common/AuthModal';
 import { MOCK_PRODUCTS } from './data/mockProducts';
 
@@ -31,15 +33,32 @@ export default function App() {
     }
   }, []);
 
-  // Cart & Wishlist State
-  const [cartItems, setCartItems] = useState([
-    { product: MOCK_PRODUCTS[0], quantity: 1 },
-    { product: MOCK_PRODUCTS[16], quantity: 1 }
-  ]);
-  const [wishlistItems, setWishlistItems] = useState([
-    MOCK_PRODUCTS[2],
-    MOCK_PRODUCTS[32]
-  ]);
+  // Cart & Wishlist State (Persisted in localStorage across page refreshes)
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('gga_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [wishlistItems, setWishlistItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('gga_wishlist');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('gga_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem('gga_wishlist', JSON.stringify(wishlistItems));
+  }, [wishlistItems]);
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
@@ -49,6 +68,8 @@ export default function App() {
     const syncRouteFromHash = () => {
       const hash = window.location.hash;
       if (hash === '#cart') setCurrentPage('cart');
+      else if (hash === '#checkout') setCurrentPage('checkout');
+      else if (hash === '#profile' || hash === '#orders') setCurrentPage('profile');
       else if (hash === '#wishlist') setCurrentPage('wishlist');
       else if (hash === '#bestsellers') setCurrentPage('bestsellers');
       else if (hash === '#categories') setCurrentPage('categories');
@@ -111,6 +132,17 @@ export default function App() {
     setCartItems(prev => prev.filter(item => item.product.id !== productId));
   };
 
+  const handleToggleWishlist = (product) => {
+    setWishlistItems(prev => {
+      const exists = prev.some(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
+  };
+
   const handleSelectProduct = (prod) => {
     const id = typeof prod === 'object' ? prod.id : prod;
     handleNavigate(`product-${id}`);
@@ -125,8 +157,12 @@ export default function App() {
     switch (currentPage) {
       case 'cart':
         return <CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateCartQuantity} onRemoveItem={handleRemoveFromCart} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
+      case 'checkout':
+        return <CheckoutPage cartItems={cartItems} onNavigate={handleNavigate} onClearCart={() => setCartItems([])} currentUser={currentUser} />;
+      case 'profile':
+        return <ProfilePage currentUser={currentUser} onLogout={() => { localStorage.removeItem('gga_user'); setCurrentUser(null); }} onNavigate={handleNavigate} onUpdateUser={(u) => setCurrentUser(u)} />;
       case 'wishlist':
-        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} />;
+        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} />;
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'bestsellers':
@@ -140,9 +176,9 @@ export default function App() {
       case 'collections':
         return <CollectionsPage onSelectCollection={handleSelectCollection} onAddToCart={handleAddToCart} />;
       case 'shop':
-        return <ShopPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} />;
+        return <ShopPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       default:
-        return <HomePage onAddToCart={handleAddToCart} onSelectCollection={handleSelectCollection} onQuickView={handleSelectProduct} />;
+        return <HomePage onAddToCart={handleAddToCart} onSelectCollection={handleSelectCollection} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
     }
   };
 

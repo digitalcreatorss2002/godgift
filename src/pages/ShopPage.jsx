@@ -13,8 +13,8 @@ import {
   Check
 } from 'lucide-react';
 
-export default function ShopPage({ onAddToCart, onQuickView }) {
-  const [productsList, setProductsList] = useState(MOCK_PRODUCTS);
+export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, wishlistItems = [] }) {
+  const [productsList, setProductsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
@@ -284,6 +284,8 @@ export default function ShopPage({ onAddToCart, onQuickView }) {
                     product={product}
                     onQuickView={onQuickView}
                     onAddToCart={onAddToCart}
+                    onToggleWishlist={onToggleWishlist}
+                    isWishlisted={wishlistItems.some(w => w.id === product.id)}
                   />
                 ))}
               </div>
