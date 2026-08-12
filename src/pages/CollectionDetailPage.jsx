@@ -109,7 +109,7 @@ const normalizeCollectionId = (id) => {
   return 'paintings';
 };
 
-export default function CollectionDetailPage({ collectionId = 'paintings', onBackToCollections, onAddToCart, onSelectProduct }) {
+export default function CollectionDetailPage({ collectionId = 'paintings', onBackToCollections, onAddToCart, onSelectProduct, onToggleWishlist, wishlistItems = [] }) {
   const normalizedKey = useMemo(() => normalizeCollectionId(collectionId), [collectionId]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [productsList, setProductsList] = useState([]);
@@ -248,6 +248,8 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
               product={product}
               onQuickView={onSelectProduct}
               onAddToCart={onAddToCart}
+              onToggleWishlist={onToggleWishlist}
+              isWishlisted={wishlistItems.some(w => w.id === product.id)}
             />
           ))}
         </div>

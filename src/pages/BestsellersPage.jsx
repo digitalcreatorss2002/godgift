@@ -3,20 +3,20 @@ import { fetchProducts, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
-import { 
-  Flame, 
-  Sparkles, 
-  Star, 
-  Trophy, 
-  ShieldCheck, 
-  Truck, 
+import {
+  Flame,
+  Sparkles,
+  Star,
+  Trophy,
+  ShieldCheck,
+  Truck,
   Heart,
   ShoppingBag,
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
 
-export default function BestsellersPage({ onAddToCart, onQuickView }) {
+export default function BestsellersPage({ onAddToCart, onQuickView, onToggleWishlist, wishlistItems = [] }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [productsList, setProductsList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,11 +89,11 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
-      
+
       {/* Museum Bestsellers Hero Banner Header */}
       <div className="relative bg-[#FAF6F0] py-16 sm:py-24 border-b border-[#EADBCA] overflow-hidden">
         <LotusJaaliPatternBackground className="text-amber-900/12" />
-        
+
         <div className="absolute top-1/2 right-10 -translate-y-1/2 opacity-20 pointer-events-none hidden lg:block">
           <DiyaIllustration className="w-80 h-80 text-amber-900" />
         </div>
@@ -120,7 +120,7 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
       {/* Top 3 Bestseller Podium Spotlight Cards */}
       {topRanked.length > 0 && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-12">
-          
+
           <div className="space-y-2 text-center sm:text-left border-b border-[#EADBCA] pb-4">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-serif font-bold text-stone-900 flex items-center gap-2">
@@ -141,7 +141,7 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
               const reviews = prod.reviews_count || prod.reviewsCount || 120;
 
               return (
-                <div 
+                <div
                   key={idx}
                   className="bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative"
                 >
@@ -209,18 +209,17 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
 
           {/* Filter Toolbar & Full Bestseller Inventory Grid */}
           <div className="pt-8 space-y-8">
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[#EADBCA] pb-6">
               <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 scrollbar-none">
                 {filterTabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setSelectedFilter(tab.id)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
-                      selectedFilter === tab.id
+                    className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer ${selectedFilter === tab.id
                         ? 'bg-amber-900 text-white shadow-sm'
                         : 'bg-white text-stone-700 border border-stone-200 hover:border-amber-800/40'
-                    }`}
+                      }`}
                   >
                     {tab.label}
                   </button>
@@ -240,6 +239,8 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
                   product={product}
                   onAddToCart={onAddToCart}
                   onQuickView={onQuickView}
+                  onToggleWishlist={onToggleWishlist}
+                  isWishlisted={wishlistItems.some(w => w.id === product.id)}
                 />
               ))}
             </div>

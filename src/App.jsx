@@ -166,13 +166,13 @@ export default function App() {
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'bestsellers':
-        return <BestsellersPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} />;
+        return <BestsellersPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'corporate-gifting':
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
-        return <CollectionDetailPage collectionId={selectedCollectionId} onBackToCollections={() => handleNavigate('collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
+        return <CollectionDetailPage collectionId={selectedCollectionId} onBackToCollections={() => handleNavigate('collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'collections':
         return <CollectionsPage onSelectCollection={handleSelectCollection} onAddToCart={handleAddToCart} />;
       case 'shop':
