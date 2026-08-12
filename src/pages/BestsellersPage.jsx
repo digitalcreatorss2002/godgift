@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { fetchProducts } from '../services/api';
+import { fetchProducts, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
@@ -155,7 +155,7 @@ export default function BestsellersPage({ onAddToCart, onQuickView }) {
                   {/* Product Image */}
                   <div className="relative aspect-[4/3] bg-stone-100 overflow-hidden">
                     <img
-                      src={prod.image}
+                      src={getImageSrc(prod.image)}
                       alt={prod.name}
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
                     />

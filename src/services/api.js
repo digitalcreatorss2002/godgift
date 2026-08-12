@@ -13,7 +13,11 @@ export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL ||
 export function getImageSrc(path) {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  if (path.startsWith('/uploads/')) return `${BACKEND_BASE_URL}${path}`;
+  if (path.startsWith('uploads/') || path.startsWith('/uploads/')) {
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    return `${BACKEND_BASE_URL}${cleanPath}`;
+  }
+  if (!path.startsWith('/')) return `/${path}`;
   return path;
 }
 

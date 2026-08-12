@@ -13,7 +13,7 @@ import {
   Check
 } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
-import { placeOrder } from '../services/api';
+import { placeOrder, getImageSrc } from '../services/api';
 
 export default function CheckoutPage({ 
   cartItems = [], 
@@ -346,7 +346,7 @@ export default function CheckoutPage({
               <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                 {cartItems.map((item) => (
                   <div key={item.product.id} className="flex items-center gap-3 border-b border-stone-100 pb-3">
-                    <img src={item.product.image} alt={item.product.name} className="w-12 h-12 rounded-xl object-cover bg-stone-100 border border-stone-200 shrink-0" />
+                    <img src={getImageSrc(item.product.image)} alt={item.product.name} className="w-12 h-12 rounded-xl object-cover bg-stone-100 border border-stone-200 shrink-0" />
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-serif font-bold text-stone-900 truncate">{item.product.name}</h4>
                       <span className="text-[11px] text-stone-500 font-mono">Qty: {item.quantity} &times; ₹{item.product.price.toLocaleString('en-IN')}</span>

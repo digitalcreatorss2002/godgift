@@ -18,7 +18,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
-import { placeOrder } from '../services/api';
+import { placeOrder, getImageSrc } from '../services/api';
 
 export default function CartPage({ 
   cartItems = [], 
@@ -185,7 +185,7 @@ export default function CartPage({
                     className="bg-white p-4 sm:p-6 rounded-2xl border border-stone-200/90 shadow-xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center"
                   >
                     <img 
-                      src={item.product.image} 
+                      src={getImageSrc(item.product.image)} 
                       alt={item.product.name}
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200"
                     />
