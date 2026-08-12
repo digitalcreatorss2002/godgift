@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import SearchModal from './SearchModal';
 import { fetchCategories, getImageSrc } from '../../services/api';
-import { 
-  Search, 
-  ShoppingBag, 
-  User, 
-  Heart, 
-  Menu, 
+import {
+  Search,
+  ShoppingBag,
+  User,
+  Heart,
+  Menu,
   X,
   ChevronDown,
   Sparkles,
@@ -91,11 +91,11 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
       <header className="sticky top-0 z-40 bg-brand-surface/95 backdrop-blur-md border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            
+
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a 
-                href="#home" 
+              <a
+                href="#home"
                 onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}
                 className="flex items-center"
               >
@@ -131,17 +131,15 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
                         const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'festive offers' ? 'offers' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home')))));
                         handleLinkClick(target);
                       }}
-                      className={`relative py-1.5 flex items-center gap-1 transition-colors ${
-                        isHovered || isActive ? 'text-primary font-bold' : 'hover:text-primary'
-                      }`}
+                      className={`relative py-1.5 flex items-center gap-1 transition-colors ${isHovered || isActive ? 'text-primary font-bold' : 'hover:text-primary'
+                        }`}
                     >
                       <span>{link.label}</span>
                       {hasDropdown && (
                         <ChevronDown className={`w-4 h-4 transition-transform ${isHovered ? 'rotate-180 text-primary' : 'text-stone-400'}`} />
                       )}
-                      <span className={`absolute -bottom-0.5 left-0 h-0.5 bg-primary transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`} />
+                      <span className={`absolute -bottom-0.5 left-0 h-0.5 bg-primary transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                        }`} />
                     </a>
 
                     {/* Shop Mega Menu */}
@@ -192,9 +190,9 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
                     {isCategories && isHovered && (
                       <div className="fixed top-full left-0 right-0 w-full bg-white/98 backdrop-blur-md border-t border-b border-stone-200/90 shadow-2xl py-6 px-4 z-50">
                         <div className="max-w-7xl mx-auto">
-                          <div className="text-center mb-4 text-xs font-bold uppercase tracking-widest text-secondary">
+                          {/* <div className="text-center mb-4 text-xs font-bold uppercase tracking-widest text-secondary">
                             Explore Categories
-                          </div>
+                          </div> */}
                           <div className="grid grid-cols-8 gap-4 justify-items-center">
                             {collectionsList.map((cat, cIdx) => (
                               <div
@@ -257,7 +255,7 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
 
                   {/* Dropdown Menu */}
                   {isUserDropdownOpen && (
-                    <div 
+                    <div
                       className="absolute right-0 mt-2 w-56 bg-white rounded-2xl border border-stone-200 shadow-xl py-2 z-50 text-xs font-bold space-y-1 animate-fade-in"
                       onMouseLeave={() => setIsUserDropdownOpen(false)}
                     >
@@ -378,15 +376,15 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
       </header>
 
       {/* Global Search Modal */}
-      <SearchModal 
-        isOpen={isSearchOpen} 
-        onClose={() => setIsSearchOpen(false)} 
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
         onSelectProduct={(prod) => {
           setIsSearchOpen(false);
           const pId = typeof prod === 'object' ? prod.id : prod;
           if (onNavigate) onNavigate(`product-${pId}`);
         }}
-        onAddToCart={() => {}}
+        onAddToCart={() => { }}
       />
     </>
   );
