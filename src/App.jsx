@@ -12,12 +12,24 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
+import AuthModal from './components/common/AuthModal';
 import { MOCK_PRODUCTS } from './data/mockProducts';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedCollectionId, setSelectedCollectionId] = useState('paintings');
   const [selectedProductId, setSelectedProductId] = useState(1);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('gga_user');
+    if (saved) {
+      try {
+        setCurrentUser(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
 
   // Cart & Wishlist State
   const [cartItems, setCartItems] = useState([
@@ -112,7 +124,7 @@ export default function App() {
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'cart':
-        return <CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateCartQuantity} onRemoveItem={handleRemoveFromCart} onNavigate={handleNavigate} />;
+        return <CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateCartQuantity} onRemoveItem={handleRemoveFromCart} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
       case 'wishlist':
         return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} />;
       case 'product-detail':
@@ -143,11 +155,22 @@ export default function App() {
         currentPage={currentPage}
         activeTab={currentPage}
         onNavigate={handleNavigate}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthOpen(true)}
+        onLogout={() => {
+          localStorage.removeItem('gga_user');
+          setCurrentUser(null);
+        }}
       />
       <main className="flex-1">
         {renderCurrentPage()}
       </main>
       <Footer />
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onLoginSuccess={(user) => setCurrentUser(user)}
+      />
     </div>
   );
 }

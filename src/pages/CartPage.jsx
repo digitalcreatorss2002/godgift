@@ -11,20 +11,41 @@ import {
   Check, 
   ArrowLeft,
   Lock,
-  Sparkles
+  Sparkles,
+  X,
+  CreditCard,
+  CheckCircle,
+  AlertCircle
 } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
+import { placeOrder } from '../services/api';
 
 export default function CartPage({ 
   cartItems = [], 
   onUpdateQuantity, 
   onRemoveItem, 
-  onNavigate 
+  onNavigate,
+  onClearCart
 }) {
   const [couponCode, setCouponCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
+
+  // Checkout Modal State
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [checkoutData, setCheckoutData] = useState({
+    customer_name: '',
+    email: '',
+    phone: '',
+    shipping_address: '',
+    city: '',
+    pincode: '',
+    payment_method: 'COD'
+  });
+  const [placingOrder, setPlacingOrder] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(null);
+  const [orderError, setOrderError] = useState('');
 
   // Calculate totals
   const subtotal = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
@@ -53,6 +74,47 @@ export default function CartPage({
     }
   };
 
+  const handleInputChange = (e) => {
+    setCheckoutData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setOrderError('');
+  };
+
+  const handlePlaceOrderSubmit = async (e) => {
+    e.preventDefault();
+    setPlacingOrder(true);
+    setOrderError('');
+
+    const fullAddress = `${checkoutData.shipping_address}, ${checkoutData.city} - ${checkoutData.pincode}`;
+
+    const payload = {
+      customer_name: checkoutData.customer_name,
+      email: checkoutData.email,
+      phone: checkoutData.phone,
+      shipping_address: fullAddress,
+      subtotal: subtotal,
+      discount_amount: discountAmount,
+      shipping_fee: shippingFee,
+      total_amount: finalTotal,
+      payment_method: checkoutData.payment_method,
+      items: cartItems.map(item => ({
+        product_id: item.product.id,
+        product_name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price
+      }))
+    };
+
+    const res = await placeOrder(payload);
+    setPlacingOrder(false);
+
+    if (res.status === 'success') {
+      setOrderSuccess(res);
+      if (onClearCart) onClearCart();
+    } else {
+      setOrderError(res.message || 'Failed to place order. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
       
@@ -69,112 +131,98 @@ export default function CartPage({
           <h1 className="text-3xl sm:text-5xl font-serif font-bold text-stone-900 tracking-tight">
             Your Shopping Cart
           </h1>
-
-          <p className="text-stone-550 text-xs sm:text-sm font-serif italic max-w-lg mx-auto">
-            Review your sacred artifacts before secure pan-India dispatch.
+          <p className="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto font-serif italic">
+            Review your chosen divine artifacts before proceeding to express insured delivery across India.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
-        
-        {cartItems.length === 0 ? (
-          /* Empty Cart State */
-          <div className="bg-white rounded-3xl border border-stone-200 p-12 text-center max-w-2xl mx-auto space-y-5 shadow-xs">
-            <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-amber-800">
-              <ShoppingBag className="w-10 h-10" />
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
 
+        {cartItems.length === 0 ? (
+          <div className="bg-white rounded-3xl p-12 text-center border border-stone-200 shadow-sm max-w-2xl mx-auto space-y-6">
+            <div className="w-20 h-20 bg-amber-900/10 rounded-full flex items-center justify-center mx-auto text-amber-900 text-3xl">
+              🪔
+            </div>
             <div className="space-y-2">
               <h2 className="text-2xl font-serif font-bold text-stone-900">Your Cart is Currently Empty</h2>
-              <p className="text-xs sm:text-sm text-stone-500 font-serif italic max-w-md mx-auto">
-                You haven't added any handcrafted brass idols, oil paintings, or puja essentials to your cart yet.
+              <p className="text-sm text-stone-500 max-w-md mx-auto">
+                Explore our hand-crafted oil paintings, brass idols, and copper puja sets to add sacred charm to your home.
               </p>
             </div>
-
             <button
               onClick={() => onNavigate && onNavigate('shop')}
-              className="px-8 py-3.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold uppercase tracking-wider rounded-2xl shadow-lg transition-all inline-flex items-center gap-2"
+              className="px-8 py-3.5 bg-amber-900 hover:bg-stone-950 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all inline-flex items-center gap-2 cursor-pointer"
             >
-              <span>Explore Devotional Catalog</span>
+              <span>Explore Devotional Artifacts</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         ) : (
-          /* Cart Items & Summary Grid */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left: Cart Items List */}
             <div className="lg:col-span-8 space-y-4">
               
-              <div className="flex items-center justify-between border-b border-[#EADBCA] pb-3">
-                <span className="text-sm font-serif font-bold text-stone-900">
-                  Cart Items ({cartItems.reduce((s, i) => s + i.quantity, 0)})
+              <div className="flex items-center justify-between border-b border-stone-200 pb-4">
+                <span className="text-sm font-bold text-stone-900 uppercase tracking-wider">
+                  Items in Cart ({cartItems.length})
                 </span>
                 <button
                   onClick={() => onNavigate && onNavigate('shop')}
-                  className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-amber-900 hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Continue Shopping</span>
                 </button>
               </div>
 
-              {/* Items Loop */}
+              {/* Items Card List */}
               <div className="space-y-4">
                 {cartItems.map((item) => (
-                  <div
+                  <div 
                     key={item.product.id}
-                    className="bg-white rounded-3xl border border-stone-200/90 p-4 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-between group hover:border-amber-800/30 transition-all"
+                    className="bg-white p-4 sm:p-6 rounded-2xl border border-stone-200/90 shadow-xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center"
                   >
-                    {/* Item Image */}
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200">
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
+                    <img 
+                      src={item.product.image} 
+                      alt={item.product.name}
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200"
+                    />
 
-                    {/* Item Details */}
-                    <div className="flex-1 space-y-1.5 text-center sm:text-left w-full">
-                      <span className="text-[10px] font-bold text-amber-800 uppercase tracking-widest block">
-                        {item.product.badge || 'Jaipur Artisan Artifact'}
-                      </span>
-                      <h3 className="text-base font-serif font-bold text-stone-900 leading-snug">
-                        {item.product.name}
-                      </h3>
+                    <div className="flex-1 space-y-1.5 w-full">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-serif font-bold text-stone-900 line-clamp-1">
+                          {item.product.name}
+                        </h3>
+                      </div>
+
                       <p className="text-xs text-stone-500 font-medium">
-                        Material: {item.product.material || 'Solid Brass & Hardwood'}
+                        Material: <span className="text-stone-800">{item.product.material || 'Devotional Artifact'}</span>
                       </p>
-                      
-                      <div className="flex items-center justify-center sm:justify-start gap-2 pt-1">
-                        <span className="text-base font-bold text-stone-900">
-                          ₹{item.product.price.toLocaleString('en-IN')}
-                        </span>
+
+                      <div className="flex items-center gap-2 text-xs font-mono">
+                        <span className="font-bold text-stone-900">₹{item.product.price.toLocaleString('en-IN')}</span>
                         {item.product.originalPrice && (
-                          <span className="text-xs text-stone-400 line-through">
-                            ₹{item.product.originalPrice.toLocaleString('en-IN')}
-                          </span>
+                          <span className="text-stone-400 line-through">₹{item.product.originalPrice.toLocaleString('en-IN')}</span>
                         )}
                       </div>
                     </div>
 
-                    {/* Quantity Controls & Remove */}
-                    <div className="flex sm:flex-col items-center justify-between sm:justify-center gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-stone-100">
+                    <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto border-t sm:border-t-0 border-stone-100 pt-3 sm:pt-0">
                       
-                      {/* Quantity Controller */}
-                      <div className="flex items-center bg-stone-100 rounded-xl p-1 border border-stone-200">
+                      {/* Quantity Controls */}
+                      <div className="flex items-center bg-stone-100 border border-stone-200 rounded-xl">
                         <button
-                          onClick={() => onUpdateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
-                          className="p-1.5 hover:bg-white rounded-lg text-stone-700 transition-colors"
+                          onClick={() => onUpdateQuantity && onUpdateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                          className="p-2 text-stone-600 hover:text-stone-900 cursor-pointer"
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="w-8 text-center text-xs font-bold text-stone-900">{item.quantity}</span>
+                        <span className="px-3 text-xs font-bold font-mono text-stone-900">{item.quantity}</span>
                         <button
-                          onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
-                          className="p-1.5 hover:bg-white rounded-lg text-stone-700 transition-colors"
+                          onClick={() => onUpdateQuantity && onUpdateQuantity(item.product.id, item.quantity + 1)}
+                          className="p-2 text-stone-600 hover:text-stone-900 cursor-pointer"
                         >
                           <Plus className="w-3.5 h-3.5" />
                         </button>
@@ -186,8 +234,8 @@ export default function CartPage({
                           ₹{(item.product.price * item.quantity).toLocaleString('en-IN')}
                         </span>
                         <button
-                          onClick={() => onRemoveItem(item.product.id)}
-                          className="p-2 text-stone-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
+                          onClick={() => onRemoveItem && onRemoveItem(item.product.id)}
+                          className="p-2 text-stone-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
                           title="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -242,12 +290,12 @@ export default function CartPage({
                         placeholder="DIVINE10 or FESTIVE15"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
-                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl pl-9 pr-3 py-2.5 border border-stone-200 focus:outline-none focus:border-primary uppercase"
+                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl pl-9 pr-3 py-2.5 border border-stone-200 focus:outline-none focus:border-amber-800 uppercase"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="px-4 py-2.5 bg-stone-900 hover:bg-stone-950 text-white text-xs font-bold uppercase rounded-xl transition-colors"
+                      className="px-4 py-2.5 bg-stone-900 hover:bg-stone-950 text-white text-xs font-bold uppercase rounded-xl transition-colors cursor-pointer"
                     >
                       Apply
                     </button>
@@ -301,7 +349,7 @@ export default function CartPage({
                 <div className="border-t border-stone-200 pt-4 space-y-1">
                   <div className="flex justify-between items-baseline">
                     <span className="text-base font-serif font-bold text-stone-900">Total Payable</span>
-                    <span className="text-2xl font-serif font-bold text-primary">
+                    <span className="text-2xl font-serif font-bold text-amber-900 font-mono">
                       ₹{finalTotal.toLocaleString('en-IN')}
                     </span>
                   </div>
@@ -312,8 +360,8 @@ export default function CartPage({
 
                 {/* Checkout Button */}
                 <button
-                  onClick={() => alert("Connecting to checkout gateway... High-speed payment backend integrated soon!")}
-                  className="w-full py-4 bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  onClick={() => setIsCheckoutOpen(true)}
+                  className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-4 h-4" />
                   <span>Proceed to Secure Checkout</span>
@@ -337,6 +385,173 @@ export default function CartPage({
         )}
 
       </div>
+
+      {/* CHECKOUT MODAL */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white w-full max-w-xl rounded-3xl border border-stone-200 shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6 relative my-8">
+            
+            <button 
+              onClick={() => { setIsCheckoutOpen(false); setOrderSuccess(null); }}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 text-stone-500 hover:text-stone-900 hover:bg-stone-200 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {orderSuccess ? (
+              <div className="text-center py-6 space-y-4">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-10 h-10" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold text-stone-900">Order Placed Successfully!</h3>
+                <p className="text-xs text-stone-600">
+                  Thank you for your order with God Gift Arts. Your order reference number is:
+                </p>
+                <div className="inline-block bg-amber-900/10 border border-amber-900/20 px-4 py-2 rounded-xl text-lg font-mono font-bold text-amber-900">
+                  {orderSuccess.order_number}
+                </div>
+                <p className="text-xs text-stone-500 italic max-w-md mx-auto">
+                  We have dispatched your divine artifacts order details to our packaging unit. You will receive an SMS and email update shortly.
+                </p>
+                <button
+                  onClick={() => {
+                    setIsCheckoutOpen(false);
+                    setOrderSuccess(null);
+                    if (onNavigate) onNavigate('shop');
+                  }}
+                  className="px-8 py-3 bg-amber-900 hover:bg-stone-950 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all cursor-pointer"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-1 border-b border-stone-100 pb-4">
+                  <h2 className="text-xl font-serif font-bold text-stone-900">Delivery & Shipping Address</h2>
+                  <p className="text-xs text-stone-500">Provide shipping details for express transit across India</p>
+                </div>
+
+                {orderError && (
+                  <div className="p-3 bg-rose-50 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{orderError}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handlePlaceOrderSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">Full Name *</label>
+                      <input
+                        type="text"
+                        name="customer_name"
+                        required
+                        value={checkoutData.customer_name}
+                        onChange={handleInputChange}
+                        placeholder="Shashwat Mishra"
+                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">Phone Number *</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        required
+                        value={checkoutData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+91 98765 43210"
+                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={checkoutData.email}
+                      onChange={handleInputChange}
+                      placeholder="shashwat@example.com"
+                      className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">Shipping Street Address *</label>
+                    <textarea
+                      name="shipping_address"
+                      required
+                      rows="2"
+                      value={checkoutData.shipping_address}
+                      onChange={handleInputChange}
+                      placeholder="House No, Building Name, Street / Colony Name"
+                      className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                    ></textarea>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">City / District *</label>
+                      <input
+                        type="text"
+                        name="city"
+                        required
+                        value={checkoutData.city}
+                        onChange={handleInputChange}
+                        placeholder="Jaipur / New Delhi"
+                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-stone-700 mb-1">Pincode *</label>
+                      <input
+                        type="text"
+                        name="pincode"
+                        required
+                        value={checkoutData.pincode}
+                        onChange={handleInputChange}
+                        placeholder="302001"
+                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl px-3.5 py-2.5 border border-stone-200 outline-none focus:border-amber-800"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase text-stone-700 mb-2">Payment Method</label>
+                    <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+                      <label className={`p-3 rounded-xl border cursor-pointer flex items-center gap-2 ${checkoutData.payment_method === 'COD' ? 'border-amber-900 bg-amber-900/5 text-amber-950' : 'border-stone-200 text-stone-600'}`}>
+                        <input type="radio" name="payment_method" value="COD" checked={checkoutData.payment_method === 'COD'} onChange={handleInputChange} />
+                        <span>Cash on Delivery</span>
+                      </label>
+                      <label className={`p-3 rounded-xl border cursor-pointer flex items-center gap-2 ${checkoutData.payment_method === 'UPI' ? 'border-amber-900 bg-amber-900/5 text-amber-950' : 'border-stone-200 text-stone-600'}`}>
+                        <input type="radio" name="payment_method" value="UPI" checked={checkoutData.payment_method === 'UPI'} onChange={handleInputChange} />
+                        <span>UPI / PayTM / QR</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="bg-stone-50 p-4 rounded-xl border border-stone-200/80 flex items-center justify-between text-xs font-bold">
+                    <span>Total Amount to Pay:</span>
+                    <span className="text-lg font-mono font-extrabold text-amber-900">₹{finalTotal.toLocaleString('en-IN')}</span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={placingOrder}
+                    className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <span>{placingOrder ? 'Processing Order...' : 'Confirm & Place Live Order'}</span>
+                    {!placingOrder && <ArrowRight className="w-4 h-4" />}
+                  </button>
+                </form>
+              </>
+            )}
+
+          </div>
+        </div>
+      )}
 
     </div>
   );

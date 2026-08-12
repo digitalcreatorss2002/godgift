@@ -103,3 +103,33 @@ export async function submitCorporateQuote(quotePayload) {
     return { status: 'error', message: error.message };
   }
 }
+
+export async function userRegister(userData) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/user_register.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error registering user:', error);
+    return { status: 'error', message: error.message };
+  }
+}
+
+export async function userLogin(credentials) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/user_login.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials)
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    return { status: 'error', message: error.message };
+  }
+}

@@ -16,7 +16,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = 'home', onNavigate }) {
+export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = 'home', onNavigate, currentUser, onOpenAuth, onLogout }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState(null); // 'shop' | 'collections' | null
@@ -243,13 +243,24 @@ export default function Header({ cartCount = 2, wishlistCount = 3, activeTab = '
                 )}
               </a>
 
-              <a
-                href="#account"
-                className="hidden sm:flex p-2.5 text-stone-700 hover:text-primary rounded-full hover:bg-stone-100"
-                title="User Account"
-              >
-                <User className="w-5 h-5" />
-              </a>
+              {currentUser ? (
+                <div className="hidden sm:flex items-center gap-1.5 bg-amber-900/10 text-amber-900 px-3 py-1.5 rounded-full text-xs font-bold border border-amber-900/20">
+                  <User className="w-4 h-4 text-amber-800" />
+                  <span className="max-w-[100px] truncate">{currentUser.name.split(' ')[0]}</span>
+                  <button onClick={onLogout} title="Sign Out" className="text-stone-400 hover:text-rose-600 ml-1 text-xs cursor-pointer">
+                    &times;
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onOpenAuth}
+                  className="hidden sm:flex p-2.5 text-stone-700 hover:text-primary rounded-full hover:bg-stone-100 cursor-pointer"
+                  title="Sign In / Register"
+                >
+                  <User className="w-5 h-5" />
+                </button>
+              )}
 
               <a
                 href="#cart"
