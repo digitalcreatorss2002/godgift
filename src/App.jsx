@@ -15,6 +15,7 @@ import CorporateGiftingPage from './pages/CorporateGiftingPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
 import AuthModal from './components/common/AuthModal';
+import HeroProductPopup from './components/ecommerce/HeroProductPopup';
 import { MOCK_PRODUCTS } from './data/mockProducts';
 
 export default function App() {
@@ -206,6 +207,10 @@ export default function App() {
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
         onLoginSuccess={(user) => setCurrentUser(user)}
+      />
+      <HeroProductPopup
+        onAddToCart={handleAddToCart}
+        onSelectProduct={handleSelectProduct}
       />
     </div>
   );

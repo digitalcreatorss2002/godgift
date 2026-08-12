@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Star, ShoppingBag, Heart, Eye, Check } from 'lucide-react';
 import { getImageSrc } from '../../services/api';
 
-export default function ProductCard({ 
-  product, 
-  onQuickView, 
-  onAddToCart, 
+export default function ProductCard({
+  product,
+  onQuickView,
+  onAddToCart,
   onToggleWishlist,
-  isWishlisted: propIsWishlisted 
+  isWishlisted: propIsWishlisted
 }) {
   const [localWishlisted, setLocalWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -31,7 +31,7 @@ export default function ProductCard({
   };
 
   return (
-    <div 
+    <div
       onClick={() => onQuickView && onQuickView(product)}
       className="bg-brand-surface rounded-2xl border border-stone-200/90 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300 group flex flex-col cursor-pointer"
     >
@@ -61,18 +61,17 @@ export default function ProductCard({
         {/* Wishlist Button */}
         <button
           onClick={handleWishlistClick}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all ${
-            isWishlisted
+          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all ${isWishlisted
               ? 'bg-rose-500 text-white'
               : 'bg-white/80 text-stone-700 hover:text-rose-500 hover:bg-white'
-          }`}
+            }`}
           aria-label="Wishlist"
         >
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
 
         {/* Quick View Floating Overlay */}
-        <div className="absolute inset-x-0 bottom-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+        {/* <div className="absolute inset-x-0 bottom-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -83,12 +82,12 @@ export default function ProductCard({
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Product Content Details */}
       <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-        
+
         <div className="space-y-1.5">
           {/* Rating */}
           <div className="flex items-center gap-1.5 text-xs text-amber-500 font-semibold">
@@ -119,11 +118,10 @@ export default function ProductCard({
           {/* Cart Action Button */}
           <button
             onClick={handleCartClick}
-            className={`p-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-              addedToCart
+            className={`p-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${addedToCart
                 ? 'bg-emerald-600 text-white'
                 : 'bg-primary hover:bg-primary-hover text-white shadow-xs'
-            }`}
+              }`}
             title="Add to Shopping Bag"
           >
             {addedToCart ? (
