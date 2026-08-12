@@ -9,7 +9,7 @@ export default function HeroBanner() {
 
   return (
     <>
-      <section className="relative w-full h-[calc(100vh-80px)] min-h-[550px] sm:min-h-[600px] bg-stone-950 text-white overflow-hidden flex items-center">
+      <section className="relative w-full h-[310px] sm:h-[350px] md:h-[380px] bg-stone-950 text-white overflow-hidden flex items-center rounded-b-3xl sm:rounded-b-[2.5rem] shadow-xl border-b border-stone-800/60">
 
         {/* Full Edge-to-Edge Ambient Video Background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -18,69 +18,69 @@ export default function HeroBanner() {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover scale-100 filter brightness-140"
+            className="w-full h-full object-cover scale-100 filter brightness-125"
           >
             <source src={videoUrl} type="video/mp4" />
           </video>
 
           {/* Dark Gradient Overlays for 100% Crisp Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/60 to-stone-950/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/65 to-stone-950/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-transparent to-stone-950/20" />
         </div>
 
-        {/* Hero Content Container (Centered alignment within max-w-7xl) */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full py-12 space-y-7">
+        {/* Hero Content Container */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full py-4 space-y-3">
 
           {/* Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-amber-300 text-xs sm:text-sm font-semibold backdrop-blur-md border border-white/20 shadow-lg">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 text-amber-300 text-[10px] sm:text-xs font-semibold backdrop-blur-md border border-white/20 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>Sacred Arts & Heritage Devotional Collection</span>
           </div>
 
-          {/* Main Headline with Tight Underline Offset */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-white tracking-tight leading-tight max-w-4xl drop-shadow-md">
-            Handcrafted with <span className="text-amber-400 underline decoration-primary decoration-4 underline-offset-[2px]">Devotion</span> & Legacy
+          {/* Main Headline */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight leading-tight max-w-3xl drop-shadow-md">
+            Handcrafted with <span className="text-amber-400 underline decoration-amber-600 decoration-4 underline-offset-[2px]">Devotion</span> & Legacy
           </h1>
 
           {/* Subtext */}
-          <p className="text-stone-200 text-base sm:text-xl leading-relaxed font-normal max-w-2xl drop-shadow-sm">
+          <p className="text-stone-200 text-xs sm:text-sm leading-relaxed font-normal max-w-xl drop-shadow-sm line-clamp-2">
             Explore our signature collection of hand-painted oil paintings, hand-cast brass murtis, copper puja sets, and bespoke corporate gift hampers.
           </p>
 
           {/* CTA Buttons */}
-          <div className="pt-3 flex flex-wrap items-center gap-4">
+          <div className="pt-1 flex flex-wrap items-center gap-3">
             <a
               href="#collections"
-              className="inline-flex items-center gap-3 bg-primary hover:bg-primary-hover text-white font-semibold text-base sm:text-lg px-8 py-4 rounded-full shadow-2xl shadow-primary/50 transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-amber-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
               <span>Explore Collection</span>
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
             </a>
 
             <a
               href="#corporate-gifting"
-              className="inline-flex items-center gap-3 bg-white/15 hover:bg-white/25 text-white font-semibold text-base sm:text-lg px-7 py-4 rounded-full backdrop-blur-md border border-white/25 transition-all"
+              className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm px-4.5 py-2.5 rounded-full backdrop-blur-md border border-white/25 transition-all cursor-pointer"
             >
-              <Gift className="w-5 h-5 text-amber-400" />
+              <Gift className="w-4 h-4 text-amber-400" />
               <span>Corporate Gifting</span>
             </a>
           </div>
 
-          {/* Trust Micro Stats */}
-          <div className="pt-8 border-t border-stone-800/80 flex flex-wrap items-center gap-8 text-xs sm:text-sm text-stone-300 font-medium">
-            <div className="flex items-center gap-2">
-              <Star className="w-4.5 h-4.5 text-amber-400 fill-amber-400" />
-              <span className="text-white font-bold text-base">4.9 / 5.0</span> Rating (2,500+ Reviews)
+          {/* Trust Micro Stats Bar */}
+          <div className="pt-3 border-t border-stone-800/80 flex flex-wrap items-center gap-6 text-[10px] sm:text-xs text-stone-300 font-medium">
+            <div className="flex items-center gap-1.5">
+              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+              <span className="text-white font-bold">4.9 / 5.0</span> Rating (2,500+ Reviews)
             </div>
             <span className="hidden sm:inline text-stone-600">•</span>
-            <div className="flex items-center gap-2">
-              <Award className="w-4.5 h-4.5 text-amber-400" />
-              <span className="text-white font-bold text-base">18+ Years</span> Master Craftsmanship
+            <div className="flex items-center gap-1.5">
+              <Award className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-white font-bold">18+ Years</span> Master Craftsmanship
             </div>
             <span className="hidden sm:inline text-stone-600">•</span>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4.5 h-4.5 text-emerald-400" />
-              <span className="text-white font-bold text-base">100% Guaranteed</span> Pure Quality
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-white font-bold">100% Guaranteed</span> Pure Quality
             </div>
           </div>
 
