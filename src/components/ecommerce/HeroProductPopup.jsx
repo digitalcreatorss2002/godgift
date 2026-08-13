@@ -148,8 +148,8 @@ export default function HeroProductPopup({ onAddToCart, onSelectProduct }) {
         <button
           onClick={handleAddToCartClick}
           className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer shadow-md transform hover:scale-103 active:scale-97 ${addedToCart
-              ? 'bg-emerald-600 text-white'
-              : 'bg-gradient-to-r from-amber-900 to-amber-950 hover:from-amber-800 hover:to-stone-950 text-white'
+            ? 'bg-emerald-600 text-white'
+            : 'bg-gradient-to-r from-amber-900 to-amber-950 hover:from-amber-800 hover:to-stone-950 text-white'
             }`}
         >
           {addedToCart ? (

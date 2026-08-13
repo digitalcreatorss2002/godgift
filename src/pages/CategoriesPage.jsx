@@ -60,11 +60,17 @@ const DEFAULT_CATEGORIES = [
   }
 ];
 
+import PageLoader from '../components/common/PageLoader';
+
+// ...
+
 export default function CategoriesPage({ onSelectCategory }) {
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCategories().then(res => {
+      setLoading(false);
       if (res && Array.isArray(res) && res.length > 0) {
         const spans = [
           "lg:col-span-8 min-h-[360px] sm:min-h-[440px]",
@@ -87,8 +93,12 @@ export default function CategoriesPage({ onSelectCategory }) {
         }));
         setCategories(mapped);
       }
-    });
+    }).catch(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return <PageLoader text="Loading sacred categories..." />;
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">

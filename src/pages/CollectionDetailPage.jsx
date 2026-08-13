@@ -109,18 +109,20 @@ const normalizeCollectionId = (id) => {
   return 'paintings';
 };
 
+import PageLoader from '../components/common/PageLoader';
+
 export default function CollectionDetailPage({ collectionId = 'paintings', onBackToCollections, onAddToCart, onSelectProduct, onToggleWishlist, wishlistItems = [] }) {
   const normalizedKey = useMemo(() => normalizeCollectionId(collectionId), [collectionId]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [productsList, setProductsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCategories().then(res => {
-      if (res && Array.isArray(res) && res.length > 0) setCategoriesList(res);
-    });
-    fetchProducts().then(res => {
-      if (res && Array.isArray(res) && res.length > 0) setProductsList(res);
-    });
+    Promise.all([fetchCategories(), fetchProducts()]).then(([cRes, pRes]) => {
+      if (cRes && Array.isArray(cRes)) setCategoriesList(cRes);
+      if (pRes && Array.isArray(pRes)) setProductsList(pRes);
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   const info = useMemo(() => {
@@ -163,6 +165,10 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
       return false;
     });
   }, [normalizedKey, collectionId, productsList]);
+
+  if (loading) {
+    return <PageLoader text="Loading collection artifacts..." />;
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-20">

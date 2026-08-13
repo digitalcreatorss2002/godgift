@@ -21,6 +21,8 @@ import {
   Minus
 } from 'lucide-react';
 
+import PageLoader from '../components/common/PageLoader';
+
 export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, onSelectProduct }) {
   const [liveProduct, setLiveProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -56,14 +58,7 @@ export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, 
   };
 
   if (!product) {
-    return (
-      <div className="min-h-[65vh] flex items-center justify-center bg-brand-bg">
-        <div className="text-center space-y-3 p-8">
-          <div className="w-10 h-10 border-4 border-amber-900 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-xs font-serif italic text-stone-600">Loading sacred artifact details...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader text="Loading sacred artifact details..." />;
   }
 
   return (

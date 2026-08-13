@@ -13,9 +13,12 @@ import {
   Check
 } from 'lucide-react';
 
+import PageLoader from '../components/common/PageLoader';
+
 export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, wishlistItems = [] }) {
   const [productsList, setProductsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [maxPrice, setMaxPrice] = useState(15000);
@@ -25,12 +28,11 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   useEffect(() => {
-    fetchProducts().then((res) => {
-      if (res && Array.isArray(res) && res.length > 0) setProductsList(res);
-    });
-    fetchCategories().then((res) => {
-      if (res && Array.isArray(res) && res.length > 0) setCategoriesList(res);
-    });
+    Promise.all([fetchProducts(), fetchCategories()]).then(([pRes, cRes]) => {
+      if (pRes && Array.isArray(pRes)) setProductsList(pRes);
+      if (cRes && Array.isArray(cRes)) setCategoriesList(cRes);
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   const categories = useMemo(() => {
@@ -96,6 +98,10 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
     setSearchQuery('');
     setSortBy('featured');
   };
+
+  if (loading) {
+    return <PageLoader text="Loading devotional collection catalog..." />;
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
