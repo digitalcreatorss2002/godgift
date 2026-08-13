@@ -56,8 +56,8 @@ export default function HeroProductPopup({ onAddToCart, onSelectProduct }) {
   if (!heroProduct || !isVisible) return null;
 
   return (
-    <div
-      className="fixed bottom-5 right-5 z-50 w-[92vw] sm:w-[380px] bg-white/95 backdrop-blur-xl rounded-3xl border border-amber-600/30 shadow-[0_20px_60px_-15px_rgba(180,83,9,0.3)] p-4 sm:p-5 text-stone-900 transition-all duration-500 hover:shadow-[0_25px_70px_-10px_rgba(180,83,9,0.4)] group overflow-hidden"
+    <div 
+      className="fixed bottom-3 right-3 left-3 sm:left-auto z-50 sm:w-[380px] bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-amber-600/30 shadow-[0_20px_60px_-15px_rgba(180,83,9,0.3)] p-3 sm:p-5 text-stone-900 transition-all duration-500 hover:shadow-[0_25px_70px_-10px_rgba(180,83,9,0.4)] group overflow-hidden"
       style={{
         animation: 'heroSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards'
       }}
@@ -67,10 +67,10 @@ export default function HeroProductPopup({ onAddToCart, onSelectProduct }) {
       <div className="absolute -bottom-10 -left-10 w-28 h-28 bg-amber-700/10 rounded-full blur-xl pointer-events-none" />
 
       {/* Top Header Badge & Close Button */}
-      <div className="flex items-center justify-between border-b border-stone-100 pb-2.5 mb-3 relative z-10">
+      <div className="flex items-center justify-between border-b border-stone-100 pb-2 mb-2.5 relative z-10">
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-amber-950 bg-gradient-to-r from-amber-500/20 via-amber-400/30 to-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30 shadow-2xs">
-            <Flame className="w-3.5 h-3.5 text-amber-600 fill-amber-500 animate-pulse" />
+          <div className="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest text-amber-950 bg-gradient-to-r from-amber-500/20 via-amber-400/30 to-amber-500/20 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-amber-500/30 shadow-2xs">
+            <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-600 fill-amber-500 animate-pulse" />
             <span>Devotional Spotlight</span>
           </div>
         </div>
@@ -80,17 +80,17 @@ export default function HeroProductPopup({ onAddToCart, onSelectProduct }) {
           className="p-1 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100/80 transition-all cursor-pointer"
           title="Close Popup"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </button>
       </div>
 
       {/* Main Product Card Interactive Body */}
-      <div
+      <div 
         onClick={handleCardClick}
-        className="flex items-center gap-3.5 cursor-pointer relative z-10"
+        className="flex items-center gap-3 cursor-pointer relative z-10"
       >
         {/* Animated Product Image Container */}
-        <div className="relative w-22 h-22 rounded-2xl overflow-hidden bg-stone-100 border border-amber-900/15 shrink-0 shadow-md group-hover:border-amber-800 transition-colors">
+        <div className="relative w-16 h-16 sm:w-22 sm:h-22 rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 border border-amber-900/15 shrink-0 shadow-md group-hover:border-amber-800 transition-colors">
           <img
             src={getImageSrc(heroProduct.image)}
             alt={heroProduct.name}

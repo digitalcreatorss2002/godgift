@@ -206,18 +206,23 @@ export default function BestsellersPage({ onAddToCart, onQuickView, onToggleWish
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[#EADBCA] pb-6">
               <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 scrollbar-none">
-                {filterTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setSelectedFilter(tab.id)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer ${selectedFilter === tab.id
-                        ? 'bg-amber-900 text-white shadow-sm'
-                        : 'bg-white text-stone-700 border border-stone-200 hover:border-amber-800/40'
+                {filterTabs.map((tab) => {
+                  const isActive = selectedFilter === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setSelectedFilter(tab.id)}
+                      className={`px-4.5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+                        isActive
+                          ? 'bg-amber-900 text-white shadow-md shadow-amber-900/30 scale-102 ring-2 ring-amber-800/40'
+                          : 'bg-white text-stone-700 border border-stone-200/90 shadow-2xs hover:border-amber-900/30 hover:bg-stone-50'
                       }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+                    >
+                      {isActive && <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400 animate-pulse" />}
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
               </div>
 
               <span className="text-xs text-stone-500 font-medium whitespace-nowrap">
@@ -226,7 +231,7 @@ export default function BestsellersPage({ onAddToCart, onQuickView, onToggleWish
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {bestsellers.map((product) => (
                 <ProductCard
                   key={product.id}
