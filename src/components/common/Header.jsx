@@ -309,11 +309,105 @@ export default function Header({
                 )}
               </button>
 
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-1.5 text-stone-700 hover:text-amber-900 rounded-full transition-colors cursor-pointer"
+                aria-label="Toggle Mobile Menu"
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+              </button>
+
             </div>
 
           </div>
         </div>
       </header>
+
+      {/* Mobile Drawer Menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden bg-stone-950/70 backdrop-blur-sm flex justify-end">
+          <div className="w-4/5 max-w-sm bg-white h-full p-6 space-y-6 overflow-y-auto shadow-2xl border-l border-stone-200">
+            
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <span className="font-serif text-lg font-bold text-stone-900">Navigation Menu</span>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-1 text-stone-400 hover:text-stone-900 rounded-full"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Mobile Nav Links */}
+            <div className="space-y-2 text-sm font-bold text-stone-800">
+              {navLinks.map((link, idx) => {
+                const label = link.label.toLowerCase();
+                const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home'))));
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleLinkClick(target)}
+                    className="w-full text-left py-2 border-b border-stone-100 hover:text-amber-900 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{link.label}</span>
+                    <ChevronRight className="w-4 h-4 text-stone-400" />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile Categories Accordion with Sub-Categories */}
+            <div className="pt-2 space-y-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-stone-400 block">
+                Explore Categories & Sub-Categories
+              </span>
+              <div className="space-y-2 text-xs font-semibold text-stone-700">
+                {collectionsList.map((cat, cIdx) => {
+                  const isExpanded = expandedMobileCat === cIdx;
+                  const subs = Array.isArray(cat.subcategories) ? cat.subcategories : [];
+
+                  return (
+                    <div key={cIdx} className="space-y-1 border-b border-stone-100 pb-2">
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={() => handleLinkClick(cat.target || `collection-${cat.slug}`)}
+                          className="text-left font-serif font-bold text-stone-900 hover:text-amber-900 flex-1 py-1 cursor-pointer"
+                        >
+                          {cat.name}
+                        </button>
+                        {subs.length > 0 && (
+                          <button
+                            onClick={() => setExpandedMobileCat(isExpanded ? null : cIdx)}
+                            className="p-1 text-stone-400 hover:text-amber-900"
+                          >
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-amber-900' : ''}`} />
+                          </button>
+                        )}
+                      </div>
+
+                      {subs.length > 0 && isExpanded && (
+                        <div className="pl-3 py-1 text-[11px] text-stone-600 space-y-1 border-l-2 border-amber-800/30 ml-1">
+                          {subs.map((sub, sIdx) => (
+                            <button
+                              key={sIdx}
+                              onClick={() => handleLinkClick(`collection-${cat.slug}?sub=${encodeURIComponent(sub)}`)}
+                              className="w-full text-left py-1 hover:text-amber-900 cursor-pointer block truncate"
+                            >
+                              • {sub}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* Global Search Modal */}
       <SearchModal
