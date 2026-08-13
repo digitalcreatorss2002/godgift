@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import HeroBanner from '../components/home/HeroBanner';
 import CircularCategoryBar from '../components/home/CircularCategoryBar';
+import BestsellersSection from '../components/home/BestsellersSection';
 import OfferBannerSlider from '../components/home/OfferBannerSlider';
 import FeaturedProducts from '../components/home/FeaturedProducts';
 import HeritageBanner from '../components/home/HeritageBanner';
@@ -46,10 +47,18 @@ export default function HomePage({
         {/* 2. Prominent 8 Circular Category Avatar Bar */}
         <CircularCategoryBar onSelectCategory={handleSelectCategory} />
 
-        {/* 3. Promo Offers Carousel Slider */}
+        {/* 3. New Arched Top Card "Our Best Sellers" Section matching satvikstore.in reference */}
+        <BestsellersSection
+          onSelectProduct={onQuickView}
+          onAddToCart={onAddToCart}
+          onToggleWishlist={onToggleWishlist}
+          wishlistItems={wishlistItems}
+        />
+
+        {/* 4. Promo Offers Carousel Slider */}
         <OfferBannerSlider />
 
-        {/* 4. Signature Products Catalog */}
+        {/* 5. Signature Products Catalog */}
         <FeaturedProducts
           onQuickView={onQuickView}
           onAddToCart={onAddToCart}
@@ -57,16 +66,16 @@ export default function HomePage({
           wishlistItems={wishlistItems}
         />
 
-        {/* 5. Trust & Quality Badges */}
+        {/* 6. Trust & Quality Badges */}
         <TrustBadges />
 
-        {/* 6. Heritage Craftsmanship & Master Guild Banner */}
+        {/* 7. Heritage Craftsmanship & Master Guild Banner */}
         <HeritageBanner />
 
-        {/* 7. Corporate Gifting Showcase */}
+        {/* 8. Corporate Gifting Showcase */}
         <CorporateGiftingSection />
 
-        {/* 8. Devotee Reviews */}
+        {/* 9. Devotee Reviews */}
         <TestimonialsSection />
 
       </div>

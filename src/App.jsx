@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import AnnouncementBar from './components/common/AnnouncementBar';
 import Header from './components/common/Header';
+import AnnouncementBar from './components/common/AnnouncementBar';
 import Footer from './components/common/Footer';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
-import CollectionsPage from './pages/CollectionsPage';
 import CategoriesPage from './pages/CategoriesPage';
+import CollectionsPage from './pages/CollectionsPage';
 import CollectionDetailPage from './pages/CollectionDetailPage';
-import BestsellersPage from './pages/BestsellersPage';
 import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CartPage';
-import WishlistPage from './pages/WishlistPage';
+import BestsellersPage from './pages/BestsellersPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
+import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
+import WishlistPage from './pages/WishlistPage';
 import AuthModal from './components/common/AuthModal';
 import HeroProductPopup from './components/ecommerce/HeroProductPopup';
-import { MOCK_PRODUCTS } from './data/mockProducts';
+import MobileBottomNav from './components/common/MobileBottomNav';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -229,10 +229,21 @@ export default function App() {
           setCurrentUser(null);
         }}
       />
-      <main className="flex-1">
+      <main className="flex-1 pb-16 md:pb-0">
         {renderCurrentPage()}
       </main>
       <Footer />
+
+      {/* Mobile-Only Native App Style Bottom Navigation Bar */}
+      <MobileBottomNav
+        currentPage={currentPage}
+        cartCount={cartCount}
+        wishlistCount={wishlistCount}
+        onNavigate={handleNavigate}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthOpen(true)}
+      />
+
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
