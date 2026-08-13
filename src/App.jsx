@@ -22,17 +22,16 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedCollectionId, setSelectedCollectionId] = useState('paintings');
   const [selectedProductId, setSelectedProductId] = useState(1);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('gga_user');
-    if (saved) {
-      try {
-        setCurrentUser(JSON.parse(saved));
-      } catch (e) {}
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('gga_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
     }
-  }, []);
+  });
 
   // Cart & Wishlist State (Persisted in localStorage across page refreshes)
   const [cartItems, setCartItems] = useState(() => {
@@ -78,7 +77,20 @@ export default function App() {
       else if (hash === '#shop') setCurrentPage('shop');
       else if (hash === '#corporate-gifting') setCurrentPage('corporate-gifting');
       else if (hash.startsWith('#collection-')) {
-        setSelectedCollectionId(hash.replace('#collection-', ''));
+        const hashContent = hash.replace('#collection-', '');
+        let colId = hashContent;
+        let subCat = null;
+
+        if (hashContent.includes('?sub=')) {
+          const parts = hashContent.split('?sub=');
+          colId = decodeURIComponent(parts[0]).trim();
+          subCat = decodeURIComponent(parts[1]).trim();
+        } else {
+          colId = decodeURIComponent(hashContent).trim();
+        }
+
+        setSelectedCollectionId(colId);
+        setSelectedSubcategory(subCat);
         setCurrentPage('collection-detail');
       } else if (hash.startsWith('#product-')) {
         setSelectedProductId(Number(hash.replace('#product-', '')));
@@ -97,12 +109,29 @@ export default function App() {
   const handleNavigate = (target) => {
     if (!target) return;
     if (target.startsWith('collection-')) {
-      const colId = target.replace('collection-', '');
+      const targetContent = target.replace('collection-', '').trim();
+      let colId = targetContent;
+      let subCat = null;
+
+      if (targetContent.includes('?sub=')) {
+        const parts = targetContent.split('?sub=');
+        colId = parts[0].trim();
+        subCat = decodeURIComponent(parts[1]).trim();
+      }
+
       setSelectedCollectionId(colId);
-      window.location.hash = `#collection-${colId}`;
+      setSelectedSubcategory(subCat);
+      setCurrentPage('collection-detail');
+
+      if (subCat) {
+        window.location.hash = `#collection-${colId}?sub=${encodeURIComponent(subCat)}`;
+      } else {
+        window.location.hash = `#collection-${colId}`;
+      }
     } else if (target.startsWith('product-')) {
       const prodId = Number(target.replace('product-', ''));
       setSelectedProductId(prodId);
+      setCurrentPage('product-detail');
       window.location.hash = `#product-${prodId}`;
     } else if (target === 'offers') {
       window.location.hash = `#${target}`;
@@ -111,6 +140,7 @@ export default function App() {
       return;
     } else {
       window.location.hash = `#${target}`;
+      setCurrentPage(target);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -173,7 +203,7 @@ export default function App() {
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
-        return <CollectionDetailPage collectionId={selectedCollectionId} onBackToCollections={() => handleNavigate('collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
+        return <CollectionDetailPage collectionId={selectedCollectionId} selectedSubcategory={selectedSubcategory} onBackToCollections={() => handleNavigate('collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'collections':
         return <CollectionsPage onSelectCollection={handleSelectCollection} onAddToCart={handleAddToCart} />;
       case 'shop':

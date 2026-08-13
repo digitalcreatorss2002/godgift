@@ -31,6 +31,7 @@ export default function Header({
   const [hoveredNav, setHoveredNav] = useState(null);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [expandedMobileCat, setExpandedMobileCat] = useState(null);
 
   // 8 Primary Categories for Dropdown & Navigation
   const [collectionsList, setCollectionsList] = useState([
@@ -88,7 +89,7 @@ export default function Header({
     <>
       <header className="sticky top-0 z-40 bg-brand-surface/95 backdrop-blur-md border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16 sm:h-20">
 
             {/* Official Brand Logo */}
             <div className="flex-shrink-0">
@@ -100,7 +101,7 @@ export default function Header({
                 <img
                   src="/logo.png"
                   alt="God Gift Arts"
-                  className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="h-9 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               </a>
             </div>
@@ -186,7 +187,7 @@ export default function Header({
                                         {subList.map((subItem, sIdx) => (
                                           <button
                                             key={sIdx}
-                                            onClick={() => handleLinkClick(cat.target || `collection-${cat.slug}`)}
+                                            onClick={() => handleLinkClick(`collection-${cat.slug}?sub=${encodeURIComponent(subItem)}`)}
                                             className="w-full text-left px-3 py-2 text-xs font-medium text-stone-700 hover:text-amber-950 hover:bg-stone-100/80 rounded-xl transition-all flex items-center justify-between cursor-pointer group/sub"
                                           >
                                             <span className="line-clamp-1">{subItem}</span>
@@ -210,7 +211,7 @@ export default function Header({
             </nav>
 
             {/* Search, Wishlist, User Profile, & Cart Action Icons */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-4">
               
               {/* Search Toggle Button */}
               <button
@@ -218,7 +219,7 @@ export default function Header({
                 className="p-2 text-stone-700 hover:text-amber-900 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
                 aria-label="Search Catalog"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
               </button>
 
               {/* Wishlist Button */}
@@ -227,32 +228,32 @@ export default function Header({
                 className="relative p-2 text-stone-700 hover:text-amber-900 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
                 aria-label="Wishlist"
               >
-                <Heart className="w-5 h-5" />
+                <Heart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 bg-amber-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-scaleIn">
+                  <span className="absolute top-1 right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-amber-900 text-white text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center animate-scaleIn">
                     {wishlistCount}
                   </span>
                 )}
               </button>
 
-              {/* User Account Menu / Login Button */}
+              {/* User Account Menu / Login Button (Concise on Mobile) */}
               <div className="relative">
                 {currentUser ? (
                   <button
                     onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                    className="flex items-center gap-2 py-1.5 px-3 rounded-full bg-stone-100 hover:bg-stone-200/80 text-stone-800 text-xs font-bold transition-all cursor-pointer border border-stone-200"
+                    className="flex items-center gap-1.5 p-2 sm:py-1.5 sm:px-3 rounded-full bg-stone-100 hover:bg-stone-200/80 text-stone-800 text-xs font-bold transition-all cursor-pointer border border-stone-200"
                   >
                     <User className="w-4 h-4 text-amber-800" />
-                    <span className="max-w-[80px] truncate">{currentUser.name || 'Account'}</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
+                    <span className="hidden sm:inline max-w-[80px] truncate">{currentUser.name || 'Account'}</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 hidden sm:inline" />
                   </button>
                 ) : (
                   <button
                     onClick={onOpenAuth}
-                    className="flex items-center gap-1.5 py-2 px-4 rounded-full bg-amber-900 hover:bg-stone-950 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
+                    className="flex items-center gap-1.5 py-1.5 px-3 sm:py-2 sm:px-4 rounded-full bg-amber-900 hover:bg-stone-950 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
                   >
                     <User className="w-3.5 h-3.5" />
-                    <span>Login</span>
+                    <span className="hidden sm:inline">Login</span>
                   </button>
                 )}
 
@@ -300,9 +301,9 @@ export default function Header({
                 className="relative p-2 text-stone-700 hover:text-amber-900 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
                 aria-label="Shopping Cart"
               >
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute top-1 right-1 w-4.5 h-4.5 bg-amber-900 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-scaleIn">
+                  <span className="absolute top-1 right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-amber-900 text-white text-[9px] sm:text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-scaleIn">
                     {cartCount}
                   </span>
                 )}
@@ -311,10 +312,10 @@ export default function Header({
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 text-stone-700 hover:text-amber-900 rounded-full transition-colors cursor-pointer"
+                className="md:hidden p-1.5 text-stone-700 hover:text-amber-900 rounded-full transition-colors cursor-pointer"
                 aria-label="Toggle Mobile Menu"
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
               </button>
 
             </div>
@@ -339,7 +340,7 @@ export default function Header({
             </div>
 
             {/* Mobile Nav Links */}
-            <div className="space-y-3 text-sm font-bold text-stone-800">
+            <div className="space-y-2 text-sm font-bold text-stone-800">
               {navLinks.map((link, idx) => {
                 const label = link.label.toLowerCase();
                 const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home'))));
@@ -356,36 +357,51 @@ export default function Header({
               })}
             </div>
 
-            {/* Mobile Categories & Dynamic Subcategories List */}
+            {/* Mobile Categories Accordion with Sub-Categories */}
             <div className="pt-2 space-y-2">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-stone-400 block">
                 Explore Categories & Sub-Categories
               </span>
               <div className="space-y-2 text-xs font-semibold text-stone-700">
-                {collectionsList.map((cat, cIdx) => (
-                  <div key={cIdx} className="space-y-1">
-                    <button
-                      onClick={() => handleLinkClick(cat.target || `collection-${cat.slug}`)}
-                      className="w-full text-left font-serif font-bold text-stone-900 hover:text-amber-900 flex items-center justify-between cursor-pointer"
-                    >
-                      <span>{cat.name}</span>
-                      <ChevronRight className="w-3.5 h-3.5 text-stone-400" />
-                    </button>
-                    {cat.subcategories && cat.subcategories.length > 0 && (
-                      <div className="pl-3 text-[11px] text-stone-500 space-y-0.5">
-                        {cat.subcategories.map((sub, sIdx) => (
-                          <div 
-                            key={sIdx}
-                            onClick={() => handleLinkClick(cat.target || `collection-${cat.slug}`)}
-                            className="hover:text-amber-900 cursor-pointer"
+                {collectionsList.map((cat, cIdx) => {
+                  const isExpanded = expandedMobileCat === cIdx;
+                  const subs = Array.isArray(cat.subcategories) ? cat.subcategories : [];
+
+                  return (
+                    <div key={cIdx} className="space-y-1 border-b border-stone-100 pb-2">
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={() => handleLinkClick(cat.target || `collection-${cat.slug}`)}
+                          className="text-left font-serif font-bold text-stone-900 hover:text-amber-900 flex-1 py-1 cursor-pointer"
+                        >
+                          {cat.name}
+                        </button>
+                        {subs.length > 0 && (
+                          <button
+                            onClick={() => setExpandedMobileCat(isExpanded ? null : cIdx)}
+                            className="p-1 text-stone-400 hover:text-amber-900"
                           >
-                            • {sub}
-                          </div>
-                        ))}
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-amber-900' : ''}`} />
+                          </button>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
+
+                      {subs.length > 0 && isExpanded && (
+                        <div className="pl-3 py-1 text-[11px] text-stone-600 space-y-1 border-l-2 border-amber-800/30 ml-1">
+                          {subs.map((sub, sIdx) => (
+                            <button
+                              key={sIdx}
+                              onClick={() => handleLinkClick(`collection-${cat.slug}?sub=${encodeURIComponent(sub)}`)}
+                              className="w-full text-left py-1 hover:text-amber-900 cursor-pointer block truncate"
+                            >
+                              • {sub}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

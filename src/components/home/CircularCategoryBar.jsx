@@ -31,32 +31,32 @@ export default function CircularCategoryBar({ onSelectCategory }) {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       
-      {/* Section Sub-Header */}
-      <div className="flex items-center justify-between mb-6 border-b border-[#EADBCA] pb-3">
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-5 border-b border-[#EADBCA] pb-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-amber-800" />
-          <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900 tracking-tight">
-            Explore 8 Devotional Categories
+          <h2 className="text-base sm:text-xl font-serif font-bold text-stone-900 tracking-tight">
+            Explore Devotional Categories
           </h2>
         </div>
         <a
           href="#categories"
           className="text-xs font-bold text-amber-900 hover:underline inline-flex items-center gap-1"
         >
-          <span>View All Categories</span>
+          <span>View All</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </div>
 
-      {/* 8 Circular Category Avatar Row Grid */}
-      <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-4 sm:gap-6 text-center">
+      {/* Responsive Horizontal Scrollable Story Bubbles on Mobile / Grid on Desktop */}
+      <div className="flex md:grid md:grid-cols-8 overflow-x-auto scrollbar-none gap-4 sm:gap-6 text-center py-2 px-1 snap-x">
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => onSelectCategory && onSelectCategory(cat.id)}
-            className="group flex flex-col items-center space-y-2 cursor-pointer transition-all focus:outline-none"
+            className="group flex flex-col items-center space-y-2 cursor-pointer transition-all focus:outline-none shrink-0 w-20 sm:w-24 md:w-auto snap-start"
           >
             {/* Circular Image Ring */}
             <div className="relative w-18 h-18 sm:w-22 sm:h-22 rounded-full p-1 bg-gradient-to-tr from-amber-800 via-amber-400 to-amber-900 shadow-md group-hover:shadow-xl group-hover:scale-108 transition-all duration-300">
@@ -71,7 +71,7 @@ export default function CircularCategoryBar({ onSelectCategory }) {
             </div>
 
             {/* Category Title Label */}
-            <div className="space-y-0.5 max-w-[90px]">
+            <div className="space-y-0.5 max-w-[85px] sm:max-w-[100px]">
               <span className="text-[11px] sm:text-xs font-serif font-bold text-stone-900 group-hover:text-amber-900 transition-colors line-clamp-2 leading-tight">
                 {cat.name}
               </span>

@@ -4,12 +4,14 @@ import { fetchProducts, fetchCategories, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
+import PageLoader from '../components/common/PageLoader';
 import {
   ArrowLeft,
   Sparkles,
   ShieldCheck,
   Award,
-  Check
+  Check,
+  Tag
 } from 'lucide-react';
 
 const COLLECTION_DATA = {
@@ -109,13 +111,25 @@ const normalizeCollectionId = (id) => {
   return 'paintings';
 };
 
-import PageLoader from '../components/common/PageLoader';
-
-export default function CollectionDetailPage({ collectionId = 'paintings', onBackToCollections, onAddToCart, onSelectProduct, onToggleWishlist, wishlistItems = [] }) {
+export default function CollectionDetailPage({
+  collectionId = 'paintings',
+  selectedSubcategory = null,
+  onBackToCollections,
+  onAddToCart,
+  onSelectProduct,
+  onToggleWishlist,
+  wishlistItems = []
+}) {
   const normalizedKey = useMemo(() => normalizeCollectionId(collectionId), [collectionId]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [productsList, setProductsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [activeSub, setActiveSub] = useState(selectedSubcategory);
+
+  useEffect(() => {
+    setActiveSub(selectedSubcategory);
+  }, [selectedSubcategory]);
 
   useEffect(() => {
     Promise.all([fetchCategories(), fetchProducts()]).then(([cRes, pRes]) => {
@@ -143,6 +157,25 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
     return COLLECTION_DATA[normalizedKey] || COLLECTION_DATA.paintings;
   }, [collectionId, normalizedKey, categoriesList]);
 
+  // Subcategories list for current category
+  const currentSubcategories = useMemo(() => {
+    const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
+    const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw);
+    if (dbCat && Array.isArray(dbCat.subcategories) && dbCat.subcategories.length > 0) {
+      return dbCat.subcategories;
+    }
+
+    if (normalizedKey === 'paintings') return ["Ganesha Canvases", "Krishna Folk Art", "Divine Lakshmi", "Vastu Wall Paintings"];
+    if (normalizedKey === 'idols') return ["Hanuman Ji Statues", "Khatu Shyam Ji", "Ram Darbar Set", "Durga Maa & Lakshmi"];
+    if (normalizedKey === 'pooja') return ["Pure Copper Thalis", "Engraved Kalash", "Brass Aarti Bells", "Dhoop Stands"];
+    if (normalizedKey === 'marble-murtis') return ["White Makrana Marble", "24K Gold Foil Idols", "Marble Chowki Plates"];
+    if (normalizedKey === 'guruji') return ["Gilded Swaroop Portraits", "Sandalwood Malas", "Satsang Accessories"];
+    if (normalizedKey === 'gifting') return ["Royal Velvet Boxes", "Custom Logo Hampers", "Diwali Diya Sets"];
+    if (normalizedKey === 'dhoop-lamps') return ["Peacock Oil Diyas", "Brass Dhoop Burners", "Urli Bowls"];
+    if (normalizedKey === 'malas') return ["108 Sandalwood Malas", "Spatik Crystal Rosaries", "Tulsi Bead Malas"];
+    return [];
+  }, [collectionId, normalizedKey, categoriesList]);
+
   // Filter products strictly for this specific category
   const collectionProducts = useMemo(() => {
     return productsList.filter((product) => {
@@ -150,10 +183,8 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
       const nKey = normalizedKey.toLowerCase().trim();
       const rawId = decodeURIComponent(collectionId || '').toLowerCase().trim();
       
-      // Direct match with DB slug or raw ID
       if (pCat === nKey || pCat === rawId) return true;
 
-      // Category slug mapping
       if (nKey === 'paintings') return pCat === 'paintings' || pCat === 'spiritual-oil-paintings';
       if (nKey === 'marble-murtis') return pCat === 'marble-murtis' || pCat === 'marble-murtis-carvings';
       if (nKey === 'idols') return pCat === 'idols' || pCat === 'brass-idols-murtis';
@@ -165,6 +196,28 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
       return false;
     });
   }, [normalizedKey, collectionId, productsList]);
+
+  // Sub-category specific filtered products
+  const displayProducts = useMemo(() => {
+    if (!activeSub) return collectionProducts;
+    const target = activeSub.toLowerCase().trim();
+
+    const matches = collectionProducts.filter(p => {
+      const pName = (p.name || '').toLowerCase();
+      const pDesc = (p.description || '').toLowerCase();
+      const pMat = (p.material || '').toLowerCase();
+      const pBadge = (p.badge || '').toLowerCase();
+      const pSub = (p.subcategory || '').toLowerCase();
+
+      const keywords = target.split(' ').filter(k => k.length > 2);
+      return pSub.includes(target) || 
+             pName.includes(target) || 
+             pBadge.includes(target) ||
+             keywords.some(k => pName.includes(k) || pDesc.includes(k) || pMat.includes(k));
+    });
+
+    return matches.length > 0 ? matches : collectionProducts;
+  }, [collectionProducts, activeSub]);
 
   if (loading) {
     return <PageLoader text="Loading collection artifacts..." />;
@@ -179,88 +232,138 @@ export default function CollectionDetailPage({ collectionId = 'paintings', onBac
           <img
             src={info.bannerImage}
             alt={info.title}
-            className="w-full h-full object-cover filter brightness-50 scale-100"
+            className="w-full h-full object-cover opacity-25 scale-105 filter blur-xs"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/50 to-stone-950/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/90 to-transparent" />
         </div>
 
-        <LotusJaaliPatternBackground className="text-amber-400/10 z-10" />
+        <LotusJaaliPatternBackground className="text-amber-500/10" />
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-6">
-
-          {/* Back to All Collections Button */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full z-10">
           <button
-            onClick={onBackToCollections}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest backdrop-blur-md border border-white/20 transition-all cursor-pointer"
+            onClick={() => onBackToCollections ? onBackToCollections() : window.location.hash = '#collections'}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900/80 hover:bg-amber-900 text-stone-300 hover:text-white text-xs font-bold tracking-wider uppercase transition-all mb-6 border border-stone-700/80 cursor-pointer shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Collections</span>
           </button>
 
-          {/* Title & Badge */}
-          <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold uppercase tracking-wider border border-amber-400/30">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>{info.badge}</span>
+          <div className="max-w-2xl space-y-4">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-amber-400">
+              <Sparkles className="w-4 h-4" />
+              <span>{activeSub ? `Sub-Category: ${activeSub}` : info.badge}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white leading-tight">
-              {info.title}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-stone-100 tracking-tight leading-tight">
+              {activeSub ? `${activeSub}` : info.title}
             </h1>
 
-            <p className="text-xs sm:text-sm text-stone-300 font-normal leading-relaxed">
+            <p className="text-stone-300 text-sm sm:text-base leading-relaxed font-light">
               {info.description}
             </p>
-          </div>
 
-          {/* Provenance Pills */}
-          <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-stone-300 pt-2 border-t border-stone-800/80">
-            <div className="flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-amber-400" />
-              <span>{info.artisanOrigin}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-amber-400" />
-              <span>{info.material}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-emerald-400" />
-              <span>{collectionProducts.length} Items Available</span>
+            <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-stone-400 font-medium">
+              <span className="flex items-center gap-1.5 text-stone-300 font-semibold">
+                <ShieldCheck className="w-4 h-4 text-amber-400" />
+                {info.artisanOrigin}
+              </span>
+              <span className="flex items-center gap-1.5 text-stone-300 font-semibold">
+                <Award className="w-4 h-4 text-amber-400" />
+                {info.material}
+              </span>
+              <span className="flex items-center gap-1.5 text-amber-400 font-bold">
+                <Check className="w-4 h-4" />
+                {displayProducts.length} Items Available
+              </span>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* Products Grid (No Filter Sidebar, Direct Full-Width Grid) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-6">
+      {/* Interactive Sub-Category Filter Pill Bar */}
+      {currentSubcategories.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+          <div className="bg-white p-3 rounded-2xl border border-stone-200/80 shadow-xs flex items-center gap-2 overflow-x-auto scrollbar-none">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 shrink-0 pr-2 border-r border-stone-200">
+              <Tag className="w-3.5 h-3.5" />
+              <span>Sub-Categories:</span>
+            </div>
 
-        {/* Title Subheader */}
-        <div className="flex items-center justify-between border-b border-[#EADBCA] pb-4">
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
-            Artifacts in {info.title}
-          </h2>
-          <span className="text-xs font-medium text-stone-500">
-            {collectionProducts.length} items
+            <button
+              onClick={() => setActiveSub(null)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                !activeSub 
+                  ? 'bg-amber-900 text-white shadow-xs' 
+                  : 'bg-stone-100 text-stone-700 hover:bg-amber-50 hover:text-amber-900'
+              }`}
+            >
+              All {info.title}
+            </button>
+
+            {currentSubcategories.map((sub, idx) => {
+              const isActive = activeSub === sub;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSub(isActive ? null : sub)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                    isActive 
+                      ? 'bg-amber-900 text-white shadow-xs' 
+                      : 'bg-stone-100 text-stone-700 hover:bg-amber-50 hover:text-amber-900'
+                  }`}
+                >
+                  {sub}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Main Products Display Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="flex items-center justify-between border-b border-stone-200 pb-4 mb-8">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+              {activeSub ? `Artifacts in ${activeSub}` : `Artifacts in ${info.title}`}
+            </h2>
+            <p className="text-xs text-stone-500 mt-1">
+              Handcrafted Jaipur artifacts ready for dispatch
+            </p>
+          </div>
+          <span className="text-xs font-bold text-stone-500 bg-stone-100 px-3 py-1.5 rounded-full border border-stone-200">
+            {displayProducts.length} items
           </span>
         </div>
 
-        {/* 4-Column Product Cards Grid */}
+        {/* 2 Products Per Column on Mobile Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-          {collectionProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onQuickView={onSelectProduct}
-              onAddToCart={onAddToCart}
-              onToggleWishlist={onToggleWishlist}
-              isWishlisted={wishlistItems.some(w => w.id === product.id)}
-            />
-          ))}
+          {displayProducts.map((product) => {
+            const isWishlisted = wishlistItems.some(w => w.id === product.id);
+            return (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={onAddToCart}
+                onQuickView={() => setQuickViewProduct(product)}
+                onToggleWishlist={onToggleWishlist}
+                isWishlisted={isWishlisted}
+              />
+            );
+          })}
         </div>
-
       </div>
+
+      {/* Quick View Modal */}
+      {quickViewProduct && (
+        <QuickViewModal
+          product={quickViewProduct}
+          isOpen={!!quickViewProduct}
+          onClose={() => setQuickViewProduct(null)}
+          onAddToCart={onAddToCart}
+          onSelectProduct={onSelectProduct}
+        />
+      )}
 
     </div>
   );
