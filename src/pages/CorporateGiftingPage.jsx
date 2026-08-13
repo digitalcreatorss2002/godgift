@@ -16,9 +16,15 @@ import {
   DollarSign
 } from 'lucide-react';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider } from '../components/common/BackgroundIllustrations';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
+import PageLoader from '../components/common/PageLoader';
 
 export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelectProduct }) {
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -72,6 +78,10 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
     e.preventDefault();
     setSubmitted(true);
   };
+
+  if (loading) {
+    return <PageLoader text="Loading bespoke corporate gifting showcase..." />;
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">

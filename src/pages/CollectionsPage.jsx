@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles, Flame, ShieldCheck, Gift } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
+import PageLoader from '../components/common/PageLoader';
 
 export default function CollectionsPage({ onSelectCollection }) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
   // Concept-Driven Collections Grouped into 4 Relatable Sections
   const collectionSections = [
     {
@@ -122,6 +129,10 @@ export default function CollectionsPage({ onSelectCollection }) {
       ]
     }
   ];
+
+  if (loading) {
+    return <PageLoader text="Loading curated devotional collections..." />;
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
