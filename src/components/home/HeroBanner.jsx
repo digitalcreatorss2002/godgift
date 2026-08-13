@@ -67,7 +67,7 @@ export default function HeroBanner() {
           </div>
 
           {/* Trust Micro Stats Bar */}
-          <div className="pt-3 border-t border-stone-800/80 flex flex-wrap items-center gap-6 text-[10px] sm:text-xs text-stone-300 font-medium">
+          <div className="pt-3  flex flex-wrap items-center gap-6 text-[10px] sm:text-xs text-stone-300 font-medium">
             <div className="flex items-center gap-1.5">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               <span className="text-white font-bold">4.9 / 5.0</span> Rating (2,500+ Reviews)
