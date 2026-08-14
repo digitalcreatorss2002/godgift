@@ -19,7 +19,7 @@ export default function BestsellersSection({ onSelectProduct, onAddToCart }) {
   return (
     <section className="bg-stone-50/50 py-12 sm:py-16 border-y border-stone-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
+
         {/* Section Header matching satvikstore.in reference */}
         <div className="text-center space-y-1">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-900 tracking-tight">
@@ -64,7 +64,7 @@ export default function BestsellersSection({ onSelectProduct, onAddToCart }) {
                     }}
                     className="w-full py-2 sm:py-2.5 border border-stone-800 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-900 hover:bg-stone-950 hover:text-white transition-all rounded-md cursor-pointer shadow-2xs"
                   >
-                    Shop Now
+                    Add to Cart
                   </button>
                 </div>
 
