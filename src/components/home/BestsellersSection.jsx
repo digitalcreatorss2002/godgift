@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { fetchProducts, getImageSrc } from '../../services/api';
 
@@ -40,7 +41,7 @@ export default function BestsellersSection({ onSelectProduct, onAddToCart }) {
                 onClick={() => onSelectProduct && onSelectProduct(product)}
               >
                 {/* 100% Flush Arched Top Image (Zero extra shadow, badges, or inner borders) */}
-                <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100">
+                <div className="relative w-full aspect-4/5 overflow-hidden bg-stone-100">
                   <img
                     src={getImageSrc(product.image)}
                     alt={product.name}
@@ -51,7 +52,7 @@ export default function BestsellersSection({ onSelectProduct, onAddToCart }) {
 
                 {/* Content Section below Image */}
                 <div className="p-3 sm:p-4 w-full flex-1 flex flex-col justify-between items-center text-center space-y-3">
-                  <h3 className="font-serif font-bold text-stone-900 text-xs sm:text-sm leading-snug line-clamp-2 min-h-[36px] flex items-center justify-center group-hover:text-amber-900 transition-colors">
+                  <h3 className="font-serif font-bold text-stone-900 text-xs sm:text-sm leading-snug line-clamp-2 min-h-9 flex items-center justify-center group-hover:text-amber-900 transition-colors">
                     {product.name}
                   </h3>
 
