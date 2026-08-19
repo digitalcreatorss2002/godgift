@@ -7,6 +7,7 @@ import FeaturedProducts from '../components/home/FeaturedProducts';
 import HeritageBanner from '../components/home/HeritageBanner';
 import TrustBadges from '../components/home/TrustBadges';
 import CorporateGiftingSection from '../components/home/CorporateGiftingSection';
+import PartnersSection from '../components/home/PartnersSection';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import { DiyaIllustration, MandalaIllustration } from '../components/common/BackgroundIllustrations';
 
@@ -75,7 +76,10 @@ export default function HomePage({
         {/* 8. Corporate Gifting Showcase */}
         <CorporateGiftingSection />
 
-        {/* 9. Devotee Reviews */}
+        {/* 9. Esteemed Corporate Partners & Clients */}
+        <PartnersSection />
+
+        {/* 10. Devotee Reviews */}
         <TestimonialsSection />
 
       </div>
