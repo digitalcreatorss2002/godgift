@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
   ];
 
   return (
-    <section className="relative bg-[#FAF6F0] pt-16 pb-20 sm:pb-24 border-t border-[#EADBCA]/60 overflow-hidden mt-6 mb-0">
+    <section className="relative bg-[#FAF6F0] pt-10 pb-16 sm:pb-20 overflow-hidden my-0">
       <JaaliPatternBackground className="text-amber-900/10" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
