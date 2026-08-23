@@ -99,11 +99,11 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-900 text-xs font-bold uppercase tracking-widest">
             <Gift className="w-4 h-4 text-amber-800" />
-            <span>Bespoke Corporate & Festive Gifting</span>
+            <span>Bespoke B2B Wholesale & Bulk Orders</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-stone-900 leading-tight">
-            Elevate Corporate Gifting <br />
+            B2B Bulk Enquiry & Custom Orders <br />
             <span className="italic font-normal text-amber-900">With Sacred Artisanal Craftsmanship</span>
           </h1>
 
@@ -212,7 +212,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
                   <div className="pt-2 flex items-center justify-between border-t border-stone-100">
                     <div>
                       <span className="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Bulk Pricing From</span>
-                      <span className="font-mono font-bold text-amber-900 text-sm">₹{hamper.price.toLocaleString()}</span>
+                      <span className="font-mono font-bold text-amber-900 text-sm">â‚¹{hamper.price.toLocaleString()}</span>
                     </div>
 
                     <button 
@@ -276,7 +276,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
             </div>
 
             <div className="relative z-10 pt-6 border-t border-stone-800 text-[11px] text-stone-400">
-              ⚡ Over 150+ Corporate Orders Delivered Last Diwali Season
+              âš¡ Over 150+ Corporate Orders Delivered Last Diwali Season
             </div>
           </div>
 
@@ -386,16 +386,16 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Target Budget per Hamper (₹)</label>
+                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Target Budget per Hamper (â‚¹)</label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                       className="w-full px-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900 cursor-pointer"
                     >
-                      <option value="500-1000">₹500 - ₹1,000</option>
-                      <option value="1000-2500">₹1,000 - ₹2,500</option>
-                      <option value="2500-5000">₹2,500 - ₹5,000</option>
-                      <option value="5000+">₹5,000+ (Executive Luxury)</option>
+                      <option value="500-1000">â‚¹500 - â‚¹1,000</option>
+                      <option value="1000-2500">â‚¹1,000 - â‚¹2,500</option>
+                      <option value="2500-5000">â‚¹2,500 - â‚¹5,000</option>
+                      <option value="5000+">â‚¹5,000+ (Executive Luxury)</option>
                     </select>
                   </div>
                 </div>

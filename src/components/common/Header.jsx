@@ -82,7 +82,7 @@ export default function Header({
     { label: "Categories", href: "#categories" },
     { label: "Collections", href: "#collections" },
     { label: "Bestsellers", href: "#bestsellers" },
-    { label: "Corporate Gifting", href: "#corporate-gifting" }
+    { label: "B2B Enquiry", href: "#b2b-enquiry" }
   ];
 
   return (
@@ -110,7 +110,7 @@ export default function Header({
             <nav className="hidden md:flex items-center gap-8 h-full text-xs font-semibold uppercase tracking-wider text-stone-700">
               {navLinks.map((link, idx) => {
                 const label = link.label.toLowerCase();
-                const isActive = activeTab === (label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home')))));
+                const isActive = activeTab === (label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting') ? 'b2b-enquiry' : 'home')))));
                 const isHovered = hoveredNav === label;
                 const hasDropdown = label === 'categories';
 
@@ -130,7 +130,7 @@ export default function Header({
                       href={link.href}
                       onClick={(e) => {
                         e.preventDefault();
-                        const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home'))));
+                        const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting') ? 'b2b-enquiry' : 'home'))));
                         handleLinkClick(target);
                       }}
                       className={`relative py-1.5 flex items-center gap-1 transition-colors ${
@@ -343,7 +343,7 @@ export default function Header({
             <div className="space-y-2 text-sm font-bold text-stone-800">
               {navLinks.map((link, idx) => {
                 const label = link.label.toLowerCase();
-                const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : (label === 'corporate gifting' ? 'corporate-gifting' : 'home'))));
+                const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting') ? 'b2b-enquiry' : 'home'))));
                 return (
                   <button
                     key={idx}
@@ -394,7 +394,7 @@ export default function Header({
                               onClick={() => handleLinkClick(`collection-${cat.slug}?sub=${encodeURIComponent(sub)}`)}
                               className="w-full text-left py-1 hover:text-amber-900 cursor-pointer block truncate"
                             >
-                              • {sub}
+                              â€¢ {sub}
                             </button>
                           ))}
                         </div>

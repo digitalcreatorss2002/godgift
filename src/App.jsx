@@ -18,6 +18,7 @@ import WishlistPage from './pages/WishlistPage';
 import AuthModal from './components/common/AuthModal';
 import HeroProductPopup from './components/ecommerce/HeroProductPopup';
 import MobileBottomNav from './components/common/MobileBottomNav';
+import B2BEnquirySection from './components/common/B2BEnquirySection';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -76,7 +77,7 @@ export default function App() {
       else if (hash === '#categories') setCurrentPage('categories');
       else if (hash === '#collections') setCurrentPage('collections');
       else if (hash === '#shop') setCurrentPage('shop');
-      else if (hash === '#corporate-gifting') setCurrentPage('corporate-gifting');
+      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
       else if (hash === '#about') setCurrentPage('about');
       else if (hash.startsWith('#collection-')) {
         const hashContent = hash.replace('#collection-', '');
@@ -135,6 +136,9 @@ export default function App() {
       setSelectedProductId(prodId);
       setCurrentPage('product-detail');
       window.location.hash = `#product-${prodId}`;
+    } else if (target === 'corporate-gifting') {
+      window.location.hash = '#b2b-enquiry';
+      setCurrentPage('b2b-enquiry');
     } else if (target === 'offers') {
       window.location.hash = `#${target}`;
       setCurrentPage('home');
@@ -200,6 +204,7 @@ export default function App() {
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'bestsellers':
         return <BestsellersPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
+      case 'b2b-enquiry':
       case 'corporate-gifting':
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'about':
@@ -236,6 +241,10 @@ export default function App() {
       <main className="flex-1 pb-16 md:pb-0">
         {renderCurrentPage()}
       </main>
+
+      {/* Global B2B Bulk Enquiry Section on EVERY Page */}
+      <B2BEnquirySection />
+
       <Footer />
 
       {/* Mobile-Only Native App Style Bottom Navigation Bar */}
