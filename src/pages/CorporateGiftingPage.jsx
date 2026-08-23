@@ -25,19 +25,6 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
     const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
   }, []);
-  const [formData, setFormData] = useState({
-    fullName: '',
-    companyName: '',
-    email: '',
-    phone: '',
-    quantity: '50-100',
-    budget: '1000-2500',
-    customLogo: true,
-    targetDate: '',
-    notes: ''
-  });
-
-  const [submitted, setSubmitted] = useState(false);
 
   const corporateHampers = [
     {
@@ -74,19 +61,14 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
     }
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   if (loading) {
-    return <PageLoader text="Loading bespoke corporate gifting showcase..." />;
+    return <PageLoader text="Loading bespoke B2B bulk orders showcase..." />;
   }
 
   return (
-    <div className="min-h-screen bg-brand-bg pb-24">
+    <div className="min-h-screen bg-brand-bg pb-12">
       
-      {/* Museum Style Corporate Gifting Hero Banner Header matching Bestsellers Page */}
+      {/* Museum Style B2B Hero Banner Header */}
       <div className="relative bg-[#FAF6F0] py-16 sm:py-24 border-b border-[#EADBCA] overflow-hidden">
         <LotusJaaliPatternBackground className="text-amber-900/12" />
 
@@ -103,8 +85,8 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-stone-900 leading-tight">
-            B2B Bulk Enquiry & Custom Orders <br />
-            <span className="italic font-normal text-amber-900">With Sacred Artisanal Craftsmanship</span>
+            B2B Bulk Enquiry & <br />
+            <span className="italic font-normal text-amber-900">Custom Wholesale Orders</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-stone-600 max-w-2xl mx-auto font-serif italic leading-relaxed">
@@ -130,7 +112,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
         </div>
       </div>
 
-      {/* Main Form & Showcase Grid */}
+      {/* Main Showcase Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-16">
         
         {/* Why Corporate Choose God Gift Arts Grid */}
@@ -179,9 +161,9 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
         {/* Corporate Hampers Showcase */}
         <div className="space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Popular Festive Corporate Hampers</h2>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Popular B2B Wholesale Hampers</h2>
             <p className="text-xs sm:text-sm text-stone-500 max-w-xl mx-auto">
-              Curated luxury hampers loved by Fortune 500 corporations for Diwali, New Year, and annual employee milestone celebrations.
+              Curated luxury hampers loved by enterprise clients for Diwali, New Year, and annual employee milestone celebrations.
             </p>
           </div>
 
@@ -212,7 +194,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
                   <div className="pt-2 flex items-center justify-between border-t border-stone-100">
                     <div>
                       <span className="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Bulk Pricing From</span>
-                      <span className="font-mono font-bold text-amber-900 text-sm">â‚¹{hamper.price.toLocaleString()}</span>
+                      <span className="font-mono font-bold text-amber-900 text-sm">₹{hamper.price.toLocaleString()}</span>
                     </div>
 
                     <button 
@@ -229,199 +211,6 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Corporate Quote Request Form Section */}
-        <div id="quote-form" className="bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-5">
-          
-          {/* Left Info Panel */}
-          <div className="lg:col-span-2 bg-stone-950 text-white p-8 sm:p-12 space-y-8 flex flex-col justify-between relative overflow-hidden">
-            <LotusJaaliPatternBackground className="text-amber-400/10" />
-
-            <div className="relative z-10 space-y-6">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400">
-                <Sparkles className="w-4 h-4" />
-                <span>Quick Corporate Quotation</span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold leading-snug">
-                Request Custom Quotation & Sample Kit
-              </h2>
-
-              <p className="text-xs text-stone-300 leading-relaxed font-serif italic">
-                Our bespoke corporate gifting team responds within 2 business hours with a formal GST quote, sample mockups, and bulk discount structures.
-              </p>
-
-              <div className="space-y-4 pt-4 border-t border-stone-800 text-xs text-stone-300">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-amber-400/15 text-amber-400 flex items-center justify-center font-bold shrink-0">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">B2B Corporate Desk</span>
-                    <span className="font-bold text-white text-sm">+91 98290 12345</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-amber-400/15 text-amber-400 flex items-center justify-center font-bold shrink-0">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Corporate Email</span>
-                    <span className="font-bold text-white text-sm">corporate@godgiftarts.com</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative z-10 pt-6 border-t border-stone-800 text-[11px] text-stone-400">
-              âš¡ Over 150+ Corporate Orders Delivered Last Diwali Season
-            </div>
-          </div>
-
-          {/* Right Interactive Form */}
-          <div className="lg:col-span-3 p-8 sm:p-12">
-            {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-stone-900">Quotation Request Received!</h3>
-                <p className="text-xs text-stone-600 max-w-md">
-                  Thank you <strong>{formData.fullName}</strong>. Our corporate relationship manager from God Gift Arts will contact you at <strong>{formData.phone}</strong> shortly with your custom sample mockup & GST quote.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 bg-stone-900 hover:bg-amber-900 text-white text-xs font-bold rounded-full transition-colors cursor-pointer"
-                >
-                  Submit Another Inquiry
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5 text-xs font-medium">
-                <div>
-                  <h3 className="text-xl font-serif font-bold text-stone-900">Corporate Inquiry Form</h3>
-                  <p className="text-stone-500 text-xs">Fill out the details below to receive bulk wholesale pricing</p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Your Full Name *</label>
-                    <div className="relative">
-                      <User className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Shashwat Mishra"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full pl-9 pr-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Company / Organization Name *</label>
-                    <div className="relative">
-                      <Building2 className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Acme Technologies Pvt Ltd"
-                        value={formData.companyName}
-                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                        className="w-full pl-9 pr-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Work Email Address *</label>
-                    <div className="relative">
-                      <Mail className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
-                      <input
-                        type="email"
-                        required
-                        placeholder="shashwat@company.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full pl-9 pr-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Mobile / WhatsApp Number *</label>
-                    <div className="relative">
-                      <Phone className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+91 98765 43210"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full pl-9 pr-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Required Quantity *</label>
-                    <select
-                      value={formData.quantity}
-                      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900 cursor-pointer"
-                    >
-                      <option value="25-50">25 to 50 Units</option>
-                      <option value="50-100">50 to 100 Units</option>
-                      <option value="100-250">100 to 250 Units</option>
-                      <option value="250-500">250 to 500 Units</option>
-                      <option value="500+">500+ Units (Bulk Enterprise)</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Target Budget per Hamper (â‚¹)</label>
-                    <select
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900 cursor-pointer"
-                    >
-                      <option value="500-1000">â‚¹500 - â‚¹1,000</option>
-                      <option value="1000-2500">â‚¹1,000 - â‚¹2,500</option>
-                      <option value="2500-5000">â‚¹2,500 - â‚¹5,000</option>
-                      <option value="5000+">â‚¹5,000+ (Executive Luxury)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Custom Requirements / Message</label>
-                  <textarea
-                    rows="3"
-                    placeholder="Mention custom logo printing, preferred delivery dates, or specific hampers..."
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full p-4 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-medium text-stone-900"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Submit Quotation Inquiry</span>
-                </button>
-              </form>
-            )}
-          </div>
-
         </div>
 
       </div>
