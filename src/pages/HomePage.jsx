@@ -11,12 +11,12 @@ import PartnersSection from '../components/home/PartnersSection';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import { DiyaIllustration, MandalaIllustration } from '../components/common/BackgroundIllustrations';
 
-export default function HomePage({ 
-  onAddToCart, 
-  onSelectCollection, 
-  onQuickView, 
-  onToggleWishlist, 
-  wishlistItems = [] 
+export default function HomePage({
+  onAddToCart,
+  onSelectCollection,
+  onQuickView,
+  onToggleWishlist,
+  wishlistItems = []
 }) {
   const handleSelectCategory = (catId) => {
     if (onSelectCollection) {
@@ -74,7 +74,7 @@ export default function HomePage({
         <HeritageBanner />
 
         {/* 8. Corporate Gifting Showcase */}
-        <CorporateGiftingSection />
+        {/* <CorporateGiftingSection /> */}
 
         {/* 9. Esteemed Corporate Partners & Clients */}
         <PartnersSection />
