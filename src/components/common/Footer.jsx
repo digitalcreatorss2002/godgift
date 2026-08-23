@@ -67,7 +67,7 @@ export default function Footer() {
               Customer Support
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-              <li><a href="#about" className="hover:text-amber-400 font-bold text-amber-300 transition-colors">About Our Legacy</a></li>
+              <li><a href="#about" className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
               <li><a href="#track" className="hover:text-amber-400 transition-colors">Track Order</a></li>
               <li><a href="#shipping" className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
               <li><a href="#returns" className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
