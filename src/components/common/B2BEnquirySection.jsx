@@ -32,7 +32,7 @@ export default function B2BEnquirySection() {
   };
 
   return (
-    <section id="b2b-enquiry" className="py-14 sm:py-20 bg-stone-50/70 border-t border-[#EADBCA]/60">
+    <section id="b2b-enquiry" className="py-14 sm:py-20 bg-transparent border-t border-[#EADBCA]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main B2B Container */}
