@@ -1,10 +1,27 @@
 import React, { useState } from 'react';
-import { Sparkles, Award, ShieldCheck, Heart, Users, MapPin, Truck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { 
+  Sparkles, 
+  Award, 
+  ShieldCheck, 
+  Heart, 
+  Building2, 
+  MapPin, 
+  Truck, 
+  CheckCircle2, 
+  ArrowRight,
+  ChevronDown,
+  HelpCircle,
+  Flame,
+  Star,
+  PackageCheck,
+  Crown
+} from 'lucide-react';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
 import PageLoader from '../components/common/PageLoader';
 
 export default function AboutUsPage({ onNavigate }) {
   const [loading, setLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState(0);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 300);
@@ -12,52 +29,85 @@ export default function AboutUsPage({ onNavigate }) {
   }, []);
 
   if (loading) {
-    return <PageLoader text="Loading God Gift Arts heritage & story..." />;
+    return <PageLoader text="Loading God Gift Arts company details & heritage..." />;
   }
 
-  const pillars = [
+  const companyDetails = [
+    { label: "Official Name", value: "God Gift Arts Private Limited" },
+    { label: "Headquarters", value: "Jaipur, Rajasthan, India" },
+    { label: "Established Year", value: "2006 (18+ Years Legacy)" },
+    { label: "Artisan Network", value: "45+ Master Guild Craftsmen" },
+    { label: "Corporate Desk", value: "+91 98290 12345 / corporate@godgiftarts.com" },
+    { label: "Tax & Compliance", value: "100% GST Registered B2B Invoicing" }
+  ];
+
+  const heroProducts = [
     {
-      icon: Award,
-      title: "Jaipur Master Guild Legacy",
-      description: "Crafted by 4th-generation master artisans using age-old lost-wax brass casting, Makrana marble chiseling, and oil-on-canvas techniques."
+      name: "Jaipur Lost-Wax Solid Brass Murtis",
+      category: "Sculpture & Idols",
+      image: "/col1.webp",
+      specs: ["100% Virgin Brass", "Heavy Solid Cast", "Hand-Buffed Antique Finish"],
+      description: "Crafted using the 3,000-year-old Chola lost-wax casting technique. Each brass Ganesha, Krishna, and Hanuman idol undergoes 14 hand-finishing steps by Jaipur sculptors."
     },
     {
-      icon: ShieldCheck,
-      title: "100% Virgin Material Guarantee",
-      description: "We use only pure solid brass, unadulterated copper, Makrana white marble, and 24K gold foil leafing—zero cheap synthetic resins."
+      name: "Handpainted Spiritual Oil Canvases",
+      category: "Devotional Paintings",
+      image: "/ganesha-oil.jpg",
+      specs: ["Vastu-Compliant Themes", "Oil on Double Canvas", "Solid Teak Frame Included"],
+      description: "Created by master painters capturing divine mudras, radiant auric colors, and intricate gold foil leafing designed to sanctify home altars and living spaces."
     },
     {
-      icon: Heart,
-      title: "Sanctity & Devotional Intent",
-      description: "Every deity idol, oil painting, and copper thali set is crafted with sacred intent to bring peace, prosperity, and divine energy to your home."
-    },
-    {
-      icon: Truck,
-      title: "Pan-India Sacred Delivery",
-      description: "Reinforced 5-layer shockproof transit packaging delivering safely to 19,000+ pincodes across India and international destinations."
+      name: "100% Pure Copper Pooja Thali Sets",
+      category: "Temple Ritual Accessories",
+      image: "/col4.jpg",
+      specs: ["Unadulterated Copper", "Engraved Kalash", "Antibacterial & Sacred"],
+      description: "Traditional hammered copper vessels, engraved kalash containers, and brass aarti bells forged for daily morning rituals and festive Diwali thali ceremonies."
     }
   ];
 
-  const craftSteps = [
+  const faqs = [
     {
-      number: "01",
-      title: "Sacred Iconography",
-      desc: "Studying traditional Shilpa Shastra scriptures to capture authentic deity mudras, postures, and expressions."
+      q: "Are God Gift Arts brass murtis solid metal or hollow?",
+      a: "All deity murtis and statues from God Gift Arts are cast from 100% solid virgin brass using traditional Jaipur lost-wax casting. We never use cheap resin, hollow shells, or plastic fillers."
     },
     {
-      number: "02",
-      title: "Lost-Wax & Marble Casting",
-      desc: "Hand-molding virgin brass molten alloys and hand-carving Makrana white marble blocks in our Jaipur ateliers."
+      q: "How do I maintain and clean the brass and copper artifacts?",
+      a: "For daily care, wipe gently with a soft dry microfiber cloth. For periodic shine restoration on pure copper or brass, apply a mixture of pitambari powder, lemon juice, or tamarind paste, rinse with water, and dry thoroughly."
     },
     {
-      number: "03",
-      title: "Hand-Polishing & Gold Detailing",
-      desc: "Artisans meticulously buff, etch, and inlay 24K gold leafing and vibrant oil pigments to enhance divine luster."
+      q: "Can we order customized corporate gift hampers with company logos?",
+      a: "Yes! We specialize in bespoke B2B corporate gifting. We offer laser-etched company logos on brassware, custom foil embossing on velvet gift boxes, personalized greeting cards, and 100% GST input credit invoicing."
     },
     {
-      number: "04",
-      title: "Ritual Transit Packaging",
-      desc: "Inspected for zero defects and packed in golden velvet gift boxes ready for home altars or VIP corporate gifting."
+      q: "What is your transit packaging & replacement policy?",
+      a: "Every product is encased in 5-layer reinforced shockproof transit armor. In the rare event of transit damage, we provide a 100% free doorstep replacement with zero questions asked."
+    },
+    {
+      q: "Do you ship internationally outside India?",
+      a: "Yes, we ship sacred artifacts to over 40+ countries globally via DHL Express and FedEx with full transit tracking and protective wooden crating."
+    }
+  ];
+
+  const qualityGuarantees = [
+    {
+      icon: ShieldCheck,
+      title: "100% Virgin Metal Guarantee",
+      desc: "Virgin brass, unadulterated copper, and genuine Makrana marble blocks."
+    },
+    {
+      icon: Award,
+      title: "Authentic Jaipur Master Guild",
+      desc: "Every item is handmade by traditional 4th-generation artisan families."
+    },
+    {
+      icon: PackageCheck,
+      title: "Zero Damage Transit Guarantee",
+      desc: "5-layer reinforced shockproof armor with 100% instant free replacement."
+    },
+    {
+      icon: Crown,
+      title: "B2B GST Invoicing Support",
+      desc: "Full tax input credit for corporate Diwali & enterprise appreciation hampers."
     }
   ];
 
@@ -77,139 +127,184 @@ export default function AboutUsPage({ onNavigate }) {
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-900 text-xs font-bold uppercase tracking-widest">
             <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-            <span>Our Sacred Artisanal Heritage</span>
+            <span>Our Heritage & Corporate Profile</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-stone-900 leading-tight">
-            The Legacy of <br />
+            About <br />
             <span className="italic font-normal text-amber-900">God Gift Arts</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-stone-600 max-w-2xl mx-auto font-serif italic leading-relaxed">
-            Preserving centuries-old Jaipur master craftsmanship, lost-wax brass murtis, pure copper thalis, and sacred oil paintings for devotees across India and worldwide.
+            Preserving centuries-old Jaipur master craftsmanship, lost-wax brass murtis, pure copper thalis, and sacred oil paintings for homes & corporate leaders worldwide.
           </p>
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-20">
 
-        {/* Our Story Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-900">
-              <MapPin className="w-4 h-4 text-amber-800" />
-              <span>Jaipur, Rajasthan • Master Guild</span>
-            </div>
-
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-snug">
-              Handcrafting Devotional Heirlooms with Sacred Intent
-            </h2>
-
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-sans">
-              Founded in the heart of Jaipur, <strong>God Gift Arts</strong> was established with a singular vision: to honor and preserve traditional Indian spiritual craftsmanship while bringing divine grace into modern homes.
-            </p>
-
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-sans">
-              Our guild brings together over 45 master artisans whose families have practiced brass lost-wax casting, Makrana marble sculpting, and sacred oil painting for generations. Every piece we create is a bridge between timeless heritage and sacred devotion.
-            </p>
-
-            <div className="pt-2 flex flex-wrap gap-4 text-xs font-bold text-stone-800">
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-stone-200 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>100% Authentic Jaipur Craft</span>
+        {/* 1. Company Overview & Details Section */}
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200 shadow-sm space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div className="space-y-5">
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-900">
+                <Building2 className="w-4 h-4 text-amber-800" />
+                <span>Company Overview</span>
               </div>
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-stone-200 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Direct Artisan Support</span>
-              </div>
-            </div>
-          </div>
 
-          {/* Image Showcase Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <img
-                src="/ganesha-oil.jpg"
-                alt="Ganesha Oil Painting"
-                className="rounded-3xl w-full h-56 object-cover border border-stone-200 shadow-md"
-              />
-              <img
-                src="/col1.webp"
-                alt="Brass Murti Craftsmanship"
-                className="rounded-3xl w-full h-40 object-cover border border-stone-200 shadow-md"
-              />
+              <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-snug">
+                Pioneering Authentic Jaipur Artisanal Craft Since 2006
+              </h2>
+
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Founded in 2006 in Jaipur, Rajasthan, <strong>God Gift Arts Private Limited</strong> is an artisanal house dedicated to creating heirloom-quality devotional sculptures, sacred oil paintings, pure copper puja sets, and luxury corporate hampers.
+              </p>
+
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                We work directly with a guild of over 45 master sculptors and painters whose families have honed lost-wax brass casting and marble chiseling across generations. Every creation is crafted with sacred intent, authentic materials, and strict quality control.
+              </p>
             </div>
-            <div className="space-y-4 pt-8">
-              <img
-                src="/col4.jpg"
-                alt="Copper Pooja Thali"
-                className="rounded-3xl w-full h-40 object-cover border border-stone-200 shadow-md"
-              />
-              <img
-                src="/col5.jpeg"
-                alt="Corporate Devotional Hampers"
-                className="rounded-3xl w-full h-56 object-cover border border-stone-200 shadow-md"
-              />
+
+            {/* Quick Specs Table */}
+            <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200 space-y-4">
+              <h3 className="text-sm font-serif font-bold text-stone-900 uppercase tracking-wider border-b border-stone-200 pb-2">
+                Corporate Credentials & Specs
+              </h3>
+              <div className="divide-y divide-stone-200/80 text-xs">
+                {companyDetails.map((item, idx) => (
+                  <div key={idx} className="py-2.5 flex items-center justify-between gap-4">
+                    <span className="font-semibold text-stone-500">{item.label}</span>
+                    <span className="font-bold text-stone-900 text-right">{item.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Core Pillars Grid */}
+        {/* 2. Hero Product Spotlight Details Section */}
+        <div className="space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-[11px] font-bold text-amber-900 uppercase tracking-widest">
+              Flagship Creations
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900">
+              Our Signature Hero Products
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500 font-serif italic">
+              Detailed breakdown of our most celebrated master artisanal lines
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {heroProducts.map((prod, idx) => (
+              <div 
+                key={idx}
+                className="bg-white rounded-3xl border border-stone-200 shadow-2xs overflow-hidden flex flex-col justify-between group hover:shadow-xl transition-all"
+              >
+                <div className="relative aspect-4/3 bg-stone-100 overflow-hidden">
+                  <img 
+                    src={prod.image} 
+                    alt={prod.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  <span className="absolute top-3 left-3 bg-amber-900 text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                    {prod.category}
+                  </span>
+                </div>
+
+                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <h3 className="font-serif font-bold text-stone-900 text-lg leading-snug">{prod.name}</h3>
+                    <p className="text-xs text-stone-600 leading-relaxed">{prod.description}</p>
+                  </div>
+
+                  <div className="space-y-2 pt-3 border-t border-stone-100">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Key Specifications</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {prod.specs.map((spec, sIdx) => (
+                        <span key={sIdx} className="text-[10px] font-semibold bg-stone-100 text-stone-700 px-2.5 py-1 rounded-full border border-stone-200">
+                          ✓ {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 3. Quality & Assurance Guarantees Grid (Bonus AI Section 1) */}
         <div className="space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">
-              Why Devotees Choose God Gift Arts
+              The God Gift Arts Quality Promise
             </h2>
             <p className="text-xs sm:text-sm text-stone-500 font-serif italic">
-              Our uncompromising commitment to purity, craftsmanship, and service
+              Our four unshakeable standards for every single artifact dispatched
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pillars.map((item, idx) => {
+            {qualityGuarantees.map((item, idx) => {
               const Icon = item.icon;
               return (
                 <div
                   key={idx}
-                  className="bg-white p-6 rounded-3xl border border-stone-200/90 shadow-2xs space-y-3 hover:shadow-lg hover:border-amber-800/30 transition-all"
+                  className="bg-white p-6 rounded-3xl border border-stone-200/90 shadow-2xs space-y-3 hover:shadow-lg transition-all"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-900 flex items-center justify-center font-bold">
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-serif font-bold text-stone-900">{item.title}</h3>
-                  <p className="text-xs text-stone-600 leading-relaxed">{item.description}</p>
+                  <p className="text-xs text-stone-600 leading-relaxed">{item.desc}</p>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* 4-Step Craftsmanship Process */}
+        {/* 4. Interactive FAQ Section (Requested: FAQ) */}
         <div className="bg-white rounded-3xl border border-stone-200 p-8 sm:p-12 shadow-sm space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-[11px] font-bold text-amber-900 uppercase tracking-widest">
-              From Atelier to Altar
-            </span>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-amber-900">
+              <HelpCircle className="w-4 h-4 text-amber-800" />
+              <span>Got Questions?</span>
+            </div>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">
-              Our Master Crafting Process
+              Frequently Asked Questions
             </h2>
+            <p className="text-xs sm:text-sm text-stone-500 font-serif italic">
+              Everything you need to know about our artifacts, materials, and corporate orders
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            {craftSteps.map((step, idx) => (
-              <div key={idx} className="space-y-3 relative z-10">
-                <span className="font-serif font-extrabold text-3xl text-amber-900/30 block">
-                  {step.number}
-                </span>
-                <h3 className="font-serif font-bold text-stone-900 text-base">{step.title}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
+          <div className="max-w-3xl mx-auto divide-y divide-stone-200 border-t border-b border-stone-200">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div key={idx} className="py-4">
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full text-left flex items-center justify-between gap-4 font-serif font-bold text-stone-900 text-sm sm:text-base py-2 hover:text-amber-900 transition-colors cursor-pointer"
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown className={`w-5 h-5 text-stone-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-amber-900' : ''}`} />
+                  </button>
+
+                  {isOpen && (
+                    <p className="text-xs sm:text-sm text-stone-600 leading-relaxed pt-2 pb-2 pl-1 font-sans">
+                      {faq.a}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Stats Counter Strip */}
+        {/* 5. Stats & Counter Strip */}
         <div className="bg-stone-950 text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-stone-800 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-stone-800">
           <div className="space-y-1">
             <div className="font-serif font-bold text-3xl sm:text-4xl text-amber-400">50,000+</div>
@@ -229,7 +324,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* Call to Action CTA Banner */}
+        {/* 6. Call to Action CTA Banner */}
         <div className="bg-gradient-to-r from-amber-900 via-amber-950 to-stone-900 text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-xl relative overflow-hidden">
           <LotusJaaliPatternBackground className="text-amber-400/10" />
 
