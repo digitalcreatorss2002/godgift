@@ -10,6 +10,7 @@ import CollectionDetailPage from './pages/CollectionDetailPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import BestsellersPage from './pages/BestsellersPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
+import AboutUsPage from './pages/AboutUsPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
@@ -76,6 +77,7 @@ export default function App() {
       else if (hash === '#collections') setCurrentPage('collections');
       else if (hash === '#shop') setCurrentPage('shop');
       else if (hash === '#corporate-gifting') setCurrentPage('corporate-gifting');
+      else if (hash === '#about') setCurrentPage('about');
       else if (hash.startsWith('#collection-')) {
         const hashContent = hash.replace('#collection-', '');
         let colId = hashContent;
@@ -200,6 +202,8 @@ export default function App() {
         return <BestsellersPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'corporate-gifting':
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
+      case 'about':
+        return <AboutUsPage onNavigate={handleNavigate} />;
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
