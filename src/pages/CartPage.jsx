@@ -15,22 +15,28 @@ import {
   X,
   CreditCard,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
-import { placeOrder, getImageSrc } from '../services/api';
+import { placeOrder, getImageSrc, applyCouponAPI } from '../services/api';
 
 export default function CartPage({ 
   cartItems = [], 
   onUpdateQuantity, 
   onRemoveItem, 
   onNavigate,
-  onClearCart
+  onClearCart,
+  appliedCoupon = null,
+  onApplyCoupon,
+  onRemoveCoupon
 }) {
-  const [couponCode, setCouponCode] = useState('');
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponCode, setCouponCode] = useState(appliedCoupon?.code || '');
   const [couponError, setCouponError] = useState('');
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+
+  const appliedCouponInfo = appliedCoupon;
+  const couponApplied = !!appliedCoupon;
 
   // Checkout Modal State
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -54,24 +60,47 @@ export default function CartPage({
     return acc + ((orig - item.product.price) * item.quantity);
   }, 0);
   
-  const discountAmount = Math.round((subtotal * discountPercent) / 100);
-  const shippingFee = subtotal > 999 || cartItems.length === 0 ? 0 : 99;
-  const finalTotal = subtotal - discountAmount + shippingFee;
+  let discountAmount = 0;
+  if (couponApplied && appliedCouponInfo) {
+    if (subtotal < appliedCouponInfo.min_order_amount) {
+      // Automatic invalidation if subtotal dropped below min order
+      discountAmount = 0;
+    } else if (appliedCouponInfo.discount_type === 'percentage') {
+      discountAmount = Math.round((subtotal * appliedCouponInfo.discount_value) / 100);
+    } else {
+      discountAmount = Math.min(appliedCouponInfo.discount_value, subtotal);
+    }
+  }
 
-  const handleApplyCoupon = (e) => {
+  const shippingFee = subtotal > 999 || cartItems.length === 0 ? 0 : 99;
+  const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
+
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
     setCouponError('');
-    const code = couponCode.trim().toUpperCase();
-
-    if (code === 'DIVINE10' || code === 'GODGIFT10') {
-      setDiscountPercent(10);
-      setCouponApplied(true);
-    } else if (code === 'FESTIVE15' || code === 'FIRST15') {
-      setDiscountPercent(15);
-      setCouponApplied(true);
-    } else {
-      setCouponError('Invalid promo code. Try DIVINE10 or FESTIVE15');
+    const code = couponCode.trim();
+    if (!code) {
+      setCouponError('Please enter a coupon code');
+      return;
     }
+
+    setApplyingCoupon(true);
+    const res = await applyCouponAPI(code, subtotal);
+    setApplyingCoupon(false);
+
+    if (res && res.status === 'success') {
+      if (onApplyCoupon) onApplyCoupon(res.data);
+      setCouponError('');
+    } else {
+      if (onRemoveCoupon) onRemoveCoupon();
+      setCouponError(res?.message || 'Invalid promo code');
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    if (onRemoveCoupon) onRemoveCoupon();
+    setCouponCode('');
+    setCouponError('');
   };
 
   const handleInputChange = (e) => {
@@ -278,41 +307,70 @@ export default function CartPage({
                 </h2>
 
                 {/* Promo Code Form */}
-                <form onSubmit={handleApplyCoupon} className="space-y-2">
+                <div className="space-y-2">
                   <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block">
                     Have a Promo Code?
                   </label>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <Tag className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
-                      <input
-                        type="text"
-                        placeholder="DIVINE10 or FESTIVE15"
-                        value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
-                        className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl pl-9 pr-3 py-2.5 border border-stone-200 focus:outline-none focus:border-amber-800 uppercase"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="px-4 py-2.5 bg-stone-900 hover:bg-stone-950 text-white text-xs font-bold uppercase rounded-xl transition-colors cursor-pointer"
-                    >
-                      Apply
-                    </button>
-                  </div>
 
-                  {couponApplied && (
-                    <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" />
-                      Promo code applied! ({discountPercent}% Off)
-                    </span>
+                  {couponApplied && appliedCouponInfo ? (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
+                          <Check className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <span className="font-mono font-bold text-emerald-950 block text-xs tracking-wider uppercase">
+                            {appliedCouponInfo.code}
+                          </span>
+                          <span className="text-[10px] font-medium text-emerald-700 block">
+                            {appliedCouponInfo.discount_type === 'percentage' 
+                              ? `${appliedCouponInfo.discount_value}% OFF applied` 
+                              : `₹${appliedCouponInfo.discount_value} OFF applied`}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleRemoveCoupon}
+                        className="text-stone-400 hover:text-rose-600 p-1 rounded-lg hover:bg-stone-200/50 transition-colors cursor-pointer"
+                        title="Remove coupon"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleApplyCoupon} className="space-y-2">
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <Tag className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+                          <input
+                            type="text"
+                            placeholder="e.g. DIVINE10 or FESTIVE15"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                            className="w-full bg-stone-50 text-stone-900 text-xs font-bold rounded-xl pl-9 pr-3 py-2.5 border border-stone-200 focus:outline-none focus:border-amber-800 uppercase"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={applyingCoupon}
+                          className="px-4 py-2.5 bg-stone-900 hover:bg-stone-950 disabled:bg-stone-400 text-white text-xs font-bold uppercase rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+                        >
+                          {applyingCoupon ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <span>Apply</span>
+                          )}
+                        </button>
+                      </div>
+
+                      {couponError && (
+                        <span className="text-[11px] text-rose-600 font-medium block">
+                          {couponError}
+                        </span>
+                      )}
+                    </form>
                   )}
-                  {couponError && (
-                    <span className="text-xs text-rose-600 font-medium block">
-                      {couponError}
-                    </span>
-                  )}
-                </form>
+                </div>
 
                 {/* Price Breakdown */}
                 <div className="space-y-3 text-xs sm:text-sm border-t border-stone-100 pt-4">
@@ -328,10 +386,10 @@ export default function CartPage({
                     </div>
                   )}
 
-                  {couponApplied && (
+                  {couponApplied && discountAmount > 0 && (
                     <div className="flex justify-between text-emerald-700 font-semibold">
-                      <span>Promo Discount ({discountPercent}%)</span>
-                      <span>- ₹{discountAmount.toLocaleString('en-IN')}</span>
+                      <span>Promo Discount ({appliedCouponInfo?.code})</span>
+                      <span className="font-mono">- ₹{discountAmount.toLocaleString('en-IN')}</span>
                     </div>
                   )}
 

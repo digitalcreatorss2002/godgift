@@ -19,7 +19,9 @@ export default function CheckoutPage({
   cartItems = [], 
   onNavigate, 
   onClearCart,
-  currentUser 
+  currentUser,
+  appliedCoupon = null,
+  onRemoveCoupon
 }) {
   const [formData, setFormData] = useState({
     customer_name: currentUser?.name || '',
@@ -38,8 +40,20 @@ export default function CheckoutPage({
 
   // Calculate totals
   const subtotal = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+  
+  let discountAmount = 0;
+  if (appliedCoupon) {
+    if (subtotal >= (appliedCoupon.min_order_amount || 0)) {
+      if (appliedCoupon.discount_type === 'percentage') {
+        discountAmount = Math.round((subtotal * appliedCoupon.discount_value) / 100);
+      } else {
+        discountAmount = Math.min(appliedCoupon.discount_value, subtotal);
+      }
+    }
+  }
+
   const shippingFee = subtotal > 999 || cartItems.length === 0 ? 0 : 99;
-  const finalTotal = subtotal + shippingFee;
+  const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -64,7 +78,7 @@ export default function CheckoutPage({
       phone: formData.phone,
       shipping_address: fullAddress,
       subtotal: subtotal,
-      discount_amount: 0,
+      discount_amount: discountAmount,
       shipping_fee: shippingFee,
       total_amount: finalTotal,
       payment_method: formData.payment_method,
@@ -81,6 +95,7 @@ export default function CheckoutPage({
       if (res.status === 'success') {
         setCompletedOrder(res);
         if (onClearCart) onClearCart();
+        if (onRemoveCoupon) onRemoveCoupon();
       } else {
         setError(res.message || 'Failed to place order. Please try again.');
       }
@@ -362,6 +377,14 @@ export default function CheckoutPage({
                   <span>Cart Items Subtotal</span>
                   <span className="font-bold text-stone-900 font-mono">₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
+
+                {discountAmount > 0 && (
+                  <div className="flex justify-between text-emerald-700 font-semibold">
+                    <span>Promo Discount ({appliedCoupon?.code})</span>
+                    <span className="font-mono">- ₹{discountAmount.toLocaleString('en-IN')}</span>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-stone-600">
                   <span>Pan-India Insured Express Shipping</span>
                   {shippingFee === 0 ? (

@@ -108,6 +108,21 @@ export async function submitCorporateQuote(quotePayload) {
   }
 }
 
+export async function applyCouponAPI(code, subtotal) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/apply_coupon.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, subtotal })
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error applying coupon:', error);
+    return { status: 'error', message: 'Unable to validate coupon code at this time.' };
+  }
+}
+
 export async function userRegister(userData) {
   try {
     const res = await fetch(`${API_BASE_URL}/user_register.php`, {

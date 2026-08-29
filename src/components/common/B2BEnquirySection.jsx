@@ -9,9 +9,11 @@ import {
   User,
   ShieldCheck,
   Award,
-  Truck
+  Truck,
+  Loader2
 } from 'lucide-react';
 import { LotusJaaliPatternBackground } from './BackgroundIllustrations';
+import { submitCorporateQuote } from '../../services/api';
 
 export default function B2BEnquirySection() {
   const [formData, setFormData] = useState({
@@ -25,10 +27,36 @@ export default function B2BEnquirySection() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setErrorMessage('');
+
+    const payload = {
+      full_name: formData.fullName,
+      company_name: formData.companyName,
+      email: formData.email,
+      phone: formData.phone,
+      quantity: formData.quantity,
+      budget: formData.budget,
+      notes: formData.notes
+    };
+
+    try {
+      const res = await submitCorporateQuote(payload);
+      if (res && res.status === 'success') {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(res?.message || 'Failed to submit quote request. Please try again.');
+      }
+    } catch (err) {
+      setErrorMessage('Network error while connecting to server. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -218,12 +246,28 @@ export default function B2BEnquirySection() {
                   />
                 </div>
 
+                {errorMessage && (
+                  <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-xl text-xs font-semibold">
+                    {errorMessage}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={loading}
+                  className="w-full py-4 bg-amber-900 hover:bg-stone-950 disabled:bg-stone-400 text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Submit B2B Bulk Enquiry</span>
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Submitting Enquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Submit B2B Bulk Enquiry</span>
+                    </>
+                  )}
                 </button>
               </form>
             )}
