@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Send, MapPin, Phone, CheckCircle2 } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onNavigate }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -16,6 +16,16 @@ export default function Footer() {
     }
   };
 
+  const handleNav = (e, target) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(target);
+    } else {
+      window.location.hash = `#${target}`;
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+
   return (
     <footer className="bg-stone-900 text-stone-300 pt-14 pb-8 border-t border-stone-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,7 +35,7 @@ export default function Footer() {
 
           {/* Column 1: Brand & Legacy */}
           <div className="space-y-4">
-            <a href="#home" className="inline-block">
+            <a href="#home" onClick={(e) => handleNav(e, 'home')} className="inline-block">
               <img
                 src="/logo.png"
                 alt="God Gift Arts"
@@ -53,11 +63,11 @@ export default function Footer() {
               Quick Collections
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-              <li><a href="#shop" className="hover:text-amber-400 transition-colors">Spiritual Oil Paintings</a></li>
-              <li><a href="#shop" className="hover:text-amber-400 transition-colors">Brass Idols & Murtis</a></li>
-              <li><a href="#shop" className="hover:text-amber-400 transition-colors">100% Pure Copper Puja Sets</a></li>
-              <li><a href="#shop" className="hover:text-amber-400 transition-colors">Guru Ji Devotional Line</a></li>
-              <li><a href="#corporate-gifting" className="hover:text-amber-400 transition-colors">Festive Corporate Hampers</a></li>
+              <li><a href="#collection-paintings" onClick={(e) => handleNav(e, 'collection-paintings')} className="hover:text-amber-400 transition-colors">Spiritual Oil Paintings</a></li>
+              <li><a href="#collection-idols" onClick={(e) => handleNav(e, 'collection-idols')} className="hover:text-amber-400 transition-colors">Brass Idols & Murtis</a></li>
+              <li><a href="#collection-pooja" onClick={(e) => handleNav(e, 'collection-pooja')} className="hover:text-amber-400 transition-colors">100% Pure Copper Puja Sets</a></li>
+              <li><a href="#collection-guruji" onClick={(e) => handleNav(e, 'collection-guruji')} className="hover:text-amber-400 transition-colors">Guru Ji Devotional Line</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Festive Corporate Hampers</a></li>
             </ul>
           </div>
 
@@ -67,12 +77,12 @@ export default function Footer() {
               Customer Support
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-              <li><a href="#about" className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
-              <li><a href="#track" className="hover:text-amber-400 transition-colors">Track Order</a></li>
-              <li><a href="#shipping" className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
-              <li><a href="#returns" className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
-              <li><a href="#faq" className="hover:text-amber-400 transition-colors">Frequently Asked Questions</a></li>
-              <li><a href="#contact" className="hover:text-amber-400 transition-colors">Contact Support</a></li>
+              <li><a href="#about" onClick={(e) => handleNav(e, 'about')} className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
+              <li><a href="#profile" onClick={(e) => handleNav(e, 'profile')} className="hover:text-amber-400 transition-colors">Track Order</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Frequently Asked Questions</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
             </ul>
           </div>
 

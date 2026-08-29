@@ -125,12 +125,18 @@ export default function App() {
       } else {
         setCurrentPage('home');
       }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     };
 
     window.addEventListener('hashchange', syncRouteFromHash);
     syncRouteFromHash();
     return () => window.removeEventListener('hashchange', syncRouteFromHash);
   }, []);
+
+  // Auto-scroll to top whenever page view or parameters change
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [currentPage, selectedCollectionId, selectedProductId]);
 
   // Central Navigation Handler
   const handleNavigate = (target) => {
@@ -289,7 +295,7 @@ export default function App() {
       {/* Global B2B Bulk Enquiry Section on EVERY Page */}
       <B2BEnquirySection />
 
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
 
       {/* Mobile-Only Native App Style Bottom Navigation Bar */}
       <MobileBottomNav
