@@ -201,7 +201,7 @@ export default function App() {
 
   const handleToggleWishlist = (product) => {
     if (!currentUser) {
-      setIsAuthModalOpen(true);
+      setIsAuthOpen(true);
       return;
     }
     setWishlistItems(prev => {
@@ -238,7 +238,7 @@ export default function App() {
             onApplyCoupon={(couponData) => setAppliedCoupon(couponData)}
             onRemoveCoupon={() => setAppliedCoupon(null)}
             currentUser={currentUser}
-            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+            onOpenAuthModal={() => setIsAuthOpen(true)}
           />
         );
       case 'checkout':
@@ -250,7 +250,7 @@ export default function App() {
             currentUser={currentUser}
             appliedCoupon={appliedCoupon}
             onRemoveCoupon={() => setAppliedCoupon(null)}
-            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+            onOpenAuthModal={() => setIsAuthOpen(true)}
           />
         );
       case 'profile':
@@ -276,7 +276,7 @@ export default function App() {
             onNavigate={handleNavigate} 
             onToggleWishlist={handleToggleWishlist}
             currentUser={currentUser}
-            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+            onOpenAuthModal={() => setIsAuthOpen(true)}
           />
         );
       case 'product-detail':
