@@ -8,8 +8,44 @@ export default function WishlistPage({
   onAddToCart, 
   onSelectProduct, 
   onNavigate,
-  onToggleWishlist 
+  onToggleWishlist,
+  currentUser = null,
+  onOpenAuthModal
 }) {
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-brand-bg py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-xl mx-auto bg-white rounded-3xl border border-stone-200 shadow-xl p-8 sm:p-12 text-center space-y-6">
+          <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <Heart className="w-8 h-8" />
+          </div>
+          
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Login Required for Wishlist</h2>
+            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-md mx-auto">
+              Please log in or create a customer account to save your favorite sacred artifacts and access them anytime.
+            </p>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => onOpenAuthModal && onOpenAuthModal()}
+              className="px-8 py-3.5 bg-amber-900 hover:bg-stone-950 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+            >
+              <span>Login / Register Now</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onNavigate && onNavigate('shop')}
+              className="px-6 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+            >
+              Browse Shop
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-brand-bg pb-24">
       

@@ -29,7 +29,9 @@ export default function CartPage({
   onClearCart,
   appliedCoupon = null,
   onApplyCoupon,
-  onRemoveCoupon
+  onRemoveCoupon,
+  currentUser = null,
+  onOpenAuthModal
 }) {
   const [couponCode, setCouponCode] = useState(appliedCoupon?.code || '');
   const [couponError, setCouponError] = useState('');
@@ -418,7 +420,13 @@ export default function CartPage({
 
                 {/* Checkout Button */}
                 <button
-                  onClick={() => onNavigate ? onNavigate('checkout') : setIsCheckoutOpen(true)}
+                  onClick={() => {
+                    if (!currentUser) {
+                      if (onOpenAuthModal) onOpenAuthModal();
+                    } else {
+                      if (onNavigate) onNavigate('checkout');
+                    }
+                  }}
                   className="w-full py-4 bg-amber-900 hover:bg-stone-950 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-4 h-4" />

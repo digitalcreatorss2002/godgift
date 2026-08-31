@@ -1,21 +1,7 @@
-import React, { useState } from 'react';
-import { Send, MapPin, Phone, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { Download, FileText, MapPin, Phone } from 'lucide-react';
 
 export default function Footer({ onNavigate }) {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setTimeout(() => {
-        setSubscribed(false);
-        setEmail('');
-      }, 4000);
-    }
-  };
-
   const handleNav = (e, target) => {
     e.preventDefault();
     if (onNavigate) {
@@ -79,46 +65,81 @@ export default function Footer({ onNavigate }) {
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
               <li><a href="#about" onClick={(e) => handleNav(e, 'about')} className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
               <li><a href="#profile" onClick={(e) => handleNav(e, 'profile')} className="hover:text-amber-400 transition-colors">Track Order</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Frequently Asked Questions</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Frequently Asked Questions</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
             </ul>
           </div>
 
-          {/* Column 4: Newsletter */}
+          {/* Column 4: Download Catalogues */}
           <div className="space-y-4">
-            <h3 className="text-sm font-serif font-bold text-white uppercase tracking-wider">
-              Devotional Newsletter
+            <h3 className="text-sm font-serif font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <Download className="w-4 h-4 text-amber-400" />
+              <span>Download Catalogues</span>
             </h3>
             <p className="text-xs text-stone-400 leading-relaxed">
-              Subscribe to receive exclusive festive discounts, new artisan collection alerts & sacred ritual guides.
+              Download our official high-resolution product collection catalogues in PDF format:
             </p>
-            <form onSubmit={handleSubscribe} className="space-y-2">
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-stone-800 text-white text-xs rounded-xl px-4 py-3 border border-stone-700 outline-none focus:border-amber-400 transition-colors pr-10"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
-                  title="Subscribe"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              {subscribed && (
-                <div className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Subscribed successfully!</span>
+            
+            <div className="space-y-2.5">
+              <a
+                href="/catalogues/brass-idols-catalogue.pdf"
+                download="GodGiftArts_Brass_Idols_Catalogue.pdf"
+                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div className="truncate">
+                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
+                      Brass Idols & Murtis
+                    </span>
+                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 4.2 MB</span>
+                  </div>
                 </div>
-              )}
-            </form>
+                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
+              </a>
+
+              <a
+                href="/catalogues/oil-paintings-catalogue.pdf"
+                download="GodGiftArts_Oil_Paintings_Catalogue.pdf"
+                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div className="truncate">
+                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
+                      Spiritual Oil Paintings
+                    </span>
+                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 3.8 MB</span>
+                  </div>
+                </div>
+                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
+              </a>
+
+              <a
+                href="/catalogues/corporate-gifting-catalogue.pdf"
+                download="GodGiftArts_Corporate_Gifting_Catalogue.pdf"
+                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div className="truncate">
+                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
+                      Corporate Gifting Hampers
+                    </span>
+                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 5.1 MB</span>
+                  </div>
+                </div>
+                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
+              </a>
+            </div>
           </div>
 
         </div>

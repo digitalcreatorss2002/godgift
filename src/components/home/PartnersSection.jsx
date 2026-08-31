@@ -8,7 +8,7 @@ export default function PartnersSection() {
     { name: "Walmart", image: "/part2.png", category: "Hypermarket" },
     { name: "Market 99", image: "/part3.png", category: "Value Retail" },
     { name: "Super 99", image: "/part4.png", category: "Departmental" },
-    { name: "Lots Wholesale", image: "/part5.png", category: "B2B Wholesale" },
+    { name: "Lots Wholesale", image: "/part5.png", category: "Corporate Wholesale" },
     { name: "Rajmandir", image: "/part6.jpeg", category: "Hypermarket" },
     { name: "Le Marché", image: "/part7.png", category: "Gourmet Retail" },
   ];

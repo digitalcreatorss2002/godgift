@@ -21,7 +21,8 @@ export default function CheckoutPage({
   onClearCart,
   currentUser,
   appliedCoupon = null,
-  onRemoveCoupon
+  onRemoveCoupon,
+  onOpenAuthModal
 }) {
   const [formData, setFormData] = useState({
     customer_name: currentUser?.name || '',
@@ -62,6 +63,10 @@ export default function CheckoutPage({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      if (onOpenAuthModal) onOpenAuthModal();
+      return;
+    }
     if (cartItems.length === 0) {
       setError('Your cart is empty. Add artifacts before placing an order.');
       return;
@@ -105,6 +110,41 @@ export default function CheckoutPage({
       setLoading(false);
     }
   };
+
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-brand-bg py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-xl mx-auto bg-white rounded-3xl border border-stone-200 shadow-xl p-8 sm:p-12 text-center space-y-6">
+          <div className="w-16 h-16 bg-amber-100 text-amber-900 rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <Lock className="w-8 h-8" />
+          </div>
+          
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Login Required to Place Order</h2>
+            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-md mx-auto">
+              Please log in or create a customer account to complete your checkout and track your devotional orders.
+            </p>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => onOpenAuthModal && onOpenAuthModal()}
+              className="px-8 py-3.5 bg-amber-900 hover:bg-stone-950 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+            >
+              <span>Login / Register Now</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onNavigate && onNavigate('cart')}
+              className="px-6 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+            >
+              Return to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (completedOrder) {
     return (

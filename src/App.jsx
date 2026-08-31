@@ -101,7 +101,7 @@ export default function App() {
       else if (hash === '#categories') setCurrentPage('categories');
       else if (hash === '#collections') setCurrentPage('collections');
       else if (hash === '#shop') setCurrentPage('shop');
-      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
+      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('corporate-gifting');
       else if (hash === '#about') setCurrentPage('about');
       else if (hash.startsWith('#collection-')) {
         const hashContent = hash.replace('#collection-', '');
@@ -200,6 +200,10 @@ export default function App() {
   };
 
   const handleToggleWishlist = (product) => {
+    if (!currentUser) {
+      setIsAuthModalOpen(true);
+      return;
+    }
     setWishlistItems(prev => {
       const exists = prev.some(item => item.id === product.id);
       if (exists) {
@@ -233,6 +237,8 @@ export default function App() {
             appliedCoupon={appliedCoupon}
             onApplyCoupon={(couponData) => setAppliedCoupon(couponData)}
             onRemoveCoupon={() => setAppliedCoupon(null)}
+            currentUser={currentUser}
+            onOpenAuthModal={() => setIsAuthModalOpen(true)}
           />
         );
       case 'checkout':
@@ -244,12 +250,35 @@ export default function App() {
             currentUser={currentUser}
             appliedCoupon={appliedCoupon}
             onRemoveCoupon={() => setAppliedCoupon(null)}
+            onOpenAuthModal={() => setIsAuthModalOpen(true)}
           />
         );
       case 'profile':
-        return <ProfilePage currentUser={currentUser} onLogout={() => { localStorage.removeItem('gga_user'); setCurrentUser(null); }} onNavigate={handleNavigate} onUpdateUser={(u) => setCurrentUser(u)} />;
+        return (
+          <ProfilePage 
+            currentUser={currentUser} 
+            onLogout={() => { 
+              localStorage.removeItem('gga_user'); 
+              localStorage.removeItem('gga_wishlist');
+              setCurrentUser(null); 
+              setWishlistItems([]);
+            }} 
+            onNavigate={handleNavigate} 
+            onUpdateUser={(u) => setCurrentUser(u)} 
+          />
+        );
       case 'wishlist':
-        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} />;
+        return (
+          <WishlistPage 
+            wishlistItems={wishlistItems} 
+            onAddToCart={handleAddToCart} 
+            onSelectProduct={handleSelectProduct} 
+            onNavigate={handleNavigate} 
+            onToggleWishlist={handleToggleWishlist}
+            currentUser={currentUser}
+            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+          />
+        );
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'bestsellers':

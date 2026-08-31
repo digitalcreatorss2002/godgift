@@ -62,13 +62,13 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
   ];
 
   if (loading) {
-    return <PageLoader text="Loading bespoke B2B bulk orders showcase..." />;
+    return <PageLoader text="Loading bespoke corporate orders showcase..." />;
   }
 
   return (
     <div className="min-h-screen bg-brand-bg pb-12">
       
-      {/* Museum Style B2B Hero Banner Header */}
+      {/* Museum Style Corporate Hero Banner Header */}
       <div className="relative bg-[#FAF6F0] py-16 sm:py-24 border-b border-[#EADBCA] overflow-hidden">
         <LotusJaaliPatternBackground className="text-amber-900/12" />
 
@@ -81,11 +81,11 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-900 text-xs font-bold uppercase tracking-widest">
             <Gift className="w-4 h-4 text-amber-800" />
-            <span>Bespoke B2B Wholesale & Bulk Orders</span>
+            <span>Bespoke Corporate Wholesale & Bulk Orders</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-stone-900 leading-tight">
-            B2B Bulk Enquiry & <br />
+            Corporate Enquiry & <br />
             <span className="italic font-normal text-amber-900">Custom Wholesale Orders</span>
           </h1>
 
@@ -133,7 +133,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
             </div>
             <h3 className="text-base font-serif font-bold text-stone-900">GST Invoice & Bulk Rates</h3>
             <p className="text-xs text-stone-600 leading-relaxed">
-              100% Tax Compliant B2B invoicing with GST input credit support for corporate tax deductions and wholesale tier pricing.
+              100% Tax Compliant Corporate invoicing with GST input credit support for corporate tax deductions and wholesale tier pricing.
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function CorporateGiftingPage({ onNavigate, onAddToCart, onSelect
         {/* Corporate Hampers Showcase */}
         <div className="space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Popular B2B Wholesale Hampers</h2>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Popular Corporate Wholesale Hampers</h2>
             <p className="text-xs sm:text-sm text-stone-500 max-w-xl mx-auto">
               Curated luxury hampers loved by enterprise clients for Diwali, New Year, and annual employee milestone celebrations.
             </p>

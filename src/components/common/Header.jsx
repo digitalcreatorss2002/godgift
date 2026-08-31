@@ -82,7 +82,7 @@ export default function Header({
     { label: "Categories", href: "#categories" },
     { label: "Collections", href: "#collections" },
     { label: "Bestsellers", href: "#bestsellers" },
-    { label: "B2B Enquiry", href: "#b2b-enquiry" }
+    { label: "Corporate Gifting", href: "#corporate-gifting" }
   ];
 
   return (
@@ -110,7 +110,7 @@ export default function Header({
             <nav className="hidden md:flex items-center gap-8 h-full text-xs font-semibold uppercase tracking-wider text-stone-700">
               {navLinks.map((link, idx) => {
                 const label = link.label.toLowerCase();
-                const isActive = activeTab === (label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting') ? 'b2b-enquiry' : 'home')))));
+                const isActive = activeTab === (label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting' || label === 'corporate enquiry') ? 'corporate-gifting' : 'home')))));
                 const isHovered = hoveredNav === label;
                 const hasDropdown = label === 'categories';
 
@@ -130,7 +130,7 @@ export default function Header({
                       href={link.href}
                       onClick={(e) => {
                         e.preventDefault();
-                        const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting') ? 'b2b-enquiry' : 'home'))));
+                        const target = label === 'categories' ? 'categories' : (label === 'collections' ? 'collections' : (label === 'bestsellers' ? 'bestsellers' : (label === 'shop' ? 'shop' : ((label === 'b2b enquiry' || label === 'corporate gifting' || label === 'corporate enquiry') ? 'corporate-gifting' : 'home'))));
                         handleLinkClick(target);
                       }}
                       className={`relative py-1.5 flex items-center gap-1 transition-colors ${
@@ -224,7 +224,13 @@ export default function Header({
 
               {/* Wishlist Button */}
               <button
-                onClick={() => handleLinkClick('wishlist')}
+                onClick={() => {
+                  if (!currentUser) {
+                    if (onOpenAuth) onOpenAuth();
+                  } else {
+                    handleLinkClick('wishlist');
+                  }
+                }}
                 className="relative p-2 text-stone-700 hover:text-amber-900 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
                 aria-label="Wishlist"
               >

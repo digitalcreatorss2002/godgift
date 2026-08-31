@@ -60,10 +60,10 @@ export default function B2BEnquirySection() {
   };
 
   return (
-    <section id="b2b-enquiry" className="py-14 sm:py-20 bg-transparent border-t border-[#EADBCA]/60">
+    <section id="corporate-gifting" className="py-14 sm:py-20 bg-transparent border-t border-[#EADBCA]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Main B2B Container */}
+        {/* Main Corporate Gifting Container */}
         <div className="bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-5">
           
           {/* Left Dark Info Panel */}
@@ -73,15 +73,15 @@ export default function B2BEnquirySection() {
             <div className="relative z-10 space-y-6">
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400">
                 <Sparkles className="w-4 h-4" />
-                <span>B2B Bulk Orders & Corporate Desk</span>
+                <span>Corporate Gifting & Bulk Orders</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-serif font-bold leading-snug">
-                Request B2B Wholesale Quote & Sample Kit
+                Request Corporate Gifting Quote & Sample Kit
               </h2>
 
               <p className="text-xs text-stone-300 leading-relaxed font-serif italic">
-                Get custom wholesale tier pricing, company logo laser printing, and 100% GST input credit invoicing. Our B2B relationship manager responds within 2 business hours.
+                Get custom wholesale tier pricing, company logo laser printing, and 100% GST input credit invoicing. Our corporate relationship manager responds within 2 business hours.
               </p>
 
               <div className="space-y-4 pt-4 border-t border-stone-800 text-xs text-stone-300">
@@ -90,7 +90,7 @@ export default function B2BEnquirySection() {
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">B2B Helpline</span>
+                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Corporate Helpline</span>
                     <span className="font-bold text-white text-sm">+91 98290 12345</span>
                   </div>
                 </div>
@@ -100,7 +100,7 @@ export default function B2BEnquirySection() {
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">B2B Email Desk</span>
+                    <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Corporate Email Desk</span>
                     <span className="font-bold text-white text-sm">b2b@godgiftarts.com</span>
                   </div>
                 </div>
@@ -122,9 +122,9 @@ export default function B2BEnquirySection() {
                 <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-stone-900">B2B Inquiry Received!</h3>
+                <h3 className="text-2xl font-serif font-bold text-stone-900">Corporate Gifting Inquiry Received!</h3>
                 <p className="text-xs text-stone-600 max-w-md">
-                  Thank you <strong>{formData.fullName}</strong>. Our B2B manager will contact you at <strong>{formData.phone}</strong> shortly with wholesale pricing & GST quotation.
+                  Thank you <strong>{formData.fullName}</strong>. Our corporate manager will contact you at <strong>{formData.phone}</strong> shortly with wholesale pricing & GST quotation.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -136,7 +136,7 @@ export default function B2BEnquirySection() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 text-xs font-medium">
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-stone-900">B2B Bulk Enquiry Form</h3>
+                  <h3 className="text-xl font-serif font-bold text-stone-900">Corporate Gifting Bulk Enquiry Form</h3>
                   <p className="text-stone-500 text-xs">Fill in your requirements below for instant wholesale catalog & quote</p>
                 </div>
 
@@ -265,7 +265,7 @@ export default function B2BEnquirySection() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Submit B2B Bulk Enquiry</span>
+                      <span>Submit Corporate Gifting Enquiry</span>
                     </>
                   )}
                 </button>

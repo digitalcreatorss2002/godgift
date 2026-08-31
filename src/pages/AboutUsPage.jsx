@@ -38,7 +38,7 @@ export default function AboutUsPage({ onNavigate }) {
     { label: "Established Year", value: "2006 (18+ Years Legacy)" },
     { label: "Artisan Network", value: "45+ Master Guild Craftsmen" },
     { label: "Corporate Desk", value: "+91 98290 12345 / corporate@godgiftarts.com" },
-    { label: "Tax & Compliance", value: "100% GST Registered B2B Invoicing" }
+    { label: "Tax & Compliance", value: "100% GST Registered Corporate Invoicing" }
   ];
 
   const heroProducts = [
@@ -76,7 +76,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       q: "Can we order customized corporate gift hampers with company logos?",
-      a: "Yes! We specialize in bespoke B2B corporate gifting. We offer laser-etched company logos on brassware, custom foil embossing on velvet gift boxes, personalized greeting cards, and 100% GST input credit invoicing."
+      a: "Yes! We specialize in bespoke Corporate Gifting. We offer laser-etched company logos on brassware, custom foil embossing on velvet gift boxes, personalized greeting cards, and 100% GST input credit invoicing."
     },
     {
       q: "What is your transit packaging & replacement policy?",
@@ -106,7 +106,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       icon: Crown,
-      title: "B2B GST Invoicing Support",
+      title: "Corporate GST Invoicing Support",
       desc: "Full tax input credit for corporate Diwali & enterprise appreciation hampers."
     }
   ];
@@ -349,7 +349,7 @@ export default function AboutUsPage({ onNavigate }) {
                 onClick={() => onNavigate && onNavigate('corporate-gifting')}
                 className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-full border border-white/20 transition-all cursor-pointer"
               >
-                <span>Corporate B2B Enquiries</span>
+                <span>Corporate Gifting Enquiries</span>
               </button>
             </div>
           </div>
