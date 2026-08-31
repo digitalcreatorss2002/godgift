@@ -12,6 +12,7 @@ import BestsellersPage from './pages/BestsellersPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
 import AboutUsPage from './pages/AboutUsPage';
 import TermsPage from './pages/TermsPage';
+import ReturnsPage from './pages/ReturnsPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
@@ -81,6 +82,7 @@ export default function App() {
       else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
       else if (hash === '#about') setCurrentPage('about');
       else if (hash === '#terms') setCurrentPage('terms');
+      else if (hash === '#returns') setCurrentPage('returns');
       else if (hash.startsWith('#collection-')) {
         const hashContent = hash.replace('#collection-', '');
         let colId = hashContent;
@@ -213,6 +215,8 @@ export default function App() {
         return <AboutUsPage onNavigate={handleNavigate} />;
       case 'terms':
         return <TermsPage onNavigate={handleNavigate} />;
+      case 'returns':
+        return <ReturnsPage onNavigate={handleNavigate} />;
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
@@ -249,7 +253,7 @@ export default function App() {
       {/* Global B2B Bulk Enquiry Section on EVERY Page */}
       <B2BEnquirySection />
 
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
 
       {/* Mobile-Only Native App Style Bottom Navigation Bar */}
       <MobileBottomNav
