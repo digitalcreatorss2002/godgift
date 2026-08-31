@@ -148,9 +148,9 @@ export default function Footer({ onNavigate }) {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
           <p>© {new Date().getFullYear()} God Gift Arts. All rights reserved.</p>
           <div className="flex items-center space-x-4">
-            <a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-stone-300">Privacy Policy</a>
+            <a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-stone-300">Terms & Conditions</a>
             <span>•</span>
-            <a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-stone-300">Terms of Service</a>
+            <a href="#returns" onClick={(e) => handleNav(e, 'returns')} className="hover:text-stone-300">Return & Refund Policy</a>
           </div>
         </div>
 
