@@ -34,11 +34,11 @@ export default function Footer({ onNavigate }) {
             <div className="space-y-2 text-xs sm:text-sm text-stone-300 pt-1 font-medium">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>Jaipur, Rajasthan, India</span>
+                <span>New Delhi & Jaipur, Rajasthan, India</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>+91 98765 43210</span>
+                <span>+91 92116 72167 / +91 96435 93295</span>
               </div>
             </div>
           </div>
@@ -49,11 +49,11 @@ export default function Footer({ onNavigate }) {
               Quick Collections
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-              <li><a href="#collection-paintings" onClick={(e) => handleNav(e, 'collection-paintings')} className="hover:text-amber-400 transition-colors">Spiritual Oil Paintings</a></li>
-              <li><a href="#collection-idols" onClick={(e) => handleNav(e, 'collection-idols')} className="hover:text-amber-400 transition-colors">Brass Idols & Murtis</a></li>
-              <li><a href="#collection-pooja" onClick={(e) => handleNav(e, 'collection-pooja')} className="hover:text-amber-400 transition-colors">100% Pure Copper Puja Sets</a></li>
-              <li><a href="#collection-guruji" onClick={(e) => handleNav(e, 'collection-guruji')} className="hover:text-amber-400 transition-colors">Guru Ji Devotional Line</a></li>
-              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Festive Corporate Hampers</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Spiritual Oil Paintings</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Brass Idols & Murtis</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">100% Pure Copper Puja Sets</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Guru Ji Devotional Line</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">B2B Bulk Hampers</a></li>
             </ul>
           </div>
 
@@ -65,10 +65,10 @@ export default function Footer({ onNavigate }) {
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
               <li><a href="#about" onClick={(e) => handleNav(e, 'about')} className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
               <li><a href="#profile" onClick={(e) => handleNav(e, 'profile')} className="hover:text-amber-400 transition-colors">Track Order</a></li>
-              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
-              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
-              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Frequently Asked Questions</a></li>
-              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
+              <li><a href="#returns" onClick={(e) => handleNav(e, 'returns')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
+              <li><a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-amber-400 transition-colors">Terms & Conditions</a></li>
+              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
             </ul>
           </div>
 
@@ -123,7 +123,7 @@ export default function Footer({ onNavigate }) {
 
               <a
                 href="/catalogues/corporate-gifting-catalogue.pdf"
-                download="GodGiftArts_Corporate_Gifting_Catalogue.pdf"
+                download="GodGiftArts_B2B_Bulk_Catalogue.pdf"
                 className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -132,7 +132,7 @@ export default function Footer({ onNavigate }) {
                   </div>
                   <div className="truncate">
                     <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
-                      Corporate Gifting Hampers
+                      B2B Bulk Wholesale
                     </span>
                     <span className="text-[10px] text-stone-400 block font-mono">PDF • 5.1 MB</span>
                   </div>
@@ -148,9 +148,9 @@ export default function Footer({ onNavigate }) {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
           <p>© {new Date().getFullYear()} God Gift Arts. All rights reserved.</p>
           <div className="flex items-center space-x-4">
-            <a href="#privacy" className="hover:text-stone-300">Privacy Policy</a>
+            <a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-stone-300">Privacy Policy</a>
             <span>•</span>
-            <a href="#terms" className="hover:text-stone-300">Terms of Service</a>
+            <a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-stone-300">Terms of Service</a>
           </div>
         </div>
 

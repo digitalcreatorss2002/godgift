@@ -11,6 +11,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import BestsellersPage from './pages/BestsellersPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
 import AboutUsPage from './pages/AboutUsPage';
+import TermsPage from './pages/TermsPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
@@ -54,15 +55,6 @@ export default function App() {
     }
   });
 
-  const [appliedCoupon, setAppliedCoupon] = useState(() => {
-    try {
-      const saved = localStorage.getItem('gga_applied_coupon');
-      return saved ? JSON.parse(saved) : null;
-    } catch (e) {
-      return null;
-    }
-  });
-
   useEffect(() => {
     localStorage.setItem('gga_cart', JSON.stringify(cartItems));
   }, [cartItems]);
@@ -70,21 +62,6 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('gga_wishlist', JSON.stringify(wishlistItems));
   }, [wishlistItems]);
-
-  useEffect(() => {
-    if (appliedCoupon) {
-      localStorage.setItem('gga_applied_coupon', JSON.stringify(appliedCoupon));
-    } else {
-      localStorage.removeItem('gga_applied_coupon');
-    }
-  }, [appliedCoupon]);
-
-  const handleClearCart = () => {
-    setCartItems([]);
-    setAppliedCoupon(null);
-    localStorage.removeItem('gga_cart');
-    localStorage.removeItem('gga_applied_coupon');
-  };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
@@ -101,8 +78,9 @@ export default function App() {
       else if (hash === '#categories') setCurrentPage('categories');
       else if (hash === '#collections') setCurrentPage('collections');
       else if (hash === '#shop') setCurrentPage('shop');
-      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('corporate-gifting');
+      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
       else if (hash === '#about') setCurrentPage('about');
+      else if (hash === '#terms') setCurrentPage('terms');
       else if (hash.startsWith('#collection-')) {
         const hashContent = hash.replace('#collection-', '');
         let colId = hashContent;
@@ -125,18 +103,12 @@ export default function App() {
       } else {
         setCurrentPage('home');
       }
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     };
 
     window.addEventListener('hashchange', syncRouteFromHash);
     syncRouteFromHash();
     return () => window.removeEventListener('hashchange', syncRouteFromHash);
   }, []);
-
-  // Auto-scroll to top whenever page view or parameters change
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [currentPage, selectedCollectionId, selectedProductId]);
 
   // Central Navigation Handler
   const handleNavigate = (target) => {
@@ -200,10 +172,6 @@ export default function App() {
   };
 
   const handleToggleWishlist = (product) => {
-    if (!currentUser) {
-      setIsAuthOpen(true);
-      return;
-    }
     setWishlistItems(prev => {
       const exists = prev.some(item => item.id === product.id);
       if (exists) {
@@ -227,58 +195,13 @@ export default function App() {
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'cart':
-        return (
-          <CartPage 
-            cartItems={cartItems} 
-            onUpdateQuantity={handleUpdateCartQuantity} 
-            onRemoveItem={handleRemoveFromCart} 
-            onClearCart={handleClearCart} 
-            onNavigate={handleNavigate}
-            appliedCoupon={appliedCoupon}
-            onApplyCoupon={(couponData) => setAppliedCoupon(couponData)}
-            onRemoveCoupon={() => setAppliedCoupon(null)}
-            currentUser={currentUser}
-            onOpenAuthModal={() => setIsAuthOpen(true)}
-          />
-        );
+        return <CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateCartQuantity} onRemoveItem={handleRemoveFromCart} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
       case 'checkout':
-        return (
-          <CheckoutPage 
-            cartItems={cartItems} 
-            onNavigate={handleNavigate} 
-            onClearCart={handleClearCart} 
-            currentUser={currentUser}
-            appliedCoupon={appliedCoupon}
-            onRemoveCoupon={() => setAppliedCoupon(null)}
-            onOpenAuthModal={() => setIsAuthOpen(true)}
-          />
-        );
+        return <CheckoutPage cartItems={cartItems} onNavigate={handleNavigate} onClearCart={() => setCartItems([])} currentUser={currentUser} />;
       case 'profile':
-        return (
-          <ProfilePage 
-            currentUser={currentUser} 
-            onLogout={() => { 
-              localStorage.removeItem('gga_user'); 
-              localStorage.removeItem('gga_wishlist');
-              setCurrentUser(null); 
-              setWishlistItems([]);
-            }} 
-            onNavigate={handleNavigate} 
-            onUpdateUser={(u) => setCurrentUser(u)} 
-          />
-        );
+        return <ProfilePage currentUser={currentUser} onLogout={() => { localStorage.removeItem('gga_user'); setCurrentUser(null); }} onNavigate={handleNavigate} onUpdateUser={(u) => setCurrentUser(u)} />;
       case 'wishlist':
-        return (
-          <WishlistPage 
-            wishlistItems={wishlistItems} 
-            onAddToCart={handleAddToCart} 
-            onSelectProduct={handleSelectProduct} 
-            onNavigate={handleNavigate} 
-            onToggleWishlist={handleToggleWishlist}
-            currentUser={currentUser}
-            onOpenAuthModal={() => setIsAuthOpen(true)}
-          />
-        );
+        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} />;
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'bestsellers':
@@ -288,6 +211,8 @@ export default function App() {
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'about':
         return <AboutUsPage onNavigate={handleNavigate} />;
+      case 'terms':
+        return <TermsPage onNavigate={handleNavigate} />;
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
@@ -324,7 +249,7 @@ export default function App() {
       {/* Global B2B Bulk Enquiry Section on EVERY Page */}
       <B2BEnquirySection />
 
-      <Footer onNavigate={handleNavigate} />
+      <Footer />
 
       {/* Mobile-Only Native App Style Bottom Navigation Bar */}
       <MobileBottomNav
