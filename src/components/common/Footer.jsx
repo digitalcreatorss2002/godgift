@@ -9,16 +9,19 @@ const DEFAULT_CATALOGUES = [
 ];
 
 export default function Footer({ onNavigate }) {
-  const [catalogues, setCatalogues] = useState(DEFAULT_CATALOGUES);
+  const [catalogues, setCatalogues] = useState([]);
 
   useEffect(() => {
     fetchCatalogues().then(res => {
-      if (res && Array.isArray(res) && res.length > 0) {
+      if (res && Array.isArray(res)) {
         const mapped = res.map(cat => ({
           ...cat,
           file_url: getImageSrc(cat.file_url)
         }));
         setCatalogues(mapped);
+      } else {
+        // Fallback only if API completely fails or is unreachable
+        setCatalogues(DEFAULT_CATALOGUES);
       }
     });
   }, []);
@@ -104,29 +107,33 @@ export default function Footer({ onNavigate }) {
             </p>
             
             <div className="space-y-2.5">
-              {catalogues.map((cat, idx) => (
-                <a
-                  key={cat.id || idx}
-                  href={cat.file_url}
-                  download={`${cat.title.replace(/\s+/g, '_')}_Catalogue.pdf`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
-                      <FileText className="w-4 h-4" />
+              {catalogues.length > 0 ? (
+                catalogues.map((cat, idx) => (
+                  <a
+                    key={cat.id || idx}
+                    href={cat.file_url}
+                    download={`${(cat.title || 'Catalogue').replace(/\s+/g, '_')}_Catalogue.pdf`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="truncate">
+                        <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
+                          {cat.title}
+                        </span>
+                        <span className="text-[10px] text-stone-400 block font-mono">{cat.file_size || 'PDF'}</span>
+                      </div>
                     </div>
-                    <div className="truncate">
-                      <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
-                        {cat.title}
-                      </span>
-                      <span className="text-[10px] text-stone-400 block font-mono">{cat.file_size || 'PDF'}</span>
-                    </div>
-                  </div>
-                  <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
-                </a>
-              ))}
+                    <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
+                  </a>
+                ))
+              ) : (
+                <p className="text-xs text-stone-500 italic py-2">No catalogues uploaded currently.</p>
+              )}
             </div>
           </div>
 
