@@ -184,7 +184,7 @@ export async function updateUserProfile(profileData) {
 
 export async function fetchHeroBanners() {
   try {
-    const res = await fetch(`${API_BASE_URL}/hero_banners.php`);
+    const res = await fetch(`${API_BASE_URL}/hero_banners.php?t=${Date.now()}`);
     if (!res.ok) throw new Error('Failed to fetch hero banners');
     const data = await res.json();
     return data.data || [];
@@ -195,7 +195,7 @@ export async function fetchHeroBanners() {
 }
 export async function fetchCatalogues() {
   try {
-    const res = await fetch(`${API_BASE_URL}/catalogues.php`);
+    const res = await fetch(`${API_BASE_URL}/catalogues.php?t=${Date.now()}`);
     if (!res.ok) throw new Error('Failed to fetch catalogues');
     const data = await res.json();
     return data.data || [];
