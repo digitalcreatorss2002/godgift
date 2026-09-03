@@ -193,3 +193,14 @@ export async function fetchHeroBanners() {
     return null;
   }
 }
+export async function fetchCatalogues() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/catalogues.php`);
+    if (!res.ok) throw new Error('Failed to fetch catalogues');
+    const data = await res.json();
+    return data.data || [];
+  } catch (error) {
+    console.warn('Backend API error fetching catalogues:', error);
+    return null;
+  }
+}

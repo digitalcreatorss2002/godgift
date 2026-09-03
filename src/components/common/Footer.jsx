@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, FileText, MapPin, Phone } from 'lucide-react';
+import { fetchCatalogues, getImageSrc } from '../../services/api';
+
+const DEFAULT_CATALOGUES = [
+  { id: 1, title: "Brass Idols & Murtis", file_url: "/catalogues/brass-idols-catalogue.pdf", file_size: "PDF • 4.2 MB" },
+  { id: 2, title: "Spiritual Oil Paintings", file_url: "/catalogues/oil-paintings-catalogue.pdf", file_size: "PDF • 3.8 MB" },
+  { id: 3, title: "B2B Bulk Wholesale", file_url: "/catalogues/corporate-gifting-catalogue.pdf", file_size: "PDF • 5.1 MB" }
+];
 
 export default function Footer({ onNavigate }) {
+  const [catalogues, setCatalogues] = useState(DEFAULT_CATALOGUES);
+
+  useEffect(() => {
+    fetchCatalogues().then(res => {
+      if (res && Array.isArray(res) && res.length > 0) {
+        const mapped = res.map(cat => ({
+          ...cat,
+          file_url: getImageSrc(cat.file_url)
+        }));
+        setCatalogues(mapped);
+      }
+    });
+  }, []);
+
   const handleNav = (e, target) => {
     e.preventDefault();
     if (onNavigate) {
@@ -72,7 +93,7 @@ export default function Footer({ onNavigate }) {
             </ul>
           </div>
 
-          {/* Column 4: Download Catalogues */}
+          {/* Column 4: Dynamic Download Catalogues */}
           <div className="space-y-4">
             <h3 className="text-sm font-serif font-bold text-white uppercase tracking-wider flex items-center gap-2">
               <Download className="w-4 h-4 text-amber-400" />
@@ -83,62 +104,29 @@ export default function Footer({ onNavigate }) {
             </p>
             
             <div className="space-y-2.5">
-              <a
-                href="/catalogues/brass-idols-catalogue.pdf"
-                download="GodGiftArts_Brass_Idols_Catalogue.pdf"
-                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
-                    <FileText className="w-4 h-4" />
+              {catalogues.map((cat, idx) => (
+                <a
+                  key={cat.id || idx}
+                  href={cat.file_url}
+                  download={`${cat.title.replace(/\s+/g, '_')}_Catalogue.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div className="truncate">
+                      <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
+                        {cat.title}
+                      </span>
+                      <span className="text-[10px] text-stone-400 block font-mono">{cat.file_size || 'PDF'}</span>
+                    </div>
                   </div>
-                  <div className="truncate">
-                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
-                      Brass Idols & Murtis
-                    </span>
-                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 4.2 MB</span>
-                  </div>
-                </div>
-                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
-              </a>
-
-              <a
-                href="/catalogues/oil-paintings-catalogue.pdf"
-                download="GodGiftArts_Oil_Paintings_Catalogue.pdf"
-                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <div className="truncate">
-                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
-                      Spiritual Oil Paintings
-                    </span>
-                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 3.8 MB</span>
-                  </div>
-                </div>
-                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
-              </a>
-
-              <a
-                href="/catalogues/corporate-gifting-catalogue.pdf"
-                download="GodGiftArts_B2B_Bulk_Catalogue.pdf"
-                className="flex items-center justify-between p-2.5 bg-stone-800/80 hover:bg-stone-800 border border-stone-700/80 hover:border-amber-400/50 rounded-xl transition-all group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="p-1.5 bg-amber-400/10 text-amber-400 rounded-lg group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors shrink-0">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <div className="truncate">
-                    <span className="text-xs font-bold text-stone-200 group-hover:text-amber-400 transition-colors block truncate">
-                      B2B Bulk Wholesale
-                    </span>
-                    <span className="text-[10px] text-stone-400 block font-mono">PDF • 5.1 MB</span>
-                  </div>
-                </div>
-                <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
-              </a>
+                  <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-400 transition-colors shrink-0 ml-2" />
+                </a>
+              ))}
             </div>
           </div>
 
