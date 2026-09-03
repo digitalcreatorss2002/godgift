@@ -8,7 +8,7 @@ import CategoriesPage from './pages/CategoriesPage';
 import CollectionsPage from './pages/CollectionsPage';
 import CollectionDetailPage from './pages/CollectionDetailPage';
 import ProductDetailPage from './pages/ProductDetailPage';
-import BestsellersPage from './pages/BestsellersPage';
+import NewArrivalsPage from './pages/NewArrivalsPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
 import AboutUsPage from './pages/AboutUsPage';
 import TermsPage from './pages/TermsPage';
@@ -75,7 +75,7 @@ export default function App() {
       else if (hash === '#checkout') setCurrentPage('checkout');
       else if (hash === '#profile' || hash === '#orders') setCurrentPage('profile');
       else if (hash === '#wishlist') setCurrentPage('wishlist');
-      else if (hash === '#bestsellers') setCurrentPage('bestsellers');
+      else if (hash === '#new-arrivals' || hash === '#bestsellers') setCurrentPage('new-arrivals');
       else if (hash === '#categories') setCurrentPage('categories');
       else if (hash === '#collections') setCurrentPage('collections');
       else if (hash === '#shop') setCurrentPage('shop');
@@ -206,8 +206,9 @@ export default function App() {
         return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} />;
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
+      case 'new-arrivals':
       case 'bestsellers':
-        return <BestsellersPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
+        return <NewArrivalsPage onAddToCart={handleAddToCart} onQuickView={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'b2b-enquiry':
       case 'corporate-gifting':
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;

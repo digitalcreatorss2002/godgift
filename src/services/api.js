@@ -204,3 +204,14 @@ export async function fetchCatalogues() {
     return null;
   }
 }
+export async function fetchNewArrivals(category = 'all') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/new_arrivals.php?category=${category}&t=${Date.now()}`);
+    if (!res.ok) throw new Error('Failed to fetch new arrivals');
+    const data = await res.json();
+    return data.data || [];
+  } catch (error) {
+    console.warn('Backend API error fetching new arrivals:', error);
+    return null;
+  }
+}

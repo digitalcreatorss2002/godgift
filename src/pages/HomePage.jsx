@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import HeroBanner from '../components/home/HeroBanner';
 import CircularCategoryBar from '../components/home/CircularCategoryBar';
-import BestsellersSection from '../components/home/BestsellersSection';
+import NewArrivalsSection from '../components/home/NewArrivalsSection';
 import OfferBannerSlider from '../components/home/OfferBannerSlider';
 import FeaturedProducts from '../components/home/FeaturedProducts';
 import HeritageBanner from '../components/home/HeritageBanner';
@@ -50,7 +50,7 @@ export default function HomePage({
         <CircularCategoryBar onSelectCategory={handleSelectCategory} />
 
         {/* 3. New Arched Top Card "Our Best Sellers" Section matching satvikstore.in reference */}
-        <BestsellersSection
+        <NewArrivalsSection
           onSelectProduct={onQuickView}
           onAddToCart={onAddToCart}
           onToggleWishlist={onToggleWishlist}
