@@ -181,3 +181,15 @@ export async function updateUserProfile(profileData) {
     return { status: 'error', message: error.message };
   }
 }
+
+export async function fetchHeroBanners() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/hero_banners.php`);
+    if (!res.ok) throw new Error('Failed to fetch hero banners');
+    const data = await res.json();
+    return data.data || [];
+  } catch (error) {
+    console.warn('Backend API error fetching hero banners:', error);
+    return null;
+  }
+}
