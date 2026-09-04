@@ -215,3 +215,27 @@ export async function fetchNewArrivals(category = 'all') {
     return null;
   }
 }
+
+export async function fetchCollections() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/collections.php?t=${Date.now()}`);
+    if (!res.ok) throw new Error('Failed to fetch collections');
+    const data = await res.json();
+    return data.data || [];
+  } catch (error) {
+    console.warn('Backend API error fetching collections:', error);
+    return null;
+  }
+}
+
+export async function fetchCollectionBySlug(slug) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/collections.php?slug=${encodeURIComponent(slug)}&t=${Date.now()}`);
+    if (!res.ok) throw new Error('Failed to fetch collection details');
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.warn('Backend API error fetching collection by slug:', error);
+    return null;
+  }
+}

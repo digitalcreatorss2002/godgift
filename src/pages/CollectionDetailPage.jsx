@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
-import { fetchProducts, fetchCategories, getImageSrc } from '../services/api';
+import { fetchProducts, fetchCategories, fetchCollections, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
@@ -14,9 +13,10 @@ import {
   Tag
 } from 'lucide-react';
 
-const COLLECTION_DATA = {
+const FALLBACK_COLLECTION_DATA = {
   paintings: {
     id: "paintings",
+    slug: "paintings",
     title: "Spiritual Oil Paintings",
     subtitle: "Hand-Painted Canvas Art with Teak Wood Frames",
     description: "Every canvas in our Spiritual Oil Paintings collection is individually painted by Jaipur master artists using rich oil pigments, textured brushwork, and Vastu-compliant iconographic proportions.",
@@ -27,6 +27,7 @@ const COLLECTION_DATA = {
   },
   idols: {
     id: "idols",
+    slug: "idols",
     title: "Brass Idols & Murtis",
     subtitle: "Jaipur Lost-Wax Cast Solid Brass Sculptures",
     description: "Crafted per sacred Shilpa Shastras metallurgy, our solid brass murtis feature hand-chiseled facial expressions, antique gold lacquer polish, and lifetime durability for home mandirs.",
@@ -37,6 +38,7 @@ const COLLECTION_DATA = {
   },
   pooja: {
     id: "pooja",
+    slug: "pooja",
     title: "Copper & Brass Puja Essentials",
     subtitle: "Sacred Consecrated Vessels, Thalis & Aarti Diyas",
     description: "Purify your daily worship rituals with 100% pure heavy-gauge copper thalis, engraved kalash vessels, Panchapatra sets, and multi-wick peacock oil diyas.",
@@ -47,6 +49,7 @@ const COLLECTION_DATA = {
   },
   guruji: {
     id: "guruji",
+    slug: "guruji",
     title: "Guru Ji Devotional Swaroop Line",
     subtitle: "Gilded Frames, Sandalwood Malas & Satsang Essentials",
     description: "Consecrated devotional swaroop frames, original sandalwood neck malas, satsang rumals, and car rear-mirror blessing accessories.",
@@ -57,6 +60,7 @@ const COLLECTION_DATA = {
   },
   gifting: {
     id: "gifting",
+    slug: "gifting",
     title: "Festive & Corporate Gift Hampers",
     subtitle: "Bespoke Packaging, Brass Diyas & Dry Fruit Sets",
     description: "Luxury velvet gift box hampers containing solid brass diyas, pure mysore sandalwood incense, dry fruit containers, and custom logo greeting cards.",
@@ -67,6 +71,7 @@ const COLLECTION_DATA = {
   },
   malas: {
     id: "malas",
+    slug: "malas",
     title: "Devotional Malas & Rosaries",
     subtitle: "Original Vrindavan Tulsi, Sandalwood & Spatik Beads",
     description: "Authentic 108-bead japa rosaries hand-strung with pure Vrindavan Tulsi wood, Mysore Sandalwood, and natural crystal Spatik for prayer & meditation.",
@@ -77,6 +82,7 @@ const COLLECTION_DATA = {
   },
   "dhoop-lamps": {
     id: "dhoop-lamps",
+    slug: "dhoop-lamps",
     title: "Brass Dhoop Lamps & Urli Bowls",
     subtitle: "Traditional Handcrafted Brass Aarti Accessories & Decor",
     description: "Handcrafted heavy brass standing oil lamps, peacock-handled dhoop incense burners, and floating flower urli bowls.",
@@ -87,6 +93,7 @@ const COLLECTION_DATA = {
   },
   "marble-murtis": {
     id: "marble-murtis",
+    slug: "marble-murtis",
     title: "Marble Murtis & Carvings",
     subtitle: "Chaste White Makrana Marble Idols with 24K Gold Foil",
     description: "Flawlessly sculpted Makrana white marble deity idols embellished with hand-embossed 24K gold foil gold work.",
@@ -122,6 +129,7 @@ export default function CollectionDetailPage({
 }) {
   const normalizedKey = useMemo(() => normalizeCollectionId(collectionId), [collectionId]);
   const [categoriesList, setCategoriesList] = useState([]);
+  const [collectionsList, setCollectionsList] = useState([]);
   const [productsList, setProductsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -132,8 +140,9 @@ export default function CollectionDetailPage({
   }, [selectedSubcategory]);
 
   useEffect(() => {
-    Promise.all([fetchCategories(), fetchProducts()]).then(([cRes, pRes]) => {
+    Promise.all([fetchCategories(), fetchCollections(), fetchProducts()]).then(([cRes, colRes, pRes]) => {
       if (cRes && Array.isArray(cRes)) setCategoriesList(cRes);
+      if (colRes && Array.isArray(colRes)) setCollectionsList(colRes);
       if (pRes && Array.isArray(pRes)) setProductsList(pRes);
       setLoading(false);
     }).catch(() => setLoading(false));
@@ -141,10 +150,29 @@ export default function CollectionDetailPage({
 
   const info = useMemo(() => {
     const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
+    
+    // 1. Check API collections first
+    const dbCol = collectionsList.find(c => (c.slug || '').toLowerCase().trim() === raw || (c.title || '').toLowerCase().trim() === raw);
+    if (dbCol) {
+      return {
+        id: dbCol.slug,
+        slug: dbCol.slug,
+        title: dbCol.title,
+        subtitle: dbCol.subtitle || dbCol.section_subtitle || 'Curated Devotional Collection',
+        description: dbCol.description || `Explore our exclusive ${dbCol.title} collection, handcrafted by traditional master artisans.`,
+        bannerImage: dbCol.image ? getImageSrc(dbCol.image) : '/col1.webp',
+        artisanOrigin: "Jaipur Master Artisan Guild",
+        material: "Devotional Artisanal Quality",
+        badge: dbCol.badge || 'Curated Series'
+      };
+    }
+
+    // 2. Check API categories second
     const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw);
     if (dbCat) {
       return {
         id: dbCat.slug,
+        slug: dbCat.slug,
         title: dbCat.name,
         subtitle: dbCat.subtitle || 'Handcrafted Devotional Artifacts',
         description: `Explore our handcrafted collection of ${dbCat.name}. Every artifact is individually made by master artisans using traditional techniques.`,
@@ -154,10 +182,12 @@ export default function CollectionDetailPage({
         badge: "Handcrafted"
       };
     }
-    return COLLECTION_DATA[normalizedKey] || COLLECTION_DATA.paintings;
-  }, [collectionId, normalizedKey, categoriesList]);
 
-  // Subcategories list for current category
+    // 3. Fallback static collection data
+    return FALLBACK_COLLECTION_DATA[normalizedKey] || FALLBACK_COLLECTION_DATA.paintings;
+  }, [collectionId, normalizedKey, collectionsList, categoriesList]);
+
+  // Subcategories list for current category/collection
   const currentSubcategories = useMemo(() => {
     const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
     const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw);
@@ -176,14 +206,20 @@ export default function CollectionDetailPage({
     return [];
   }, [collectionId, normalizedKey, categoriesList]);
 
-  // Filter products strictly for this specific category
+  // Filter products for this specific collection
   const collectionProducts = useMemo(() => {
+    const rawId = decodeURIComponent(collectionId || '').toLowerCase().trim();
+    const nKey = normalizedKey.toLowerCase().trim();
+
     return productsList.filter((product) => {
+      const pColSlug = (product.collection_slug || '').toLowerCase().trim();
       const pCat = (product.category || '').toLowerCase().trim();
-      const nKey = normalizedKey.toLowerCase().trim();
-      const rawId = decodeURIComponent(collectionId || '').toLowerCase().trim();
-      
-      if (pCat === nKey || pCat === rawId) return true;
+
+      // 1. Direct collection assignment from Admin Products
+      if (pColSlug && pColSlug === rawId) return true;
+
+      // 2. Category matching
+      if (pCat === rawId || pCat === nKey) return true;
 
       if (nKey === 'paintings') return pCat === 'paintings' || pCat === 'spiritual-oil-paintings';
       if (nKey === 'marble-murtis') return pCat === 'marble-murtis' || pCat === 'marble-murtis-carvings';
@@ -193,6 +229,7 @@ export default function CollectionDetailPage({
       if (nKey === 'guruji') return pCat === 'guruji' || pCat === 'guru-ji-devotional-line';
       if (nKey === 'gifting') return pCat === 'gifting' || pCat === 'festive-corporate-gift-hampers';
       if (nKey === 'malas') return pCat === 'malas' || pCat === 'devotional-malas';
+      
       return false;
     });
   }, [normalizedKey, collectionId, productsList]);
@@ -338,19 +375,25 @@ export default function CollectionDetailPage({
 
         {/* 2 Products Per Column on Mobile Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-          {displayProducts.map((product) => {
-            const isWishlisted = wishlistItems.some(w => w.id === product.id);
-            return (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-                onQuickView={() => setQuickViewProduct(product)}
-                onToggleWishlist={onToggleWishlist}
-                isWishlisted={isWishlisted}
-              />
-            );
-          })}
+          {displayProducts.length === 0 ? (
+            <div className="col-span-full py-16 text-center text-stone-400 font-serif">
+              No products found in this collection yet. Check back soon!
+            </div>
+          ) : (
+            displayProducts.map((product) => {
+              const isWishlisted = wishlistItems.some(w => w.id === product.id);
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={onAddToCart}
+                  onQuickView={() => setQuickViewProduct(product)}
+                  onToggleWishlist={onToggleWishlist}
+                  isWishlisted={isWishlisted}
+                />
+              );
+            })
+          )}
         </div>
       </div>
 
