@@ -36,9 +36,17 @@ export default function CartPage({
   const [couponCode, setCouponCode] = useState(appliedCoupon?.code || '');
   const [couponError, setCouponError] = useState('');
   const [applyingCoupon, setApplyingCoupon] = useState(false);
+  const [localCoupon, setLocalCoupon] = useState(appliedCoupon);
 
-  const appliedCouponInfo = appliedCoupon;
-  const couponApplied = !!appliedCoupon;
+  React.useEffect(() => {
+    setLocalCoupon(appliedCoupon);
+    if (appliedCoupon?.code) {
+      setCouponCode(appliedCoupon.code);
+    }
+  }, [appliedCoupon]);
+
+  const activeCoupon = localCoupon || appliedCoupon;
+  const couponApplied = !!activeCoupon;
 
   // Checkout Modal State
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -63,14 +71,14 @@ export default function CartPage({
   }, 0);
   
   let discountAmount = 0;
-  if (couponApplied && appliedCouponInfo) {
-    if (subtotal < appliedCouponInfo.min_order_amount) {
+  if (couponApplied && activeCoupon) {
+    if (subtotal < (activeCoupon.min_order_amount || 0)) {
       // Automatic invalidation if subtotal dropped below min order
       discountAmount = 0;
-    } else if (appliedCouponInfo.discount_type === 'percentage') {
-      discountAmount = Math.round((subtotal * appliedCouponInfo.discount_value) / 100);
+    } else if (activeCoupon.discount_type === 'percentage') {
+      discountAmount = Math.round((subtotal * activeCoupon.discount_value) / 100);
     } else {
-      discountAmount = Math.min(appliedCouponInfo.discount_value, subtotal);
+      discountAmount = Math.min(activeCoupon.discount_value, subtotal);
     }
   }
 
@@ -91,15 +99,18 @@ export default function CartPage({
     setApplyingCoupon(false);
 
     if (res && res.status === 'success') {
+      setLocalCoupon(res.data);
       if (onApplyCoupon) onApplyCoupon(res.data);
       setCouponError('');
     } else {
+      setLocalCoupon(null);
       if (onRemoveCoupon) onRemoveCoupon();
       setCouponError(res?.message || 'Invalid promo code');
     }
   };
 
   const handleRemoveCoupon = () => {
+    setLocalCoupon(null);
     if (onRemoveCoupon) onRemoveCoupon();
     setCouponCode('');
     setCouponError('');
@@ -314,7 +325,7 @@ export default function CartPage({
                     Have a Promo Code?
                   </label>
 
-                  {couponApplied && appliedCouponInfo ? (
+                  {couponApplied && activeCoupon ? (
                     <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
@@ -322,12 +333,12 @@ export default function CartPage({
                         </div>
                         <div>
                           <span className="font-mono font-bold text-emerald-950 block text-xs tracking-wider uppercase">
-                            {appliedCouponInfo.code}
+                            {activeCoupon.code}
                           </span>
                           <span className="text-[10px] font-medium text-emerald-700 block">
-                            {appliedCouponInfo.discount_type === 'percentage' 
-                              ? `${appliedCouponInfo.discount_value}% OFF applied` 
-                              : `₹${appliedCouponInfo.discount_value} OFF applied`}
+                            {activeCoupon.discount_type === 'percentage' 
+                              ? `${activeCoupon.discount_value}% OFF applied` 
+                              : `₹${activeCoupon.discount_value} OFF applied`}
                           </span>
                         </div>
                       </div>
@@ -390,7 +401,7 @@ export default function CartPage({
 
                   {couponApplied && discountAmount > 0 && (
                     <div className="flex justify-between text-emerald-700 font-semibold">
-                      <span>Promo Discount ({appliedCouponInfo?.code})</span>
+                      <span>Promo Discount ({activeCoupon?.code})</span>
                       <span className="font-mono">- ₹{discountAmount.toLocaleString('en-IN')}</span>
                     </div>
                   )}

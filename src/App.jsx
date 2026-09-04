@@ -56,6 +56,15 @@ export default function App() {
     }
   });
 
+  const [appliedCoupon, setAppliedCoupon] = useState(() => {
+    try {
+      const saved = localStorage.getItem('gga_coupon');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
   useEffect(() => {
     localStorage.setItem('gga_cart', JSON.stringify(cartItems));
   }, [cartItems]);
@@ -63,6 +72,14 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('gga_wishlist', JSON.stringify(wishlistItems));
   }, [wishlistItems]);
+
+  useEffect(() => {
+    if (appliedCoupon) {
+      localStorage.setItem('gga_coupon', JSON.stringify(appliedCoupon));
+    } else {
+      localStorage.removeItem('gga_coupon');
+    }
+  }, [appliedCoupon]);
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
@@ -197,9 +214,32 @@ export default function App() {
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'cart':
-        return <CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateCartQuantity} onRemoveItem={handleRemoveFromCart} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
+        return (
+          <CartPage 
+            cartItems={cartItems} 
+            onUpdateQuantity={handleUpdateCartQuantity} 
+            onRemoveItem={handleRemoveFromCart} 
+            onClearCart={() => setCartItems([])} 
+            onNavigate={handleNavigate} 
+            currentUser={currentUser}
+            onOpenAuthModal={() => setIsAuthOpen(true)}
+            appliedCoupon={appliedCoupon}
+            onApplyCoupon={(c) => setAppliedCoupon(c)}
+            onRemoveCoupon={() => setAppliedCoupon(null)}
+          />
+        );
       case 'checkout':
-        return <CheckoutPage cartItems={cartItems} onNavigate={handleNavigate} onClearCart={() => setCartItems([])} currentUser={currentUser} />;
+        return (
+          <CheckoutPage 
+            cartItems={cartItems} 
+            onNavigate={handleNavigate} 
+            onClearCart={() => setCartItems([])} 
+            currentUser={currentUser}
+            appliedCoupon={appliedCoupon}
+            onRemoveCoupon={() => setAppliedCoupon(null)}
+            onOpenAuthModal={() => setIsAuthOpen(true)}
+          />
+        );
       case 'profile':
         return <ProfilePage currentUser={currentUser} onLogout={() => { localStorage.removeItem('gga_user'); setCurrentUser(null); }} onNavigate={handleNavigate} onUpdateUser={(u) => setCurrentUser(u)} />;
       case 'wishlist':
