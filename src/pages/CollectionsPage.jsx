@@ -179,8 +179,8 @@ export default function CollectionsPage({ onSelectCollection }) {
         id: col.id,
         slug: col.slug,
         tag: col.tag || col.slug,
-        title: col.title,
-        subtitle: col.subtitle || col.description || '',
+        title: col.title || col.name || 'Devotional Collection',
+        subtitle: col.subtitle || col.section_subtitle || col.description || '',
         badge: col.badge || 'Curated',
         image: col.image ? getImageSrc(col.image) : '/col1.webp'
       });
