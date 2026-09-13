@@ -136,6 +136,11 @@ const getCollectionAliases = (id) => {
   const clean = raw.replace(/[^a-z0-9]/g, '');
   const aliases = new Set([raw, clean]);
 
+  if (clean === 'diya' || clean === 'diyas') {
+    ['diya', 'diyas'].forEach(a => aliases.add(a));
+    return Array.from(aliases);
+  }
+
   if (clean.includes('painting')) {
     ['paintings', 'painting', 'spiritual-oil-paintings', 'spiritualoilpaintings', 'oil', 'canvas'].forEach(a => aliases.add(a));
   }
@@ -154,8 +159,8 @@ const getCollectionAliases = (id) => {
   if (clean.includes('gift') || clean.includes('hamper') || clean.includes('diwali')) {
     ['gifting', 'gift', 'hampers', 'festive-corporate-gift-hampers', 'festivecorporategifthampers', 'diwali'].forEach(a => aliases.add(a));
   }
-  if (clean.includes('dhoop') || clean.includes('lamp') || clean.includes('urli') || clean.includes('diya')) {
-    ['dhoop-lamps', 'dhooplamps', 'brass-dhoop-and-lamps', 'brassdhoopandlamps', 'diya', 'diyas', 'dhoop', 'lamps', 'lamp', 'urli'].forEach(a => aliases.add(a));
+  if (clean.includes('dhoop') || clean.includes('lamp') || clean.includes('urli')) {
+    ['dhoop-lamps', 'dhooplamps', 'brass-dhoop-and-lamps', 'brassdhoopandlamps', 'dhoop', 'lamps', 'lamp', 'urli'].forEach(a => aliases.add(a));
   }
   if (clean.includes('mala') || clean.includes('rosar')) {
     ['malas', 'mala', 'rosary', 'devotional-malas', 'devotionalmalas'].forEach(a => aliases.add(a));
@@ -272,7 +277,7 @@ export default function CollectionDetailPage({
     if (normalizedKey === 'marble-murtis') return ["White Makrana Marble", "24K Gold Foil Idols", "Marble Chowki Plates"];
     if (normalizedKey === 'guruji') return ["Gilded Swaroop Portraits", "Sandalwood Malas", "Satsang Accessories"];
     if (normalizedKey === 'gifting') return ["Royal Velvet Boxes", "Custom Logo Hampers", "Diwali Diya Sets"];
-    if (normalizedKey === 'dhoop-lamps') return ["Peacock Oil Diyas", "Brass Dhoop Burners", "Urli Bowls"];
+    if (normalizedKey === 'dhoop-lamps' || normalizedKey === 'diya') return ["Peacock Oil Diyas", "Brass Dhoop Burners", "Urli Bowls"];
     if (normalizedKey === 'malas') return ["108 Sandalwood Malas", "Spatik Crystal Rosaries", "Tulsi Bead Malas"];
     return [];
   }, [collectionId, normalizedKey, categoriesList]);
@@ -288,9 +293,6 @@ export default function CollectionDetailPage({
       const pCat = (product.category || '').toLowerCase().trim();
       const pSub = (product.subcategory || '').toLowerCase().trim();
       const pName = (product.name || '').toLowerCase().trim();
-      const pDesc = (product.description || '').toLowerCase().trim();
-      const pBadge = (product.badge || '').toLowerCase().trim();
-      const pMat = (product.material || '').toLowerCase().trim();
 
       const cleanCat = pCat.replace(/[^a-z0-9]/g, '');
       const cleanCol = pColSlug.replace(/[^a-z0-9]/g, '');
@@ -306,22 +308,13 @@ export default function CollectionDetailPage({
       }
 
       // 2. Contains matching for category/collection
-      if (cleanCat !== '' && cleanId !== '' && (cleanCat.includes(cleanId) || cleanId.includes(cleanCat))) return true;
-      if (cleanCol !== '' && cleanId !== '' && (cleanCol.includes(cleanId) || cleanId.includes(cleanCol))) return true;
-      if (cleanSub !== '' && cleanId !== '' && (cleanSub.includes(cleanId) || cleanId.includes(cleanSub))) return true;
+      if (cleanCat !== '' && cleanId !== '' && (cleanCat === cleanId || cleanCat.includes(cleanId) || cleanId.includes(cleanCat))) return true;
+      if (cleanCol !== '' && cleanId !== '' && (cleanCol === cleanId || cleanCol.includes(cleanId) || cleanId.includes(cleanCol))) return true;
+      if (cleanSub !== '' && cleanId !== '' && (cleanSub === cleanId || cleanSub.includes(cleanId) || cleanId.includes(cleanSub))) return true;
 
-      // 3. Fallback term matching for specific collections (e.g. diya, mala, painting, idol)
-      if (cleanId.includes('diya') || cleanId.includes('dhoop') || cleanId.includes('lamp') || cleanId.includes('urli')) {
-        if (pName.includes('diya') || pName.includes('lamp') || pName.includes('urli') || pName.includes('dhoop') || pDesc.includes('diya') || pDesc.includes('dhoop') || pMat.includes('brass')) return true;
-      }
-      if (cleanId.includes('mala') || cleanId.includes('rosary')) {
-        if (pName.includes('mala') || pName.includes('rosary') || pDesc.includes('mala') || pMat.includes('sandalwood') || pMat.includes('tulsi') || pMat.includes('spatik')) return true;
-      }
-      if (cleanId.includes('painting') || cleanId.includes('canvas')) {
-        if (pName.includes('painting') || pName.includes('canvas') || pDesc.includes('painting') || pDesc.includes('canvas')) return true;
-      }
-      if (cleanId.includes('idol') || cleanId.includes('murti') || cleanId.includes('statue')) {
-        if (pName.includes('idol') || pName.includes('murti') || pName.includes('statue') || pDesc.includes('murti') || pDesc.includes('idol')) return true;
+      // 3. Fallback name check for specific collection terms (e.g. product name explicitly contains "diya")
+      if (cleanId === 'diya' || cleanId === 'diyas') {
+        if (pName.includes('diya')) return true;
       }
 
       return false;

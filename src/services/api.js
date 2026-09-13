@@ -10,17 +10,8 @@ export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL ||
     ? 'http://localhost/gga-backend' 
     : 'https://hrntechsolutions.com/gga-backend');
 
-export function getImageSrc(path, categoryHint = '') {
-  if (!path || path.trim() === '') {
-    const hint = (categoryHint || '').toLowerCase();
-    if (hint.includes('diya') || hint.includes('lamp') || hint.includes('dhoop')) return '/col3.jpg';
-    if (hint.includes('painting') || hint.includes('canvas')) return '/ganesha-oil.jpg';
-    if (hint.includes('idol') || hint.includes('murti') || hint.includes('statue')) return '/col1.webp';
-    if (hint.includes('marble')) return '/col2.jpg';
-    if (hint.includes('guru')) return '/col6.webp';
-    if (hint.includes('gift') || hint.includes('hamper') || hint.includes('diwali')) return '/col5.jpeg';
-    return '/col4.jpg';
-  }
+export function getImageSrc(path) {
+  if (!path || path.trim() === '') return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
   if (path.startsWith('uploads/') || path.startsWith('/uploads/')) {
     const cleanPath = path.startsWith('/') ? path : `/${path}`;

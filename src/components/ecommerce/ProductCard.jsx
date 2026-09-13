@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Star, ShoppingBag, Heart, Eye, Check } from 'lucide-react';
+import { Star, ShoppingBag, Heart, Eye, Check, Sparkles } from 'lucide-react';
 import { getImageSrc } from '../../services/api';
+import { LotusJaaliPatternBackground } from '../common/BackgroundIllustrations';
 
 export default function ProductCard({
   product,
@@ -11,6 +12,7 @@ export default function ProductCard({
 }) {
   const [localWishlisted, setLocalWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const isWishlisted = propIsWishlisted !== undefined ? propIsWishlisted : localWishlisted;
 
@@ -30,6 +32,9 @@ export default function ProductCard({
     }
   };
 
+  const rawImageSrc = getImageSrc(product.image);
+  const hasValidImage = rawImageSrc && !imgError;
+
   return (
     <div
       onClick={() => onQuickView && onQuickView(product)}
@@ -37,16 +42,28 @@ export default function ProductCard({
     >
       {/* Image & Badges Container */}
       <div className="relative aspect-square bg-stone-100 overflow-hidden">
-        <img
-          src={getImageSrc(product.image, product.category || product.collection_slug || product.name)}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = '/col4.jpg';
-          }}
-        />
+        {hasValidImage ? (
+          <img
+            src={rawImageSrc}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-stone-900 via-amber-950/90 to-stone-900 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
+            <LotusJaaliPatternBackground className="text-amber-500/10" />
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-400/20 flex items-center justify-center mb-2 shadow-inner z-10">
+              <Sparkles className="w-5 h-5 text-amber-400/80" />
+            </div>
+            <span className="text-[11px] font-serif font-semibold text-amber-200/90 line-clamp-2 px-2 z-10 leading-tight">
+              {product.name}
+            </span>
+            <span className="text-[9px] uppercase tracking-widest text-amber-400/60 font-mono mt-1.5 z-10">
+              {product.material || product.badge || 'Handcrafted'}
+            </span>
+          </div>
+        )}
 
         {/* Badges Container */}
         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 flex flex-wrap gap-1 max-w-[80%]">
