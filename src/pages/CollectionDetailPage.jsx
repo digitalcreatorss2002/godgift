@@ -91,6 +91,17 @@ const FALLBACK_COLLECTION_DATA = {
     material: "Solid Virgin Brass",
     badge: "Traditional Aarti"
   },
+  diya: {
+    id: "diya",
+    slug: "diya",
+    title: "Diya & Aarti Lighting Collection",
+    subtitle: "Handcrafted Brass & Copper Diyas, Oil Lamps & Aarti Vessels",
+    description: "Explore our sacred collection of handcrafted solid brass oil diyas, multi-wick peacock lamps, hanging diyas, and floating flower urli bowls.",
+    bannerImage: "/col3.jpg",
+    artisanOrigin: "Moradabad & Jaipur Artisans",
+    material: "100% Solid Virgin Brass & Pure Copper",
+    badge: "Sacred Aarti"
+  },
   "marble-murtis": {
     id: "marble-murtis",
     slug: "marble-murtis",
@@ -110,7 +121,8 @@ const normalizeCollectionId = (id) => {
   if (c.includes('painting')) return 'paintings';
   if (c.includes('marble')) return 'marble-murtis';
   if (c.includes('idol') || c.includes('murti') || c.includes('statue')) return 'idols';
-  if (c.includes('dhoop') || c.includes('lamp') || c.includes('urli') || c.includes('diya')) return 'dhoop-lamps';
+  if (c === 'diya' || c === 'diyas') return 'diya';
+  if (c.includes('dhoop') || c.includes('lamp') || c.includes('urli')) return 'dhoop-lamps';
   if (c.includes('pooja') || c.includes('puja') || c.includes('copper')) return 'pooja';
   if (c.includes('guru')) return 'guruji';
   if (c.includes('gift') || c.includes('hamper') || c.includes('diwali')) return 'gifting';
@@ -186,7 +198,27 @@ export default function CollectionDetailPage({
     const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
     const clean = raw.replace(/[^a-z0-9]/g, '');
     
-    // 1. Check API collections first
+    // 1. Check API categories for exact match first
+    const dbCat = categoriesList.find(c => {
+      const cSlug = (c.slug || '').toLowerCase().trim();
+      const cName = (c.name || '').toLowerCase().trim();
+      return cSlug === raw || cName === raw || cSlug.replace(/[^a-z0-9]/g, '') === clean;
+    });
+    if (dbCat) {
+      return {
+        id: dbCat.slug,
+        slug: dbCat.slug,
+        title: dbCat.name,
+        subtitle: dbCat.subtitle || 'Handcrafted Devotional Artifacts',
+        description: `Explore our handcrafted collection of ${dbCat.name}. Every artifact is individually made by master artisans using traditional techniques.`,
+        bannerImage: dbCat.image ? getImageSrc(dbCat.image, dbCat.name) : '/col4.jpg',
+        artisanOrigin: "Master Artisan Guild",
+        material: "Devotional Quality",
+        badge: "Handcrafted"
+      };
+    }
+
+    // 2. Check API collections second
     const dbCol = collectionsList.find(c => {
       const cSlug = (c.slug || '').toLowerCase().trim();
       const cTitle = (c.title || '').toLowerCase().trim();
@@ -199,30 +231,10 @@ export default function CollectionDetailPage({
         title: dbCol.title,
         subtitle: dbCol.subtitle || dbCol.section_subtitle || 'Curated Devotional Collection',
         description: dbCol.description || `Explore our exclusive ${dbCol.title} collection, handcrafted by traditional master artisans.`,
-        bannerImage: dbCol.image ? getImageSrc(dbCol.image) : '/col1.webp',
+        bannerImage: dbCol.image ? getImageSrc(dbCol.image, dbCol.title) : '/col1.webp',
         artisanOrigin: "Jaipur Master Artisan Guild",
         material: "Devotional Artisanal Quality",
         badge: dbCol.badge || 'Curated Series'
-      };
-    }
-
-    // 2. Check API categories second
-    const dbCat = categoriesList.find(c => {
-      const cSlug = (c.slug || '').toLowerCase().trim();
-      const cName = (c.name || '').toLowerCase().trim();
-      return cSlug === raw || cName === raw || cSlug.replace(/[^a-z0-9]/g, '') === clean || (clean !== '' && cSlug.replace(/[^a-z0-9]/g, '').includes(clean));
-    });
-    if (dbCat) {
-      return {
-        id: dbCat.slug,
-        slug: dbCat.slug,
-        title: dbCat.name,
-        subtitle: dbCat.subtitle || 'Handcrafted Devotional Artifacts',
-        description: `Explore our handcrafted collection of ${dbCat.name}. Every artifact is individually made by master artisans using traditional techniques.`,
-        bannerImage: dbCat.image ? getImageSrc(dbCat.image) : '/col4.jpg',
-        artisanOrigin: "Master Artisan Guild",
-        material: "Devotional Quality",
-        badge: "Handcrafted"
       };
     }
 
