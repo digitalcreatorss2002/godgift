@@ -90,6 +90,7 @@ export default function CheckoutPage({
       items: cartItems.map(item => ({
         product_id: item.product.id,
         product_name: item.product.name,
+        sku: item.product.sku || ('GGA-SKU-' + item.product.id),
         quantity: item.quantity,
         price: item.product.price
       }))

@@ -387,7 +387,7 @@ export default function CollectionDetailPage({
                   key={product.id}
                   product={product}
                   onAddToCart={onAddToCart}
-                  onQuickView={() => setQuickViewProduct(product)}
+                  onQuickView={() => onSelectProduct ? onSelectProduct(product) : (window.location.hash = '#product-' + product.id)}
                   onToggleWishlist={onToggleWishlist}
                   isWishlisted={isWishlisted}
                 />
@@ -396,17 +396,6 @@ export default function CollectionDetailPage({
           )}
         </div>
       </div>
-
-      {/* Quick View Modal */}
-      {quickViewProduct && (
-        <QuickViewModal
-          product={quickViewProduct}
-          isOpen={!!quickViewProduct}
-          onClose={() => setQuickViewProduct(null)}
-          onAddToCart={onAddToCart}
-          onSelectProduct={onSelectProduct}
-        />
-      )}
 
     </div>
   );

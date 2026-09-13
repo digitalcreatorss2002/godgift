@@ -75,7 +75,7 @@ export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, 
         });
       }
     }
-    return list.length > 0 ? list : ['/ganesha-oil.jpg', '/col1.webp', '/col4.jpg'];
+    return list;
   }, [product]);
 
   const isWishlisted = useMemo(() => {
@@ -238,6 +238,12 @@ export default function ProductDetailPage({ productId = 1, onBack, onAddToCart, 
               <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 leading-tight">
                 {product.name}
               </h1>
+
+              <div className="flex items-center gap-2 pt-0.5">
+                <span className="px-2.5 py-1 bg-stone-100 border border-stone-200 text-stone-800 text-[11px] font-mono font-bold rounded-lg uppercase tracking-wider">
+                  SKU: {product.sku || ('GGA-SKU-' + product.id)}
+                </span>
+              </div>
 
               <p className="text-xs sm:text-sm text-stone-600 font-normal leading-relaxed">
                 {product.description}
