@@ -84,56 +84,75 @@ export default function App() {
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
 
-  // Unified Hash & Route Synchronizer
+  // Unified Path & Hash Route Synchronizer (Supports Clean URLs without #)
   useEffect(() => {
-    const syncRouteFromHash = () => {
-      const hash = window.location.hash;
-      if (hash === '#cart') setCurrentPage('cart');
-      else if (hash === '#checkout') setCurrentPage('checkout');
-      else if (hash === '#profile' || hash === '#orders') setCurrentPage('profile');
-      else if (hash === '#wishlist') setCurrentPage('wishlist');
-      else if (hash === '#new-arrivals' || hash === '#bestsellers') setCurrentPage('new-arrivals');
-      else if (hash === '#categories') setCurrentPage('categories');
-      else if (hash === '#collections') setCurrentPage('collections');
-      else if (hash === '#shop') setCurrentPage('shop');
-      else if (hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
-      else if (hash === '#about') setCurrentPage('about');
-      else if (hash === '#terms') setCurrentPage('terms');
-      else if (hash === '#returns') setCurrentPage('returns');
-      else if (hash.startsWith('#collection-')) {
-        const hashContent = hash.replace('#collection-', '');
-        let colId = hashContent;
+    const syncRouteFromLocation = () => {
+      const path = window.location.pathname.replace(/\/$/, '').toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+
+      // Check path or hash
+      const activeRoute = path !== '' ? path : (hash ? hash.replace('#', '/') : '/');
+
+      if (activeRoute === '/cart' || hash === '#cart') setCurrentPage('cart');
+      else if (activeRoute === '/checkout' || hash === '#checkout') setCurrentPage('checkout');
+      else if (activeRoute === '/profile' || activeRoute === '/orders' || hash === '#profile' || hash === '#orders') setCurrentPage('profile');
+      else if (activeRoute === '/wishlist' || hash === '#wishlist') setCurrentPage('wishlist');
+      else if (activeRoute === '/new-arrivals' || activeRoute === '/bestsellers' || hash === '#new-arrivals' || hash === '#bestsellers') setCurrentPage('new-arrivals');
+      else if (activeRoute === '/categories' || hash === '#categories') setCurrentPage('categories');
+      else if (activeRoute === '/collections' || hash === '#collections') setCurrentPage('collections');
+      else if (activeRoute === '/shop' || hash === '#shop') setCurrentPage('shop');
+      else if (activeRoute === '/b2b-enquiry' || activeRoute === '/corporate-gifting' || hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
+      else if (activeRoute === '/about' || hash === '#about') setCurrentPage('about');
+      else if (activeRoute === '/terms' || hash === '#terms') setCurrentPage('terms');
+      else if (activeRoute === '/returns' || hash === '#returns') setCurrentPage('returns');
+      else if (activeRoute.startsWith('/collection') || hash.startsWith('#collection') || activeRoute.startsWith('/category') || hash.startsWith('#category')) {
+        let routeContent = activeRoute.startsWith('/collection') ? activeRoute.replace('/collection', '') : (activeRoute.startsWith('/category') ? activeRoute.replace('/category', '') : (hash.startsWith('#collection') ? hash.replace('#collection', '') : hash.replace('#category', '')));
+        routeContent = routeContent.replace(/^[-/]/, '');
+        let colId = routeContent;
         let subCat = null;
 
-        if (hashContent.includes('?sub=')) {
-          const parts = hashContent.split('?sub=');
+        if (routeContent.includes('?sub=')) {
+          const parts = routeContent.split('?sub=');
           colId = decodeURIComponent(parts[0]).trim();
           subCat = decodeURIComponent(parts[1]).trim();
         } else {
-          colId = decodeURIComponent(hashContent).trim();
+          colId = decodeURIComponent(routeContent).trim();
         }
 
-        setSelectedCollectionId(colId);
+        setSelectedCollectionId(colId || 'paintings');
         setSelectedSubcategory(subCat);
         setCurrentPage('collection-detail');
-      } else if (hash.startsWith('#product-')) {
-        setSelectedProductId(Number(hash.replace('#product-', '')));
-        setCurrentPage('product-detail');
+      } else if (activeRoute.startsWith('/product') || hash.startsWith('#product')) {
+        let rawId = activeRoute.startsWith('/product') ? activeRoute.replace('/product', '') : hash.replace('#product', '');
+        rawId = rawId.replace(/^[-/]/, '');
+        const pId = Number(rawId);
+        if (pId > 0) {
+          setSelectedProductId(pId);
+          setCurrentPage('product-detail');
+        } else {
+          setCurrentPage('home');
+        }
       } else {
         setCurrentPage('home');
       }
     };
 
-    window.addEventListener('hashchange', syncRouteFromHash);
-    syncRouteFromHash();
-    return () => window.removeEventListener('hashchange', syncRouteFromHash);
+    window.addEventListener('popstate', syncRouteFromLocation);
+    window.addEventListener('hashchange', syncRouteFromLocation);
+    syncRouteFromLocation();
+    return () => {
+      window.removeEventListener('popstate', syncRouteFromLocation);
+      window.removeEventListener('hashchange', syncRouteFromLocation);
+    };
   }, []);
 
-  // Central Navigation Handler
+  // Central Navigation Handler (Pushes Clean Path URLs)
   const handleNavigate = (target) => {
     if (!target) return;
-    if (target.startsWith('collection-')) {
-      const targetContent = target.replace('collection-', '').trim();
+    let targetPath = '/';
+
+    if (target.startsWith('collection-') || target.startsWith('category-')) {
+      const targetContent = target.replace(/^(collection-|category-)/, '').trim();
       let colId = targetContent;
       let subCat = null;
 
@@ -146,29 +165,26 @@ export default function App() {
       setSelectedCollectionId(colId);
       setSelectedSubcategory(subCat);
       setCurrentPage('collection-detail');
-
-      if (subCat) {
-        window.location.hash = `#collection-${colId}?sub=${encodeURIComponent(subCat)}`;
-      } else {
-        window.location.hash = `#collection-${colId}`;
-      }
+      targetPath = subCat ? `/collection/${colId}?sub=${encodeURIComponent(subCat)}` : `/collection/${colId}`;
     } else if (target.startsWith('product-')) {
       const prodId = Number(target.replace('product-', ''));
       setSelectedProductId(prodId);
       setCurrentPage('product-detail');
-      window.location.hash = `#product-${prodId}`;
-    } else if (target === 'corporate-gifting') {
-      window.location.hash = '#b2b-enquiry';
+      targetPath = `/product/${prodId}`;
+    } else if (target === 'corporate-gifting' || target === 'b2b-enquiry') {
       setCurrentPage('b2b-enquiry');
-    } else if (target === 'offers') {
-      window.location.hash = `#${target}`;
+      targetPath = '/b2b-enquiry';
+    } else if (target === 'home') {
       setCurrentPage('home');
-      setTimeout(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' }), 100);
-      return;
+      targetPath = '/';
     } else {
-      window.location.hash = `#${target}`;
       setCurrentPage(target);
+      targetPath = `/${target}`;
     }
+
+    try {
+      window.history.pushState(null, '', targetPath);
+    } catch (e) {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

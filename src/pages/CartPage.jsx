@@ -239,8 +239,11 @@ export default function CartPage({
                         </h3>
                       </div>
 
-                      <p className="text-xs text-stone-500 font-medium">
-                        Material: <span className="text-stone-800">{item.product.material || 'Devotional Artifact'}</span>
+                      <p className="text-xs text-stone-500 font-medium flex items-center gap-2 flex-wrap">
+                        <span>Material: <strong className="text-stone-800">{item.product.material || 'Devotional Artifact'}</strong></span>
+                        <span className="text-[10px] font-mono font-bold text-stone-600 bg-stone-100 px-2 py-0.5 rounded border border-stone-200 uppercase">
+                          SKU: {item.product.sku || ('GGA-SKU-' + item.product.id)}
+                        </span>
                       </p>
 
                       <div className="flex items-center gap-2 text-xs font-mono">

@@ -31,14 +31,15 @@ export async function fetchProducts(params = {}) {
     if (params.sort) query.append('sort', params.sort);
     if (params.id) query.append('id', params.id);
     if (params.slug) query.append('slug', params.slug);
+    query.append('t', Date.now().toString());
 
     const res = await fetch(`${API_BASE_URL}/products.php?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch products');
     const data = await res.json();
     return data.data || [];
   } catch (error) {
-    console.warn('Backend API offline or unreachable. Falling back to local catalog data.', error);
-    return null;
+    console.warn('Backend API error fetching products:', error);
+    return [];
   }
 }
 
