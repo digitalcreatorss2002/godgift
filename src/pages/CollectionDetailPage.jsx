@@ -105,17 +105,17 @@ const FALLBACK_COLLECTION_DATA = {
 };
 
 const normalizeCollectionId = (id) => {
-  if (!id) return 'paintings';
+  if (!id) return '';
   const c = decodeURIComponent(id).toLowerCase().replace(/[^a-z0-9]/g, '');
   if (c.includes('painting')) return 'paintings';
   if (c.includes('marble')) return 'marble-murtis';
   if (c.includes('idol') || c.includes('murti') || c.includes('statue')) return 'idols';
-  if (c.includes('dhoop') || c.includes('lamp') || c.includes('urli')) return 'dhoop-lamps';
+  if (c.includes('dhoop') || c.includes('lamp') || c.includes('urli') || c.includes('diya')) return 'dhoop-lamps';
   if (c.includes('pooja') || c.includes('puja') || c.includes('copper')) return 'pooja';
   if (c.includes('guru')) return 'guruji';
   if (c.includes('gift') || c.includes('hamper')) return 'gifting';
   if (c.includes('mala') || c.includes('rosar')) return 'malas';
-  return 'paintings';
+  return c;
 };
 
 export default function CollectionDetailPage({
@@ -132,7 +132,6 @@ export default function CollectionDetailPage({
   const [collectionsList, setCollectionsList] = useState([]);
   const [productsList, setProductsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [activeSub, setActiveSub] = useState(selectedSubcategory);
 
   useEffect(() => {
@@ -168,7 +167,7 @@ export default function CollectionDetailPage({
     }
 
     // 2. Check API categories second
-    const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw);
+    const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw || (c.name || '').toLowerCase().trim() === raw);
     if (dbCat) {
       return {
         id: dbCat.slug,
@@ -183,14 +182,25 @@ export default function CollectionDetailPage({
       };
     }
 
-    // 3. Fallback static collection data
-    return FALLBACK_COLLECTION_DATA[normalizedKey] || FALLBACK_COLLECTION_DATA.paintings;
+    // 3. Fallback collection info title
+    const fallbackTitle = raw.charAt(0).toUpperCase() + raw.slice(1);
+    return FALLBACK_COLLECTION_DATA[normalizedKey] || {
+      id: raw,
+      slug: raw,
+      title: fallbackTitle || "Devotional Artifacts",
+      subtitle: "Handcrafted Devotional Collection",
+      description: `Explore our handcrafted ${fallbackTitle} collection, made by traditional master artisans.`,
+      bannerImage: "/col4.jpg",
+      artisanOrigin: "Master Artisan Guild",
+      material: "Devotional Quality",
+      badge: "Handcrafted"
+    };
   }, [collectionId, normalizedKey, collectionsList, categoriesList]);
 
   // Subcategories list for current category/collection
   const currentSubcategories = useMemo(() => {
     const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
-    const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw);
+    const dbCat = categoriesList.find(c => (c.slug || '').toLowerCase().trim() === raw || (c.name || '').toLowerCase().trim() === raw);
     if (dbCat && Array.isArray(dbCat.subcategories) && dbCat.subcategories.length > 0) {
       return dbCat.subcategories;
     }
@@ -206,33 +216,30 @@ export default function CollectionDetailPage({
     return [];
   }, [collectionId, normalizedKey, categoriesList]);
 
-  // Filter products for this specific collection
+  // Strict & Accurate Product Filtering
   const collectionProducts = useMemo(() => {
     const rawId = decodeURIComponent(collectionId || '').toLowerCase().trim();
-    const nKey = normalizedKey.toLowerCase().trim();
+    const cleanId = rawId.replace(/[^a-z0-9]/g, '');
 
     return productsList.filter((product) => {
       const pColSlug = (product.collection_slug || '').toLowerCase().trim();
       const pCat = (product.category || '').toLowerCase().trim();
+      const pSub = (product.subcategory || '').toLowerCase().trim();
+      const cleanCat = pCat.replace(/[^a-z0-9]/g, '');
+      const cleanCol = pColSlug.replace(/[^a-z0-9]/g, '');
 
       // 1. Direct collection assignment from Admin Products
-      if (pColSlug && pColSlug === rawId) return true;
+      if (pColSlug && (pColSlug === rawId || cleanCol === cleanId)) return true;
 
       // 2. Category matching
-      if (pCat === rawId || pCat === nKey) return true;
+      if (pCat && (pCat === rawId || cleanCat === cleanId || (cleanCat !== '' && cleanId !== '' && (cleanCat.includes(cleanId) || cleanId.includes(cleanCat))))) return true;
 
-      if (nKey === 'paintings') return pCat === 'paintings' || pCat === 'spiritual-oil-paintings';
-      if (nKey === 'marble-murtis') return pCat === 'marble-murtis' || pCat === 'marble-murtis-carvings';
-      if (nKey === 'idols') return pCat === 'idols' || pCat === 'brass-idols-murtis';
-      if (nKey === 'dhoop-lamps') return pCat === 'dhoop-lamps' || pCat === 'brass-dhoop-and-lamps';
-      if (nKey === 'pooja') return pCat === 'pooja' || pCat === 'copper-pooja-sets';
-      if (nKey === 'guruji') return pCat === 'guruji' || pCat === 'guru-ji-devotional-line';
-      if (nKey === 'gifting') return pCat === 'gifting' || pCat === 'festive-corporate-gift-hampers';
-      if (nKey === 'malas') return pCat === 'malas' || pCat === 'devotional-malas';
-      
+      // 3. Subcategory matching
+      if (pSub && (pSub === rawId || pSub.includes(rawId) || rawId.includes(pSub))) return true;
+
       return false;
     });
-  }, [normalizedKey, collectionId, productsList]);
+  }, [collectionId, productsList]);
 
   // Sub-category specific filtered products
   const displayProducts = useMemo(() => {
