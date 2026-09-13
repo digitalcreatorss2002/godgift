@@ -104,6 +104,20 @@ const FALLBACK_COLLECTION_DATA = {
   }
 };
 
+const normalizeCollectionId = (id) => {
+  if (!id) return '';
+  const c = decodeURIComponent(id).toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (c.includes('painting')) return 'paintings';
+  if (c.includes('marble')) return 'marble-murtis';
+  if (c.includes('idol') || c.includes('murti') || c.includes('statue')) return 'idols';
+  if (c.includes('dhoop') || c.includes('lamp') || c.includes('urli') || c.includes('diya')) return 'dhoop-lamps';
+  if (c.includes('pooja') || c.includes('puja') || c.includes('copper')) return 'pooja';
+  if (c.includes('guru')) return 'guruji';
+  if (c.includes('gift') || c.includes('hamper') || c.includes('diwali')) return 'gifting';
+  if (c.includes('mala') || c.includes('rosar')) return 'malas';
+  return c;
+};
+
 const getCollectionAliases = (id) => {
   if (!id) return [];
   const raw = decodeURIComponent(id).toLowerCase().trim();
@@ -125,8 +139,8 @@ const getCollectionAliases = (id) => {
   if (clean.includes('guru')) {
     ['guruji', 'guru', 'guru-ji-devotional-line', 'gurujidevotionalline'].forEach(a => aliases.add(a));
   }
-  if (clean.includes('gift') || clean.includes('hamper')) {
-    ['gifting', 'gift', 'hampers', 'festive-corporate-gift-hampers', 'festivecorporategifthampers'].forEach(a => aliases.add(a));
+  if (clean.includes('gift') || clean.includes('hamper') || clean.includes('diwali')) {
+    ['gifting', 'gift', 'hampers', 'festive-corporate-gift-hampers', 'festivecorporategifthampers', 'diwali'].forEach(a => aliases.add(a));
   }
   if (clean.includes('dhoop') || clean.includes('lamp') || clean.includes('urli') || clean.includes('diya')) {
     ['dhoop-lamps', 'dhooplamps', 'brass-dhoop-and-lamps', 'brassdhoopandlamps', 'diya', 'diyas', 'dhoop', 'lamps', 'lamp', 'urli'].forEach(a => aliases.add(a));
