@@ -55,7 +55,16 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
     return [{ id: 'all', label: 'All Artifacts', count: productsList.length }, ...mapped];
   }, [categoriesList, productsList]);
 
-  const materials = ['all', 'Solid Brass', 'Pure Copper & Brass', 'Oil on Canvas', 'Sandalwood & Brass', 'Teak Wood'];
+  const materials = useMemo(() => {
+    const set = new Set();
+    productsList.forEach(p => {
+      if (p.material && p.material.trim() && p.material.trim().toLowerCase() !== 'default') {
+        set.add(p.material.trim());
+      }
+    });
+    const list = Array.from(set);
+    return list.length > 0 ? ['all', ...list] : [];
+  }, [productsList]);
 
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
@@ -198,23 +207,25 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
             </div>
 
             {/* Materials List */}
-            <div className="space-y-2 pt-4 border-t border-stone-100">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Material</h3>
-              <div className="space-y-1">
-                {materials.map((mat) => (
-                  <button
-                    key={mat}
-                    onClick={() => setSelectedMaterial(mat)}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
-                      selectedMaterial === mat ? 'text-amber-900 font-bold bg-amber-900/10' : 'text-stone-600 hover:bg-stone-50'
-                    }`}
-                  >
-                    <span>{mat === 'all' ? 'All Materials' : mat}</span>
-                    {selectedMaterial === mat && <Check className="w-3.5 h-3.5 text-amber-900" />}
-                  </button>
-                ))}
+            {materials.length > 0 && (
+              <div className="space-y-2 pt-4 border-t border-stone-100">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Material</h3>
+                <div className="space-y-1">
+                  {materials.map((mat) => (
+                    <button
+                      key={mat}
+                      onClick={() => setSelectedMaterial(mat)}
+                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                        selectedMaterial === mat ? 'text-amber-900 font-bold bg-amber-900/10' : 'text-stone-600 hover:bg-stone-50'
+                      }`}
+                    >
+                      <span>{mat === 'all' ? 'All Materials' : mat}</span>
+                      {selectedMaterial === mat && <Check className="w-3.5 h-3.5 text-amber-900" />}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* In-Stock Toggle */}
             <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
