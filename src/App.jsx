@@ -259,7 +259,7 @@ export default function App() {
       case 'profile':
         return <ProfilePage currentUser={currentUser} onLogout={() => { localStorage.removeItem('gga_user'); setCurrentUser(null); }} onNavigate={handleNavigate} onUpdateUser={(u) => setCurrentUser(u)} />;
       case 'wishlist':
-        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} />;
+        return <WishlistPage wishlistItems={wishlistItems} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onNavigate={handleNavigate} onToggleWishlist={handleToggleWishlist} currentUser={currentUser} onOpenAuthModal={() => setIsAuthOpen(true)} />;
       case 'product-detail':
         return <ProductDetailPage productId={selectedProductId} onBack={() => handleNavigate('shop')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'new-arrivals':
