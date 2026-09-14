@@ -6,8 +6,8 @@ const DEFAULT_BANNER = {
   badge_text: "SACRED ARTS & HERITAGE",
   title: "Handcrafted with Devotion & Legacy",
   subtitle: "Explore our signature collection of hand-painted oil paintings, hand-cast brass murtis, copper puja sets, and bespoke corporate gift hampers.",
-  media_type: "image",
-  media_url: "/col3.jpg",
+  media_type: "none",
+  media_url: "",
   button_text: "Explore Collection",
   button_link: "#collections",
   sec_button_text: "B2B Enquiry",
@@ -27,12 +27,12 @@ export default function HeroBanner() {
       }
 
       if (b) {
-        const rawUrl = b.media_url || '';
-        const isFallbackVideo = !rawUrl || rawUrl.includes('god-banner.mp4');
+        const rawUrl = (b.media_url || '').trim();
+        const isDummyFallback = !rawUrl || rawUrl.includes('god-banner.mp4') || rawUrl.includes('col3.jpg');
         setBanner({
           ...b,
-          media_type: isFallbackVideo ? 'image' : (b.media_type || 'image'),
-          media_url: isFallbackVideo ? '/col3.jpg' : getImageSrc(rawUrl)
+          media_type: isDummyFallback ? 'none' : (b.media_type || 'image'),
+          media_url: isDummyFallback ? '' : getImageSrc(rawUrl)
         });
       }
     });
@@ -41,33 +41,33 @@ export default function HeroBanner() {
   return (
     <section className="relative w-full h-[270px] sm:h-[350px] md:h-[380px] bg-stone-950 text-white overflow-hidden flex items-center rounded-b-2xl sm:rounded-b-[2.5rem] shadow-xl border-b border-stone-800/60">
 
-      {/* Fixed Ambient Background Media (Video or Image) */}
+      {/* Clean Black Ambient Background Media (Renders only if custom media uploaded in Admin) */}
       <div className="absolute inset-0 overflow-hidden">
-        {banner.media_type === 'video' && banner.media_url && !banner.media_url.includes('god-banner.mp4') ? (
+        {banner.media_type === 'video' && banner.media_url ? (
           <video
             key={banner.media_url}
             autoPlay
             loop
             muted
             playsInline
-            onError={() => setBanner(prev => ({ ...prev, media_type: 'image', media_url: '/col3.jpg' }))}
+            onError={() => setBanner(prev => ({ ...prev, media_type: 'none', media_url: '' }))}
             className="w-full h-full object-cover scale-100 filter brightness-125"
           >
             <source src={banner.media_url} type="video/mp4" />
           </video>
-        ) : (
+        ) : banner.media_type === 'image' && banner.media_url ? (
           <img
             key={banner.media_url}
-            src={banner.media_url || '/col3.jpg'}
+            src={banner.media_url}
             alt={banner.title}
-            onError={(e) => { e.target.src = '/col3.jpg'; }}
+            onError={() => setBanner(prev => ({ ...prev, media_type: 'none', media_url: '' }))}
             className="w-full h-full object-cover scale-100 filter brightness-110"
           />
-        )}
+        ) : null}
 
         {/* Dark Gradient Overlays for 100% Crisp Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/65 to-stone-950/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-transparent to-stone-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-950/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/40" />
       </div>
 
       {/* Hero Content Container */}
