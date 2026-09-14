@@ -1,48 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchCategories, getImageSrc } from '../../services/api';
 
 export default function CircularCategorySlider({ onSelectCategory }) {
-  const categories = [
-    {
-      id: "paintings",
-      name: "Oil Paintings",
-      image: "/ganesha-oil.jpg"
-    },
-    {
-      id: "idols",
-      name: "Brass Idols",
-      image: "/col1.webp"
-    },
-    {
-      id: "pooja",
-      name: "Copper Puja Sets",
-      image: "/col4.jpg"
-    },
-    {
-      id: "murtis",
-      name: "Marble Murtis",
-      image: "/col2.jpg"
-    },
-    {
-      id: "guruji",
-      name: "Guru Ji Swaroop",
-      image: "/col6.webp"
-    },
-    {
-      id: "lamps",
-      name: "Brass Dhoop Lamps",
-      image: "/col3.jpg"
-    },
-    {
-      id: "mala",
-      name: "Devotional Malas",
-      image: "/col8.webp"
-    },
-    {
-      id: "gifting",
-      name: "Gift Hampers",
-      image: "/col5.jpeg"
-    }
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories().then(res => {
+      if (res && Array.isArray(res)) {
+        const mapped = res.map(cat => ({
+          id: cat.slug || cat.id,
+          name: cat.name,
+          image: cat.image ? getImageSrc(cat.image) : '/col4.jpg'
+        }));
+        setCategories(mapped);
+      }
+    });
+  }, []);
+
+  if (categories.length === 0) return null;
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">

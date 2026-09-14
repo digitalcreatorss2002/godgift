@@ -3,63 +3,6 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { LotusJaaliPatternBackground } from '../components/common/BackgroundIllustrations';
 import { fetchCategories, getImageSrc } from '../services/api';
 
-const DEFAULT_CATEGORIES = [
-  {
-    id: "paintings",
-    slug: "paintings",
-    num: "01",
-    name: "Spiritual Oil Paintings",
-    subtitle: "Hand-Painted Canvas Wall Art by Jaipur Master Artists",
-    image: "/ganesha-oil.jpg",
-    span: "lg:col-span-8 min-h-[360px] sm:min-h-[440px]"
-  },
-  {
-    id: "idols",
-    slug: "idols",
-    num: "02",
-    name: "Brass Idols & Murtis",
-    subtitle: "Solid Brass Lost-Wax Cast Deities & Sculptures",
-    image: "/col1.webp",
-    span: "lg:col-span-4 min-h-[360px] sm:min-h-[440px]"
-  },
-  {
-    id: "pooja",
-    slug: "pooja",
-    num: "03",
-    name: "Copper & Pooja Sets",
-    subtitle: "100% Pure Heavy Gauge Copper Thalis & Kalash",
-    image: "/col4.jpg",
-    span: "lg:col-span-4 min-h-[280px] sm:min-h-[320px]"
-  },
-  {
-    id: "marble-murtis",
-    slug: "marble-murtis",
-    num: "04",
-    name: "Marble Murtis & Carvings",
-    subtitle: "Chaste White Makrana Marble Idols with 24K Gold Foil",
-    image: "/col2.jpg",
-    span: "lg:col-span-4 min-h-[280px] sm:min-h-[320px]"
-  },
-  {
-    id: "guruji",
-    slug: "guruji",
-    num: "05",
-    name: "Guru Ji Devotional Line",
-    subtitle: "Gilded Swaroop Portraits, Sandalwood Malas & Accessories",
-    image: "/col6.webp",
-    span: "lg:col-span-4 min-h-[280px] sm:min-h-[320px]"
-  },
-  {
-    id: "gifting",
-    slug: "gifting",
-    num: "06",
-    name: "Festive & Gift Hampers",
-    subtitle: "Luxury Velvet Box Sets with Brass Diyas & Dry Fruits",
-    image: "/col5.jpeg",
-    span: "lg:col-span-12 min-h-[280px] sm:min-h-[340px]"
-  }
-];
-
 import PageLoader from '../components/common/PageLoader';
 
 // ...

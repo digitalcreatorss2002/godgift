@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { fetchProducts, getImageSrc } from '../services/api';
+import { fetchProducts, fetchCategories, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import QuickViewModal from '../components/ecommerce/QuickViewModal';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
@@ -20,14 +20,29 @@ import PageLoader from '../components/common/PageLoader';
 export default function BestsellersPage({ onAddToCart, onQuickView, onToggleWishlist, wishlistItems = [] }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [productsList, setProductsList] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts().then(res => {
+    Promise.all([fetchProducts(), fetchCategories()]).then(([pRes, cRes]) => {
       setLoading(false);
-      if (res && Array.isArray(res)) setProductsList(res);
-    });
+      if (pRes && Array.isArray(pRes)) setProductsList(pRes);
+      if (cRes && Array.isArray(cRes)) setCategoriesList(cRes);
+    }).catch(() => setLoading(false));
   }, []);
+
+  const filterTabs = useMemo(() => {
+    const tabs = [{ id: 'all', label: 'Top Bestsellers' }];
+    if (categoriesList && categoriesList.length > 0) {
+      categoriesList.forEach(c => {
+        tabs.push({
+          id: c.slug || (c.name || '').toLowerCase().trim(),
+          label: c.name
+        });
+      });
+    }
+    return tabs;
+  }, [categoriesList]);
 
   // Top 3 Spotlight Bestsellers
   const topRanked = useMemo(() => {
@@ -63,19 +78,11 @@ export default function BestsellersPage({ onAddToCart, onQuickView, onToggleWish
       if (selectedFilter !== 'all') {
         const pCat = (product.category || '').toLowerCase().trim();
         const selCat = selectedFilter.toLowerCase().trim();
-        if (pCat !== selCat && !pCat.includes(selCat)) return false;
+        if (pCat !== selCat && !pCat.includes(selCat) && !selCat.includes(pCat)) return false;
       }
       return true;
     }).slice(0, 8);
   }, [productsList, topRanked, selectedFilter]);
-
-  const filterTabs = [
-    { id: 'all', label: 'Top Bestsellers' },
-    { id: 'paintings', label: 'Spiritual Paintings' },
-    { id: 'idols', label: 'Brass Idols' },
-    { id: 'pooja', label: 'Copper Puja Sets' },
-    { id: 'guruji', label: 'Guru Ji Line' }
-  ];
 
   if (loading) {
     return <PageLoader text="Loading top rated devotional artifacts..." />;

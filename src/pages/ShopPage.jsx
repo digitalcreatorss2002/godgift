@@ -50,20 +50,6 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
           count: matchCount
         };
       });
-    } else {
-      const catMap = new Map();
-      productsList.forEach(p => {
-        if (p.category) {
-          const rawCat = p.category.trim();
-          const slug = rawCat.toLowerCase().replace(/[^a-z0-9]/g, '-');
-          if (!catMap.has(slug)) {
-            const label = rawCat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            catMap.set(slug, { id: slug, label: label, count: 0 });
-          }
-          catMap.get(slug).count += 1;
-        }
-      });
-      mapped = Array.from(catMap.values());
     }
 
     return [{ id: 'all', label: 'All Artifacts', count: productsList.length }, ...mapped];

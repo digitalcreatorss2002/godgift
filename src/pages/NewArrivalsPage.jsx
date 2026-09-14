@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { fetchNewArrivals, getImageSrc } from '../services/api';
+import { fetchNewArrivals, fetchCategories, getImageSrc } from '../services/api';
 import ProductCard from '../components/ecommerce/ProductCard';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
 import { Sparkles, ShoppingBag, Star, ShieldCheck } from 'lucide-react';
@@ -8,32 +8,41 @@ import PageLoader from '../components/common/PageLoader';
 export default function NewArrivalsPage({ onAddToCart, onQuickView, onToggleWishlist, wishlistItems = [] }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [productsList, setProductsList] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchNewArrivals().then(res => {
+    Promise.all([fetchNewArrivals(), fetchCategories()]).then(([pRes, cRes]) => {
       setLoading(false);
-      if (res && Array.isArray(res)) setProductsList(res);
-    });
+      if (pRes && Array.isArray(pRes)) setProductsList(pRes);
+      if (cRes && Array.isArray(cRes)) setCategoriesList(cRes);
+    }).catch(() => setLoading(false));
   }, []);
+
+  const filterTabs = useMemo(() => {
+    const tabs = [{ id: 'all', label: 'All New Arrivals' }];
+    if (categoriesList && categoriesList.length > 0) {
+      categoriesList.forEach(c => {
+        tabs.push({
+          id: c.slug || (c.name || '').toLowerCase().trim(),
+          label: c.name
+        });
+      });
+    }
+    return tabs;
+  }, [categoriesList]);
 
   const filteredArrivals = useMemo(() => {
     if (productsList.length === 0) return [];
     if (selectedFilter === 'all') return productsList;
+    const target = selectedFilter.toLowerCase().trim();
     return productsList.filter((product) => {
       const pCat = (product.category || '').toLowerCase().trim();
-      const selCat = selectedFilter.toLowerCase().trim();
-      return pCat === selCat || pCat.includes(selCat);
+      const pCol = (product.collection_slug || '').toLowerCase().trim();
+      const pName = (product.name || '').toLowerCase().trim();
+      return pCat === target || pCat.includes(target) || target.includes(pCat) || pCol === target || pName.includes(target);
     });
   }, [productsList, selectedFilter]);
-
-  const filterTabs = [
-    { id: 'all', label: 'All New Arrivals' },
-    { id: 'paintings', label: 'Oil Paintings' },
-    { id: 'idols', label: 'Brass Idols' },
-    { id: 'pooja', label: 'Copper Puja Sets' },
-    { id: 'guruji', label: 'Guru Ji Line' }
-  ];
 
   if (loading) {
     return <PageLoader text="Loading new devotional arrivals..." />;

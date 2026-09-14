@@ -2,72 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { fetchCategories, getImageSrc } from '../../services/api';
 
-const DEFAULT_COLLAGE = [
-  {
-    id: "spiritual-oil-paintings",
-    title: "Spiritual Oil Paintings",
-    subtitle: "Hand-painted Om Ganesha, Krishna Folk Art & Divine Lakshmi canvas art",
-    image: "/ganesha-oil.jpg",
-    size: "lg:col-span-2 lg:row-span-2 h-[380px] sm:h-[480px]",
-    badge: "Handmade Canvas Art"
-  },
-  {
-    id: "brass-idols-murtis",
-    title: "Brass Idols & Murtis",
-    subtitle: "Hanuman Ji, Khatu Shyam Ji, Ram Darbar & Durga Maa murtis",
-    image: "/col1.webp",
-    size: "lg:col-span-1 h-[235px]",
-    badge: "Pure Solid Brass"
-  },
-  {
-    id: "copper-pooja-sets",
-    title: "Copper & Pooja Sets",
-    subtitle: "Pure copper thalis, kalash, brass ghanti & dhoop stands",
-    image: "/col4.jpg",
-    size: "lg:col-span-1 h-[235px]",
-    badge: "Authentic Copper"
-  },
-  {
-    id: "guru-ji-devotional-line",
-    title: "Guru Ji Devotional Line",
-    subtitle: "Guru Ji Swaroop frames, neck malas, rumals & gift hampers",
-    image: "/col6.webp",
-    size: "lg:col-span-2 h-[225px]",
-    badge: "Guru Ji Special"
-  }
-];
-
 export default function CategoryGrid({ onSelectCategory }) {
-  const [collageItems, setCollageItems] = useState(DEFAULT_COLLAGE);
+  const [collageItems, setCollageItems] = useState([]);
 
   useEffect(() => {
     fetchCategories().then(res => {
-      if (res && Array.isArray(res) && res.length >= 4) {
+      if (res && Array.isArray(res) && res.length > 0) {
         const sizes = [
           "lg:col-span-2 lg:row-span-2 h-[380px] sm:h-[480px]",
           "lg:col-span-1 h-[235px]",
           "lg:col-span-1 h-[235px]",
           "lg:col-span-2 h-[225px]"
         ];
-        const badges = [
-          "Handmade Canvas Art",
-          "Pure Solid Brass",
-          "Authentic Copper",
-          "Guru Ji Special"
-        ];
         
-        const firstFour = res.slice(0, 4).map((cat, idx) => ({
-          id: cat.slug,
+        const mapped = res.map((cat, idx) => ({
+          id: cat.slug || cat.id,
           title: cat.name,
           subtitle: cat.subtitle || 'Handcrafted Devotional Artifacts',
-          image: cat.image ? getImageSrc(cat.image) : DEFAULT_COLLAGE[idx].image,
-          size: sizes[idx],
-          badge: badges[idx] || "Handcrafted Art"
+          image: cat.image ? getImageSrc(cat.image) : '/col4.jpg',
+          size: res.length === 1 ? "lg:col-span-3 h-[380px]" : (sizes[idx % sizes.length]),
+          badge: "Handcrafted Art"
         }));
-        setCollageItems(firstFour);
+        setCollageItems(mapped);
+      } else {
+        setCollageItems([]);
       }
     });
   }, []);
+
+  if (collageItems.length === 0) return null;
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

@@ -2,17 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { fetchCategories, getImageSrc } from '../../services/api';
 import { Sparkles, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const DEFAULT_8_CATEGORIES = [
-  { id: 'spiritual-oil-paintings', name: 'Oil Paintings', image: '/ganesha-oil.jpg', count: 12 },
-  { id: 'brass-idols-murtis', name: 'Brass Idols', image: '/col1.webp', count: 8 },
-  { id: 'copper-pooja-sets', name: 'Copper & Pooja', image: '/col4.jpg', count: 7 },
-  { id: 'marble-murtis-carvings', name: 'Marble Murtis', image: '/col2.webp', count: 4 },
-  { id: 'guru-ji-devotional-line', name: 'Guru Ji Special', image: '/col6.webp', count: 6 },
-  { id: 'festive-corporate-gift-hampers', name: 'Gift Hampers', image: '/col5.webp', count: 4 },
-  { id: 'brass-dhoop-and-lamps', name: 'Dhoop & Lamps', image: '/col3.webp', count: 1 },
-  { id: 'devotional-malas', name: 'Devotional Malas', image: '/col6.webp', count: 6 }
-];
-
 export default function CircularCategoryBar({ onSelectCategory }) {
   const [categories, setCategories] = useState([]);
   const sliderRef = useRef(null);
@@ -30,6 +19,8 @@ export default function CircularCategoryBar({ onSelectCategory }) {
       }
     });
   }, []);
+
+  if (categories.length === 0) return null;
 
   const scroll = (direction) => {
     if (sliderRef.current) {
