@@ -33,17 +33,7 @@ export default function Header({
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [expandedMobileCat, setExpandedMobileCat] = useState(null);
 
-  // 8 Primary Categories for Dropdown & Navigation
-  const [collectionsList, setCollectionsList] = useState([
-    { name: "Spiritual Oil Paintings", subcategories: ["Ganesha Canvases", "Krishna Folk Art", "Divine Lakshmi", "Vastu Wall Paintings"], slug: "paintings", target: "collection-paintings" },
-    { name: "Brass Idols & Murtis", subcategories: ["Hanuman Ji Statues", "Khatu Shyam Ji", "Ram Darbar Set", "Durga Maa & Lakshmi"], slug: "idols", target: "collection-idols" },
-    { name: "Copper & Pooja Sets", subcategories: ["Pure Copper Thalis", "Engraved Kalash", "Brass Aarti Bells", "Dhoop Stands"], slug: "pooja", target: "collection-pooja" },
-    { name: "Marble Murtis & Carvings", subcategories: ["White Makrana Marble", "24K Gold Foil Idols", "Marble Chowki Plates"], slug: "marble-murtis", target: "collection-idols" },
-    { name: "Guru Ji Devotional Line", subcategories: ["Gilded Swaroop Portraits", "Sandalwood Malas", "Satsang Accessories"], slug: "guruji", target: "collection-guruji" },
-    { name: "Festive & Gift Hampers", subcategories: ["Royal Velvet Boxes", "Custom Logo Hampers", "Diwali Diya Sets"], slug: "gifting", target: "collection-gifting" },
-    { name: "Brass Dhoop & Lamps", subcategories: ["Peacock Oil Diyas", "Brass Dhoop Burners", "Urli Bowls"], slug: "dhoop-lamps", target: "collection-pooja" },
-    { name: "Devotional Malas", subcategories: ["108 Sandalwood Malas", "Spatik Crystal Rosaries", "Tulsi Bead Malas"], slug: "malas", target: "collection-malas" }
-  ]);
+  const [collectionsList, setCollectionsList] = useState([]);
 
   useEffect(() => {
     fetchCategories().then(res => {

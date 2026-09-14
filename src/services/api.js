@@ -57,13 +57,13 @@ export async function fetchProductById(id) {
 
 export async function fetchCategories() {
   try {
-    const res = await fetch(`${API_BASE_URL}/categories.php`);
+    const res = await fetch(`${API_BASE_URL}/categories.php?t=${Date.now()}`);
     if (!res.ok) throw new Error('Failed to fetch categories');
     const data = await res.json();
     return data.data || [];
   } catch (error) {
     console.warn('Backend API error fetching categories:', error);
-    return null;
+    return [];
   }
 }
 

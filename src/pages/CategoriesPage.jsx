@@ -65,13 +65,13 @@ import PageLoader from '../components/common/PageLoader';
 // ...
 
 export default function CategoriesPage({ onSelectCategory }) {
-  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCategories().then(res => {
       setLoading(false);
-      if (res && Array.isArray(res) && res.length > 0) {
+      if (res && Array.isArray(res)) {
         const spans = [
           "lg:col-span-8 min-h-[360px] sm:min-h-[440px]",
           "lg:col-span-4 min-h-[360px] sm:min-h-[440px]",

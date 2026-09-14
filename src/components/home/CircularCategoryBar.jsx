@@ -14,17 +14,17 @@ const DEFAULT_8_CATEGORIES = [
 ];
 
 export default function CircularCategoryBar({ onSelectCategory }) {
-  const [categories, setCategories] = useState(DEFAULT_8_CATEGORIES);
+  const [categories, setCategories] = useState([]);
   const sliderRef = useRef(null);
 
   useEffect(() => {
     fetchCategories().then(res => {
-      if (res && Array.isArray(res) && res.length > 0) {
+      if (res && Array.isArray(res)) {
         const mapped = res.map((cat, idx) => ({
           id: cat.slug || cat.id,
           name: cat.name,
-          image: cat.image ? getImageSrc(cat.image) : DEFAULT_8_CATEGORIES[idx % DEFAULT_8_CATEGORIES.length].image,
-          count: cat.product_count || cat.count || (idx + 4)
+          image: cat.image ? getImageSrc(cat.image) : '/col4.jpg',
+          count: cat.product_count || cat.count || 0
         }));
         setCategories(mapped);
       }

@@ -36,30 +36,35 @@ export default function ShopPage({ onAddToCart, onQuickView, onToggleWishlist, w
   }, []);
 
   const categories = useMemo(() => {
-    const defaultCats = [
-      { id: 'paintings', slug: 'paintings', label: 'Spiritual Oil Paintings' },
-      { id: 'idols', slug: 'idols', label: 'Brass Idols & Murtis' },
-      { id: 'pooja', slug: 'pooja', label: 'Copper & Pooja Sets' },
-      { id: 'guruji', slug: 'guruji', label: 'Guru Ji Devotional Line' },
-      { id: 'gifting', slug: 'gifting', label: 'Festive Gift Hampers' }
-    ];
-
-    const source = categoriesList.length > 0
-      ? categoriesList.map(c => ({ id: c.slug, slug: c.slug, label: c.name }))
-      : defaultCats;
-
-    const mapped = source.map(c => {
-      const matchCount = productsList.filter(p => {
-        const pCat = (p.category || '').toLowerCase().trim();
+    let mapped = [];
+    if (categoriesList && categoriesList.length > 0) {
+      mapped = categoriesList.map(c => {
         const cSlug = (c.slug || c.id || '').toLowerCase().trim();
-        return pCat === cSlug || pCat.includes(cSlug) || cSlug.includes(pCat);
-      }).length;
-      return {
-        id: c.slug || c.id,
-        label: c.label,
-        count: matchCount
-      };
-    });
+        const matchCount = productsList.filter(p => {
+          const pCat = (p.category || '').toLowerCase().trim();
+          return pCat === cSlug || pCat.includes(cSlug) || cSlug.includes(pCat);
+        }).length;
+        return {
+          id: c.slug || c.id,
+          label: c.name,
+          count: matchCount
+        };
+      });
+    } else {
+      const catMap = new Map();
+      productsList.forEach(p => {
+        if (p.category) {
+          const rawCat = p.category.trim();
+          const slug = rawCat.toLowerCase().replace(/[^a-z0-9]/g, '-');
+          if (!catMap.has(slug)) {
+            const label = rawCat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            catMap.set(slug, { id: slug, label: label, count: 0 });
+          }
+          catMap.get(slug).count += 1;
+        }
+      });
+      mapped = Array.from(catMap.values());
+    }
 
     return [{ id: 'all', label: 'All Artifacts', count: productsList.length }, ...mapped];
   }, [categoriesList, productsList]);
