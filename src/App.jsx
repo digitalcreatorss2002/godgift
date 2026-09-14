@@ -277,7 +277,7 @@ export default function App() {
       case 'categories':
         return <CategoriesPage onSelectCategory={(catId) => handleSelectCollection(catId)} />;
       case 'collection-detail':
-        return <CollectionDetailPage collectionId={selectedCollectionId} selectedSubcategory={selectedSubcategory} onBackToCollections={() => handleNavigate('collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
+        return <CollectionDetailPage collectionId={selectedCollectionId} selectedSubcategory={selectedSubcategory} onBackToCollections={(targetRoute) => handleNavigate(targetRoute || 'collections')} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} onToggleWishlist={handleToggleWishlist} wishlistItems={wishlistItems} />;
       case 'collections':
         return <CollectionsPage onSelectCollection={handleSelectCollection} onAddToCart={handleAddToCart} />;
       case 'shop':

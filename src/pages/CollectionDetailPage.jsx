@@ -219,7 +219,8 @@ export default function CollectionDetailPage({
         bannerImage: dbCat.image ? getImageSrc(dbCat.image, dbCat.name) : '/col4.jpg',
         artisanOrigin: "Master Artisan Guild",
         material: "Devotional Quality",
-        badge: "Handcrafted"
+        badge: "Handcrafted",
+        pageType: 'category'
       };
     }
 
@@ -239,13 +240,18 @@ export default function CollectionDetailPage({
         bannerImage: dbCol.image ? getImageSrc(dbCol.image, dbCol.title) : '/col1.webp',
         artisanOrigin: "Jaipur Master Artisan Guild",
         material: "Devotional Artisanal Quality",
-        badge: dbCol.badge || 'Curated Series'
+        badge: dbCol.badge || 'Curated Series',
+        pageType: 'collection'
       };
     }
 
     // 3. Fallback collection info title
     const fallbackTitle = raw.charAt(0).toUpperCase() + raw.slice(1);
-    return FALLBACK_COLLECTION_DATA[normalizedKey] || {
+    const fallbackData = FALLBACK_COLLECTION_DATA[normalizedKey];
+    return fallbackData ? {
+      ...fallbackData,
+      pageType: 'collection'
+    } : {
       id: raw,
       slug: raw,
       title: fallbackTitle || "Devotional Artifacts",
@@ -254,14 +260,17 @@ export default function CollectionDetailPage({
       bannerImage: "/col4.jpg",
       artisanOrigin: "Master Artisan Guild",
       material: "Devotional Quality",
-      badge: "Handcrafted"
+      badge: "Handcrafted",
+      pageType: 'collection'
     };
   }, [collectionId, normalizedKey, collectionsList, categoriesList]);
 
-  // Subcategories list for current category/collection
+  // Subcategories list for current category/collection (strictly from database, no fake defaults)
   const currentSubcategories = useMemo(() => {
     const raw = decodeURIComponent(collectionId || '').toLowerCase().trim();
     const clean = raw.replace(/[^a-z0-9]/g, '');
+    
+    // Check categories database
     const dbCat = categoriesList.find(c => {
       const cSlug = (c.slug || '').toLowerCase().trim();
       const cName = (c.name || '').toLowerCase().trim();
@@ -271,16 +280,18 @@ export default function CollectionDetailPage({
       return dbCat.subcategories;
     }
 
-    if (normalizedKey === 'paintings') return ["Ganesha Canvases", "Krishna Folk Art", "Divine Lakshmi", "Vastu Wall Paintings"];
-    if (normalizedKey === 'idols') return ["Hanuman Ji Statues", "Khatu Shyam Ji", "Ram Darbar Set", "Durga Maa & Lakshmi"];
-    if (normalizedKey === 'pooja') return ["Pure Copper Thalis", "Engraved Kalash", "Brass Aarti Bells", "Dhoop Stands"];
-    if (normalizedKey === 'marble-murtis') return ["White Makrana Marble", "24K Gold Foil Idols", "Marble Chowki Plates"];
-    if (normalizedKey === 'guruji') return ["Gilded Swaroop Portraits", "Sandalwood Malas", "Satsang Accessories"];
-    if (normalizedKey === 'gifting') return ["Royal Velvet Boxes", "Custom Logo Hampers", "Diwali Diya Sets"];
-    if (normalizedKey === 'dhoop-lamps' || normalizedKey === 'diya') return ["Peacock Oil Diyas", "Brass Dhoop Burners", "Urli Bowls"];
-    if (normalizedKey === 'malas') return ["108 Sandalwood Malas", "Spatik Crystal Rosaries", "Tulsi Bead Malas"];
+    // Check collections database
+    const dbCol = collectionsList.find(c => {
+      const cSlug = (c.slug || '').toLowerCase().trim();
+      const cTitle = (c.title || '').toLowerCase().trim();
+      return cSlug === raw || cTitle === raw || cSlug.replace(/[^a-z0-9]/g, '') === clean;
+    });
+    if (dbCol && Array.isArray(dbCol.subcategories) && dbCol.subcategories.length > 0) {
+      return dbCol.subcategories;
+    }
+
     return [];
-  }, [collectionId, normalizedKey, categoriesList]);
+  }, [collectionId, categoriesList, collectionsList]);
 
   // Strict & Accurate Product Filtering
   const collectionProducts = useMemo(() => {
@@ -365,11 +376,18 @@ export default function CollectionDetailPage({
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full z-10">
           <button
-            onClick={() => onBackToCollections ? onBackToCollections() : window.location.hash = '#collections'}
+            onClick={() => {
+              const targetRoute = info.pageType === 'category' ? 'categories' : 'collections';
+              if (onBackToCollections) {
+                onBackToCollections(targetRoute);
+              } else {
+                window.location.hash = `#${targetRoute}`;
+              }
+            }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900/80 hover:bg-amber-900 text-stone-300 hover:text-white text-xs font-bold tracking-wider uppercase transition-all mb-6 border border-stone-700/80 cursor-pointer shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to All Collections</span>
+            <span>{info.pageType === 'category' ? 'Back to Categories' : 'Back to Collections'}</span>
           </button>
 
           <div className="max-w-2xl space-y-4">
