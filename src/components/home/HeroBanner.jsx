@@ -6,8 +6,8 @@ const DEFAULT_BANNER = {
   badge_text: "SACRED ARTS & HERITAGE",
   title: "Handcrafted with Devotion & Legacy",
   subtitle: "Explore our signature collection of hand-painted oil paintings, hand-cast brass murtis, copper puja sets, and bespoke corporate gift hampers.",
-  media_type: "video",
-  media_url: "/god-banner.mp4",
+  media_type: "image",
+  media_url: "/col3.jpg",
   button_text: "Explore Collection",
   button_link: "#collections",
   sec_button_text: "B2B Enquiry",
@@ -19,15 +19,20 @@ export default function HeroBanner() {
 
   useEffect(() => {
     fetchHeroBanners().then(res => {
+      let b = null;
       if (res && typeof res === 'object' && !Array.isArray(res) && res.title) {
-        setBanner({
-          ...res,
-          media_url: getImageSrc(res.media_url)
-        });
+        b = res;
       } else if (res && Array.isArray(res) && res.length > 0) {
+        b = res[0];
+      }
+
+      if (b) {
+        const rawUrl = b.media_url || '';
+        const isFallbackVideo = !rawUrl || rawUrl.includes('god-banner.mp4');
         setBanner({
-          ...res[0],
-          media_url: getImageSrc(res[0].media_url)
+          ...b,
+          media_type: isFallbackVideo ? 'image' : (b.media_type || 'image'),
+          media_url: isFallbackVideo ? '/col3.jpg' : getImageSrc(rawUrl)
         });
       }
     });
@@ -38,13 +43,14 @@ export default function HeroBanner() {
 
       {/* Fixed Ambient Background Media (Video or Image) */}
       <div className="absolute inset-0 overflow-hidden">
-        {banner.media_type === 'video' ? (
+        {banner.media_type === 'video' && banner.media_url && !banner.media_url.includes('god-banner.mp4') ? (
           <video
             key={banner.media_url}
             autoPlay
             loop
             muted
             playsInline
+            onError={() => setBanner(prev => ({ ...prev, media_type: 'image', media_url: '/col3.jpg' }))}
             className="w-full h-full object-cover scale-100 filter brightness-125"
           >
             <source src={banner.media_url} type="video/mp4" />
@@ -52,8 +58,9 @@ export default function HeroBanner() {
         ) : (
           <img
             key={banner.media_url}
-            src={banner.media_url}
+            src={banner.media_url || '/col3.jpg'}
             alt={banner.title}
+            onError={(e) => { e.target.src = '/col3.jpg'; }}
             className="w-full h-full object-cover scale-100 filter brightness-110"
           />
         )}
