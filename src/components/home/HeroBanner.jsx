@@ -64,10 +64,6 @@ export default function HeroBanner() {
             className="w-full h-full object-cover scale-100 filter brightness-110"
           />
         ) : null}
-
-        {/* Dark Gradient Overlays for 100% Crisp Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-950/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/40" />
       </div>
 
       {/* Hero Content Container */}
