@@ -58,11 +58,15 @@ export default function Footer({ onNavigate }) {
             <div className="space-y-2 text-xs sm:text-sm text-stone-300 pt-1 font-medium">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>New Delhi & Jaipur, Rajasthan, India</span>
+                <span>F-111, Bhagwan Nagar, Ashram, New Delhi - 110014, India</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>+91 92116 72167 / +91 96435 93295</span>
+                <span>
+                  <a href="tel:+919211672167" className="hover:text-amber-400 transition-colors">+91 92116 72167</a>
+                  {" / "}
+                  <a href="tel:+918287421378" className="hover:text-amber-400 transition-colors">+91 82874 21378</a>
+                </span>
               </div>
             </div>
           </div>
