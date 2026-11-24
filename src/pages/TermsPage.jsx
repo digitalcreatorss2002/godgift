@@ -254,8 +254,8 @@ export default function TermsPage({ onNavigate }) {
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />
                 <div>
                   <span className="text-stone-400 text-[10px] uppercase block">Official Email</span>
-                  <a href="mailto:godgiftart09@gmail.com" className="text-amber-300 font-bold hover:underline">
-                    godgiftart09@gmail.com
+                  <a href="mailto:godgiftarts1@gmail.com" className="text-amber-300 font-bold hover:underline">
+                    godgiftarts1@gmail.com
                   </a>
                 </div>
               </div>

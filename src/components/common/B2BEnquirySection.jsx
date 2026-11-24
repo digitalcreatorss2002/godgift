@@ -91,7 +91,7 @@ export default function B2BEnquirySection() {
                   </div>
                   <div>
                     <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Corporate Helpline</span>
-                    <span className="font-bold text-white text-sm">+91 98290 12345</span>
+                    <a href="tel:+919211672167" className="font-bold text-white text-sm hover:text-amber-400 transition-colors">+91 92116 72167</a>
                   </div>
                 </div>
 
@@ -101,7 +101,7 @@ export default function B2BEnquirySection() {
                   </div>
                   <div>
                     <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Corporate Email Desk</span>
-                    <span className="font-bold text-white text-sm">b2b@godgiftarts.com</span>
+                    <a href="mailto:godgiftarts1@gmail.com" className="font-bold text-white text-sm hover:text-amber-400 transition-colors">godgiftarts1@gmail.com</a>
                   </div>
                 </div>
               </div>
