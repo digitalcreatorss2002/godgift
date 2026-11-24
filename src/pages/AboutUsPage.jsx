@@ -58,10 +58,10 @@ export default function AboutUsPage({ onNavigate }) {
     { label: "Brand & Company Name", value: "God Gift Arts" },
     { label: "Business Category", value: "Gifts & Crafts • Festive & Decorative Lighting" },
     { label: "Established Year", value: "2006 (18+ Years Legacy)" },
-    { label: "Leadership", value: "Mrs. Poonam (CEO)" },
+    { label: "Leadership", value: "Mrs. Poonam (Founder)" },
     { label: "Core Operations", value: "Foremost Manufacturer, Wholesaler, Exporter, Importer & Trader" },
     { label: "Operational Headquarters", value: "F-111, Bhagwan Nagar, Ashram, New Delhi - 110014, India" },
-    { label: "Direct Contact Desk", value: "+91 9211672167 / Poonamgautam924@gmail.com" },
+    { label: "Direct Contact Desk", value: "+91 9211672167 / poonamgautam924@gmail.com" },
     { label: "Global Reach", value: "Worldwide Shipping Available & Pan-India Network" },
     { label: "Official Portfolio", value: "https://linktr.ee/godgiftarts" }
   ];
@@ -87,7 +87,7 @@ export default function AboutUsPage({ onNavigate }) {
       organization: "House of Rose Professional",
       category: "Leadership Summit",
       badge: "Keynote Address",
-      description: "CEO Mrs. Poonam addressing the House of Rose Professional leadership summit, sharing insights on building a nationwide artisanal brand, manufacturing innovation, and women-led entrepreneurship."
+      description: "Founder Mrs. Poonam addressing the House of Rose Professional leadership summit, sharing insights on building a nationwide artisanal brand, manufacturing innovation, and women-led entrepreneurship."
     },
     {
       id: "award-walmart",
@@ -216,7 +216,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       title: "Visionary National Leadership",
-      desc: "Guided by CEO Mrs. Poonam with a dedicated vision to establish national leadership in the festive goods sector."
+      desc: "Guided by Founder Mrs. Poonam with a dedicated vision to establish national leadership in the festive goods sector."
     }
   ];
 
@@ -326,7 +326,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       q: "How can I apply to become an authorized distributor for God Gift Arts in India?",
-      a: "We are actively appointing Pan-India distributors across all zones! Requirements include an initial investment of ₹2 Lakh to ₹5 Lakh to manage inventory, a minimum of 200 sq. ft. storage space, and local market understanding in retail or home décor. Partners receive an attractive 40% margin, marketing collateral, and potential exclusive territorial rights. Contact our CEO Mrs. Poonam directly at +91 9211672167 or poonamgautam924@gmail.com to apply."
+      a: "We are actively appointing Pan-India distributors across all zones! Requirements include an initial investment of ₹2 Lakh to ₹5 Lakh to manage inventory, a minimum of 200 sq. ft. storage space, and local market understanding in retail or home décor. Partners receive an attractive 40% margin, marketing collateral, and potential exclusive territorial rights. Contact our Founder Mrs. Poonam directly at +91 9211672167 or poonamgautam924@gmail.com to apply."
     },
     {
       q: "What profit margin and perks do distributors receive?",
@@ -342,7 +342,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       q: "Where is God Gift Arts located and how can we visit or contact you?",
-      a: "Our registered operational headquarters is located at F-111, Bhagwan Nagar, Ashram, New Delhi - 110014, India. You can connect with our CEO Mrs. Poonam via Call/WhatsApp at +91 9211672167 or email at poonamgautam924@gmail.com."
+      a: "Our registered operational headquarters is located at F-111, Bhagwan Nagar, Ashram, New Delhi - 110014, India. You can connect with our Founder Mrs. Poonam via Call/WhatsApp at +91 9211672167 or email at poonamgautam924@gmail.com."
     }
   ];
 
@@ -437,7 +437,7 @@ export default function AboutUsPage({ onNavigate }) {
                   </div>
                   <div>
                     <h4 className="font-serif font-bold text-stone-900 text-base">Mrs. Poonam</h4>
-                    <p className="text-xs text-amber-900 font-semibold uppercase tracking-wider">Chief Executive Officer (CEO)</p>
+                    <p className="text-xs text-amber-900 font-semibold uppercase tracking-wider">Founder</p>
                     <p className="text-[11px] text-stone-500">God Gift Arts • Leadership & Vision</p>
                   </div>
                 </div>
@@ -451,11 +451,11 @@ export default function AboutUsPage({ onNavigate }) {
                     <span>+91 9211672167</span>
                   </a>
                   <a 
-                    href="mailto:Poonamgautam924@gmail.com" 
+                    href="mailto:poonamgautam924@gmail.com" 
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-100 hover:bg-amber-100 text-stone-800 hover:text-amber-900 text-xs font-semibold transition-colors border border-stone-200"
                   >
                     <Mail className="w-3.5 h-3.5 text-amber-700" />
-                    <span>Email CEO</span>
+                    <span>Email Founder</span>
                   </a>
                 </div>
               </div>
@@ -848,7 +848,7 @@ export default function AboutUsPage({ onNavigate }) {
               Ready to Partner with God Gift Arts in Your City?
             </h4>
             <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto font-sans">
-              Connect directly with our CEO Mrs. Poonam to discuss distributorship terms, initial inventory packages, and 40% margin allocations.
+              Connect directly with our Founder Mrs. Poonam to discuss distributorship terms, initial inventory packages, and 40% margin allocations.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -858,7 +858,7 @@ export default function AboutUsPage({ onNavigate }) {
                 rel="noreferrer"
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full transition-all inline-flex items-center gap-2 shadow-lg"
               >
-                <span>WhatsApp CEO (+91 9211672167)</span>
+                <span>WhatsApp Founder (+91 9211672167)</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
@@ -871,7 +871,7 @@ export default function AboutUsPage({ onNavigate }) {
               </a>
 
               <a
-                href="mailto:Poonamgautam924@gmail.com?subject=God%20Gift%20Arts%20Distributorship%20Application"
+                href="mailto:poonamgautam924@gmail.com?subject=God%20Gift%20Arts%20Distributorship%20Application"
                 className="bg-stone-800 hover:bg-stone-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full border border-stone-600 transition-all inline-flex items-center gap-2"
               >
                 <Mail className="w-4 h-4" />
@@ -993,10 +993,10 @@ export default function AboutUsPage({ onNavigate }) {
                 <strong>Address:</strong> F-111, Bhagwan Nagar, Ashram, New Delhi - 110014, India
               </p>
               <p className="text-stone-300">
-                <strong>CEO:</strong> Mrs. Poonam | <strong>Phone:</strong> +91 9211672167
+                <strong>Founder:</strong> Mrs. Poonam | <strong>Phone:</strong> +91 9211672167
               </p>
               <p className="text-stone-300">
-                <strong>Email:</strong> Poonamgautam924@gmail.com | <strong>Portfolio:</strong> linktr.ee/godgiftarts
+                <strong>Email:</strong> poonamgautam924@gmail.com | <strong>Portfolio:</strong> linktr.ee/godgiftarts
               </p>
             </div>
 
@@ -1022,7 +1022,7 @@ export default function AboutUsPage({ onNavigate }) {
                 rel="noreferrer"
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg transition-all cursor-pointer inline-flex items-center gap-2"
               >
-                <span>WhatsApp CEO</span>
+                <span>WhatsApp Founder</span>
               </a>
             </div>
           </div>
