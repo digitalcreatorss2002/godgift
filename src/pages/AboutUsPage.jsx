@@ -27,7 +27,13 @@ import {
   Layers,
   Globe,
   Store,
-  BadgePercent
+  BadgePercent,
+  Trophy,
+  Video,
+  Play,
+  Eye,
+  X,
+  Maximize2
 } from 'lucide-react';
 import { LotusJaaliPatternBackground, DecorativeWavyDivider, DiyaIllustration } from '../components/common/BackgroundIllustrations';
 import PageLoader from '../components/common/PageLoader';
@@ -36,6 +42,7 @@ export default function AboutUsPage({ onNavigate }) {
   const [loading, setLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState(0);
   const [activeZone, setActiveZone] = useState('all');
+  const [activeMediaModal, setActiveMediaModal] = useState(null);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 300);
@@ -57,6 +64,41 @@ export default function AboutUsPage({ onNavigate }) {
     { label: "Direct Contact Desk", value: "+91 9211672167 / Poonamgautam924@gmail.com" },
     { label: "Global Reach", value: "Worldwide Shipping Available & Pan-India Network" },
     { label: "Official Portfolio", value: "https://linktr.ee/godgiftarts" }
+  ];
+
+  // Awards & Recognition Media Data (award1.jpeg, award2.jpeg, award3.mp4)
+  const awardsData = [
+    {
+      id: "award-video",
+      type: "video",
+      src: "/award3.mp4",
+      poster: "/award1.jpeg",
+      title: "National Felicitation & Award Ceremony",
+      organization: "National Industry Recognition",
+      category: "Ceremony Video",
+      badge: "Watch Live Video",
+      description: "Official felicitation ceremony honoring Mrs. Poonam and God Gift Arts for outstanding manufacturing excellence, dedication to traditional handicrafts, and empowering women in the craft sector."
+    },
+    {
+      id: "award-hor",
+      type: "image",
+      src: "/award1.jpeg",
+      title: "House of Rose Professional Keynote",
+      organization: "House of Rose Professional",
+      category: "Leadership Summit",
+      badge: "Keynote Address",
+      description: "CEO Mrs. Poonam addressing the House of Rose Professional leadership summit, sharing insights on building a nationwide artisanal brand, manufacturing innovation, and women-led entrepreneurship."
+    },
+    {
+      id: "award-walmart",
+      type: "image",
+      src: "/award2.jpeg",
+      title: "Walmart Women Entrepreneurship Development Program",
+      organization: "Walmart & WEConnect International",
+      category: "WEDP National Cohort",
+      badge: "Walmart Honoree",
+      description: "Selected and recognized among the elite cohort of women entrepreneurs at the prestigious Walmart Women Entrepreneurship Development Program (WEDP) with WEConnect International."
+    }
   ];
 
   // Core Product Range
@@ -481,7 +523,134 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 3. Offered Range of Products Section */}
+        {/* 3. Awards, Accolades & Leadership Recognition Section */}
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200 shadow-sm space-y-10">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-900 text-xs font-bold uppercase tracking-widest">
+              <Trophy className="w-3.5 h-3.5 text-amber-800" />
+              <span>Accolades & Leadership Recognition</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900">
+              Honors, Awards & National Felicitations
+            </h2>
+
+            <p className="text-xs sm:text-sm text-stone-600 font-serif italic max-w-2xl mx-auto">
+              Celebrating Mrs. Poonam's visionary leadership and God Gift Arts' milestone achievements in manufacturing excellence, women entrepreneurship, and industry recognition.
+            </p>
+          </div>
+
+          {/* 3 Media Cards Grid: 1 Video + 2 Images */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            {awardsData.map((award) => (
+              <div 
+                key={award.id}
+                className="bg-stone-50 rounded-3xl border border-stone-200/90 shadow-2xs overflow-hidden flex flex-col justify-between group hover:shadow-xl transition-all"
+              >
+                {/* Media Player / Container */}
+                <div className="relative aspect-4/3 bg-stone-950 overflow-hidden flex items-center justify-center">
+                  {award.type === "video" ? (
+                    <video
+                      controls
+                      playsInline
+                      preload="metadata"
+                      poster={award.poster}
+                      className="w-full h-full object-cover"
+                    >
+                      <source src={award.src} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <>
+                      <img 
+                        src={award.src} 
+                        alt={award.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
+                        onClick={() => setActiveMediaModal(award)}
+                      />
+                      <button
+                        onClick={() => setActiveMediaModal(award)}
+                        className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-xs transition-colors cursor-pointer"
+                        title="Enlarge photograph"
+                      >
+                        <Maximize2 className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
+
+                  <span className="absolute top-3 left-3 bg-amber-900 text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">
+                    {award.badge}
+                  </span>
+                </div>
+
+                {/* Card Text Content */}
+                <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">
+                      {award.organization} • {award.category}
+                    </span>
+                    <h3 className="font-serif font-bold text-stone-900 text-lg leading-snug">
+                      {award.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 leading-relaxed font-sans">
+                      {award.description}
+                    </p>
+                  </div>
+
+                  {award.type === "image" && (
+                    <div className="pt-3 border-t border-stone-200/70">
+                      <button
+                        onClick={() => setActiveMediaModal(award)}
+                        className="text-xs font-semibold text-amber-900 hover:text-amber-950 inline-flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View Full Photograph</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {award.type === "video" && (
+                    <div className="pt-3 border-t border-stone-200/70">
+                      <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 inline-flex items-center gap-1.5">
+                        <Video className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>High-Definition Official Clip</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Recognition Highlights Strip */}
+          <div className="bg-[#FAF6F0] rounded-2xl p-6 sm:p-8 border border-[#EADBCA] grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-stone-200/80">
+            <div className="space-y-1.5">
+              <div className="inline-flex p-2 rounded-xl bg-amber-900/10 text-amber-900 mb-1">
+                <Crown className="w-5 h-5" />
+              </div>
+              <h4 className="font-serif font-bold text-stone-900 text-sm">Walmart WEDP Certified</h4>
+              <p className="text-xs text-stone-600">Selected for the prestigious Walmart Women Entrepreneurship Development Program with WEConnect.</p>
+            </div>
+
+            <div className="space-y-1.5 pt-4 md:pt-0">
+              <div className="inline-flex p-2 rounded-xl bg-amber-900/10 text-amber-900 mb-1">
+                <Award className="w-5 h-5" />
+              </div>
+              <h4 className="font-serif font-bold text-stone-900 text-sm">House of Rose Speaker</h4>
+              <p className="text-xs text-stone-600">Invited to key leadership platforms to share insights on indigenous artisanal manufacturing & growth.</p>
+            </div>
+
+            <div className="space-y-1.5 pt-4 md:pt-0">
+              <div className="inline-flex p-2 rounded-xl bg-amber-900/10 text-amber-900 mb-1">
+                <Trophy className="w-5 h-5" />
+              </div>
+              <h4 className="font-serif font-bold text-stone-900 text-sm">18+ Years Leadership</h4>
+              <p className="text-xs text-stone-600">Recognized for consistent dedication to craftsmanship, product reliability, and national expansion.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Offered Range of Products Section */}
         <div className="space-y-8">
           <div className="text-center max-w-3xl mx-auto space-y-2">
             <span className="text-[11px] font-bold text-amber-900 uppercase tracking-widest">
@@ -546,7 +715,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 4. USPs of Our Products (Why Choose GGA) */}
+        {/* 5. USPs of Our Products (Why Choose GGA) */}
         <div className="space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-[11px] font-bold text-amber-900 uppercase tracking-widest">
@@ -579,7 +748,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 5. PAN-INDIA DISTRIBUTORSHIP OPPORTUNITY (Requested Section from Images 2, 3 & 4) */}
+        {/* 6. PAN-INDIA DISTRIBUTORSHIP OPPORTUNITY */}
         <div id="distributorship" className="bg-gradient-to-b from-stone-900 to-stone-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl border border-stone-800 space-y-12 relative overflow-hidden">
           <LotusJaaliPatternBackground className="text-amber-400/5" />
 
@@ -649,7 +818,7 @@ export default function AboutUsPage({ onNavigate }) {
             </div>
           </div>
 
-          {/* National Geographic Zones (from Screenshot 4) */}
+          {/* National Geographic Zones */}
           <div className="relative z-10 space-y-6 pt-4 border-t border-stone-800">
             <div className="text-center space-y-2 max-w-2xl mx-auto">
               <h3 className="text-lg font-serif font-bold text-amber-300 uppercase tracking-wider">
@@ -756,7 +925,7 @@ export default function AboutUsPage({ onNavigate }) {
 
         </div>
 
-        {/* 6. Company Features / Core Pillars */}
+        {/* 7. Company Features / Core Pillars */}
         <div className="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200 shadow-sm space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-[11px] font-bold text-amber-900 uppercase tracking-widest">
@@ -786,7 +955,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 7. Interactive FAQ Section */}
+        {/* 8. Interactive FAQ Section */}
         <div className="bg-white rounded-3xl border border-stone-200 p-8 sm:p-12 shadow-sm space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-amber-900">
@@ -825,7 +994,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 8. Stats & Heritage Strip */}
+        {/* 9. Stats & Heritage Strip */}
         <div className="bg-stone-950 text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-stone-800 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-stone-800">
           <div className="space-y-1">
             <div className="font-serif font-bold text-3xl sm:text-4xl text-amber-400">2006</div>
@@ -845,7 +1014,7 @@ export default function AboutUsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 9. Contact Desk & Final Call to Action */}
+        {/* 10. Contact Desk & Final Call to Action */}
         <div className="bg-gradient-to-r from-amber-900 via-amber-950 to-stone-900 text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-xl relative overflow-hidden">
           <LotusJaaliPatternBackground className="text-amber-400/10" />
 
@@ -903,6 +1072,52 @@ export default function AboutUsPage({ onNavigate }) {
         </div>
 
       </div>
+
+      {/* Lightbox Modal for Award Photographs */}
+      {activeMediaModal && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+          onClick={() => setActiveMediaModal(null)}
+        >
+          <div 
+            className="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-stone-200 relative animate-in fade-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="p-4 sm:p-6 border-b border-stone-200 flex items-center justify-between gap-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900">
+                  {activeMediaModal.organization}
+                </span>
+                <h3 className="font-serif font-bold text-stone-900 text-base sm:text-lg">
+                  {activeMediaModal.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveMediaModal(null)}
+                className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Image */}
+            <div className="relative max-h-[70vh] bg-stone-950 flex items-center justify-center overflow-hidden">
+              <img 
+                src={activeMediaModal.src} 
+                alt={activeMediaModal.title} 
+                className="max-h-[70vh] w-auto max-w-full object-contain"
+              />
+            </div>
+
+            {/* Modal Description */}
+            <div className="p-4 sm:p-6 bg-stone-50 border-t border-stone-200 text-xs sm:text-sm text-stone-600 leading-relaxed font-sans">
+              {activeMediaModal.description}
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
