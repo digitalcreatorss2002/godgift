@@ -540,84 +540,41 @@ export default function AboutUsPage({ onNavigate }) {
             </p>
           </div>
 
-          {/* 3 Media Cards Grid: 1 Video + 2 Images */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          {/* 3 Media Items: Pure Images & Video */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
             {awardsData.map((award) => (
               <div 
                 key={award.id}
-                className="bg-stone-50 rounded-3xl border border-stone-200/90 shadow-2xs overflow-hidden flex flex-col justify-between group hover:shadow-xl transition-all"
+                className="relative aspect-4/3 bg-stone-950 rounded-3xl overflow-hidden border border-stone-200 shadow-md group"
               >
-                {/* Media Player / Container */}
-                <div className="relative aspect-4/3 bg-stone-950 overflow-hidden flex items-center justify-center">
-                  {award.type === "video" ? (
-                    <video
-                      controls
-                      playsInline
-                      preload="metadata"
-                      poster={award.poster}
-                      className="w-full h-full object-cover"
-                    >
-                      <source src={award.src} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : (
-                    <>
-                      <img 
-                        src={award.src} 
-                        alt={award.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
-                        onClick={() => setActiveMediaModal(award)}
-                      />
-                      <button
-                        onClick={() => setActiveMediaModal(award)}
-                        className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-xs transition-colors cursor-pointer"
-                        title="Enlarge photograph"
-                      >
-                        <Maximize2 className="w-4 h-4" />
-                      </button>
-                    </>
-                  )}
-
-                  <span className="absolute top-3 left-3 bg-amber-900 text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">
-                    {award.badge}
-                  </span>
-                </div>
-
-                {/* Card Text Content */}
-                <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">
-                      {award.organization} • {award.category}
-                    </span>
-                    <h3 className="font-serif font-bold text-stone-900 text-lg leading-snug">
-                      {award.title}
-                    </h3>
-                    <p className="text-xs text-stone-600 leading-relaxed font-sans">
-                      {award.description}
-                    </p>
+                {award.type === "video" ? (
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={award.poster}
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={award.src} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <div 
+                    className="w-full h-full cursor-pointer relative"
+                    onClick={() => setActiveMediaModal(award)}
+                  >
+                    <img 
+                      src={award.src} 
+                      alt={award.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white p-2.5 rounded-full backdrop-blur-xs shadow-lg">
+                        <Maximize2 className="w-5 h-5" />
+                      </div>
+                    </div>
                   </div>
-
-                  {award.type === "image" && (
-                    <div className="pt-3 border-t border-stone-200/70">
-                      <button
-                        onClick={() => setActiveMediaModal(award)}
-                        className="text-xs font-semibold text-amber-900 hover:text-amber-950 inline-flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>View Full Photograph</span>
-                      </button>
-                    </div>
-                  )}
-
-                  {award.type === "video" && (
-                    <div className="pt-3 border-t border-stone-200/70">
-                      <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 inline-flex items-center gap-1.5">
-                        <Video className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>High-Definition Official Clip</span>
-                      </span>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             ))}
           </div>
