@@ -51,6 +51,7 @@ export default function Footer({ onNavigate }) {
                 alt="God Gift Arts"
                 className="h-14 w-auto object-contain brightness-110"
               />
+              <span className="block text-[10px] uppercase font-bold tracking-widest text-amber-400 mt-1">Since 2006</span>
             </a>
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-sm">
               Handcrafted devotional arts, brass idols, and luxury pooja decor. Preserving Indian heritage and spiritual legacy since 2006.
@@ -76,12 +77,18 @@ export default function Footer({ onNavigate }) {
             <h3 className="text-sm font-serif font-bold text-white uppercase tracking-wider">
               Quick Collections
             </h3>
-            <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Spiritual Oil Paintings</a></li>
-              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Brass Idols & Murtis</a></li>
-              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">100% Pure Copper Puja Sets</a></li>
-              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Guru Ji Devotional Line</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">B2B Bulk Hampers</a></li>
+            <ul className="space-y-1.5 text-xs text-stone-400">
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Diyas</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Ghee Baati</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Oil Paintings</a></li>
+              <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">B2B Bulk Corporate</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Candles</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Diffusers</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Christmas</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">New Year Items</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Holi</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Rakhi</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Diwali</a></li>
             </ul>
           </div>
 

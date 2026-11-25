@@ -13,7 +13,7 @@ export default function AnnouncementBar() {
           <span className="text-stone-600">•</span>
           <span className="text-amber-400 font-bold flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-amber-400" />
-            Handcrafted Jaipur Legacy
+            Handcrafted Products
           </span>
         </div>
 

@@ -86,13 +86,14 @@ export default function Header({
               <a
                 href="#home"
                 onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}
-                className="flex items-center gap-2 group cursor-pointer"
+                className="flex flex-col items-start group cursor-pointer"
               >
                 <img
                   src="/logo.png"
                   alt="God Gift Arts"
-                  className="h-9 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="h-9 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
+                <span className="text-[9px] font-bold tracking-widest text-amber-800 uppercase -mt-0.5">Since 2006</span>
               </a>
             </div>
 

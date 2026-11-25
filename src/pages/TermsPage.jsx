@@ -268,7 +268,6 @@ export default function TermsPage({ onNavigate }) {
                   <span className="text-stone-400 text-[10px] uppercase block">Helpline Numbers</span>
                   <span className="text-stone-200 font-semibold block">+91 92116 72167</span>
                   <span className="text-stone-200 font-semibold block">+91 82874 21378</span>
-                  <span className="text-stone-200 font-semibold block">+91 96950 53606</span>
                 </div>
               </div>
 

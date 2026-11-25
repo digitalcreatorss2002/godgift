@@ -59,7 +59,7 @@ export default function AboutUsPage({ onNavigate }) {
   // Company Credentials & Corporate Profile Data
   const companyDetails = [
     { label: "Brand Name", value: "GodGift Arts" },
-    { label: "Founding Legacy", value: "Established in 2006 (Past 2 Decades)" },
+    { label: "Founding Legacy", value: "Established in 2006 (20+ Years Legacy)" },
     { label: "Founder", value: "Mrs. Poonam (Fine Arts in Art Education)" },
     { label: "Manufacturing Setup", value: "In-House Setup with 30–40 Skilled Women Artisans" },
     { label: "Craftsmanship", value: "100% Handmade & Truly Handcrafted" },
@@ -251,7 +251,7 @@ export default function AboutUsPage({ onNavigate }) {
     },
     {
       q: "Can businesses apply for Pan-India distributorship or bulk orders?",
-      a: "Yes! We cater to nationwide wholesale supply and are actively appointing regional distributors with lucrative 40% margins. Contact our Founder Mrs. Poonam directly via Call/WhatsApp at +91 9211672167 or email at poonamgautam924@gmail.com."
+      a: "Yes! We cater to nationwide wholesale supply and are actively appointing regional distributors with profitable distributorship opportunities. Contact our Founder Mrs. Poonam directly via Call/WhatsApp at +91 9211672167 or email at poonamgautam924@gmail.com."
     }
   ];
 
@@ -275,7 +275,7 @@ export default function AboutUsPage({ onNavigate }) {
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-900 text-xs font-bold uppercase tracking-widest">
             <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-            <span>Our Legacy • Past 2 Decades</span>
+            <span>Our Legacy • 20+ Years</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-stone-900 leading-tight">
@@ -284,7 +284,7 @@ export default function AboutUsPage({ onNavigate }) {
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-stone-700 max-w-3xl mx-auto font-serif italic leading-relaxed">
-            "A Journey of Creativity, Craftsmanship & Empowerment for the past 2 decades."
+            "A Journey of Creativity, Craftsmanship & Empowerment for the past 20+ years."
           </p>
 
           {/* Quick Badges Row */}
@@ -300,6 +300,10 @@ export default function AboutUsPage({ onNavigate }) {
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white rounded-full border border-stone-200 shadow-2xs">
               <Award className="w-3.5 h-3.5 text-amber-600" />
               Awarded & Recognized by Walmart
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white rounded-full border border-stone-200 shadow-2xs">
+              <BadgePercent className="w-3.5 h-3.5 text-amber-600" />
+              Profitable Distributorship
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white rounded-full border border-stone-200 shadow-2xs">
               <Truck className="w-3.5 h-3.5 text-blue-600" />
@@ -367,7 +371,7 @@ export default function AboutUsPage({ onNavigate }) {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-100 hover:bg-amber-100 text-stone-800 hover:text-amber-900 text-xs font-semibold transition-colors border border-stone-200"
                   >
                     <Mail className="w-3.5 h-3.5 text-amber-700" />
-                    <span>Email Founder</span>
+                    <span>Email Us</span>
                   </a>
                 </div>
               </div>
@@ -688,7 +692,7 @@ export default function AboutUsPage({ onNavigate }) {
             </h2>
 
             <p className="text-xs sm:text-sm text-stone-300 font-sans leading-relaxed">
-              We invite proactive, entrepreneurial partners to join the GodGift Arts distribution network with lucrative <strong>40% profit margins</strong>, dedicated marketing support, and guaranteed factory-backed fulfillment.
+              We invite proactive, entrepreneurial partners to join the GodGift Arts distribution network with profitable distributorship opportunities, dedicated marketing support, and guaranteed factory-backed fulfillment.
             </p>
           </div>
 
@@ -759,10 +763,10 @@ export default function AboutUsPage({ onNavigate }) {
           {/* Distributorship Direct Contact Action Bar */}
           <div className="relative z-10 bg-amber-500/10 border border-amber-400/30 rounded-2xl p-6 sm:p-8 text-center space-y-4">
             <h4 className="font-serif font-bold text-lg sm:text-xl text-white">
-              Connect with Founder Mrs. Poonam
+              Ready to Partner with God Gift Arts in Your City?
             </h4>
             <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto font-sans">
-              Discuss regional distributorship rights, bulk sample kits, and customized corporate order terms.
+              Connect directly with our founder Mrs. Poonam to discuss distributorship in your city
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -772,7 +776,7 @@ export default function AboutUsPage({ onNavigate }) {
                 rel="noreferrer"
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full transition-all inline-flex items-center gap-2 shadow-lg"
               >
-                <span>WhatsApp Founder (+91 9211672167)</span>
+                <span>WhatsApp (+91 9211672167)</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
@@ -885,7 +889,7 @@ export default function AboutUsPage({ onNavigate }) {
                 rel="noreferrer"
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg transition-all cursor-pointer inline-flex items-center gap-2"
               >
-                <span>WhatsApp Founder</span>
+                <span>WhatsApp Us</span>
               </a>
             </div>
           </div>

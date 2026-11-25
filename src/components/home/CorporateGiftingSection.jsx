@@ -96,7 +96,7 @@ export default function CorporateGiftingSection() {
 
               {submitted && (
                 <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-semibold text-center border border-emerald-200">
-                  Thank you! Our Corporate Gifting Team will call you within 2 hours.
+                  Thank you! Our Corporate Gifting Team will call you within 1 working day.
                 </div>
               )}
             </form>

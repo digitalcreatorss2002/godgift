@@ -81,7 +81,7 @@ export default function B2BEnquirySection() {
               </h2>
 
               <p className="text-xs text-stone-300 leading-relaxed font-serif italic">
-                Get custom wholesale tier pricing, company logo laser printing, and 100% GST input credit invoicing. Our corporate relationship manager responds within 2 business hours.
+                Get custom wholesale tier pricing, company logo laser printing, and 100% GST input credit invoicing. Our corporate relationship manager responds within 1 working day.
               </p>
 
               <div className="space-y-4 pt-4 border-t border-stone-800 text-xs text-stone-300">
@@ -265,7 +265,7 @@ export default function B2BEnquirySection() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Submit Corporate Gifting Enquiry</span>
+                      <span>Submit</span>
                     </>
                   )}
                 </button>
