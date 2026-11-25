@@ -11,6 +11,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import NewArrivalsPage from './pages/NewArrivalsPage';
 import CorporateGiftingPage from './pages/CorporateGiftingPage';
 import AboutUsPage from './pages/AboutUsPage';
+import ContactPage from './pages/ContactPage';
 import TermsPage from './pages/TermsPage';
 import ReturnsPage from './pages/ReturnsPage';
 import CartPage from './pages/CartPage';
@@ -21,6 +22,7 @@ import AuthModal from './components/common/AuthModal';
 import HeroProductPopup from './components/ecommerce/HeroProductPopup';
 import MobileBottomNav from './components/common/MobileBottomNav';
 import B2BEnquirySection from './components/common/B2BEnquirySection';
+import FloatingSupportWidget from './components/common/FloatingSupportWidget';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -103,6 +105,7 @@ export default function App() {
       else if (activeRoute === '/shop' || hash === '#shop') setCurrentPage('shop');
       else if (activeRoute === '/b2b-enquiry' || activeRoute === '/corporate-gifting' || hash === '#b2b-enquiry' || hash === '#corporate-gifting') setCurrentPage('b2b-enquiry');
       else if (activeRoute === '/about' || hash === '#about') setCurrentPage('about');
+      else if (activeRoute === '/contact' || hash === '#contact') setCurrentPage('contact');
       else if (activeRoute === '/terms' || hash === '#terms') setCurrentPage('terms');
       else if (activeRoute === '/returns' || hash === '#returns') setCurrentPage('returns');
       else if (activeRoute.startsWith('/collection') || hash.startsWith('#collection') || activeRoute.startsWith('/category') || hash.startsWith('#category')) {
@@ -270,6 +273,8 @@ export default function App() {
         return <CorporateGiftingPage onNavigate={handleNavigate} onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct} />;
       case 'about':
         return <AboutUsPage onNavigate={handleNavigate} />;
+      case 'contact':
+        return <ContactPage onNavigate={handleNavigate} />;
       case 'terms':
         return <TermsPage onNavigate={handleNavigate} />;
       case 'returns':
@@ -331,6 +336,7 @@ export default function App() {
         onAddToCart={handleAddToCart}
         onSelectProduct={handleSelectProduct}
       />
+      <FloatingSupportWidget />
     </div>
   );
 }

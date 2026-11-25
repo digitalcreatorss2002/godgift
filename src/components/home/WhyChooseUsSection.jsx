@@ -1,67 +1,67 @@
 import React from 'react';
 import { 
-  ShieldCheck, 
-  Award, 
-  Truck, 
-  Sparkles 
+  Sparkles, 
+  Layers, 
+  BadgeCheck, 
+  Headphones 
 } from 'lucide-react';
 
 export default function WhyChooseUsSection() {
   const pillars = [
     {
-      icon: ShieldCheck,
-      title: "100% Solid Brass & Copper",
-      description: "Pure virgin metals hand-cast without hollow fillers, resin, or synthetic substitutes."
-    },
-    {
-      icon: Award,
-      title: "Jaipur Master Artisans",
-      description: "Handcrafted by 45+ 4th-generation sculptor families preserving lost-wax heritage."
-    },
-    {
-      icon: Truck,
-      title: "Insured Safe Transit",
-      description: "5-layer shockproof armor packaging with 100% free doorstep damage replacement."
-    },
-    {
       icon: Sparkles,
-      title: "Corporate Orders & GST",
-      description: "Bespoke company logo laser engraving and 100% GST input credit invoicing."
+      title: "Handcrafted Material",
+      description: "Our products feature premium, 100% handmade materials crafted with meticulous attention to detail for an authentic, lasting finish."
+    },
+    {
+      icon: Layers,
+      title: "Variety Products",
+      description: "Explore an extensive variety of traditional & decorative diyas, candles, dhoop, havan samagri, and seasonal festive collections for every occasion."
+    },
+    {
+      icon: BadgeCheck,
+      title: "Quality Assurance",
+      description: "Every creation is carefully handcrafted and inspected by skilled artisans, ensuring the highest standards of craftsmanship, durability, and beauty."
+    },
+    {
+      icon: Headphones,
+      title: "Dedicated Customer Support",
+      description: "We're here for you with prompt assistance for wholesale, corporate, and retail queries. Your complete satisfaction is our highest priority."
     }
   ];
 
   return (
-    <section className="bg-[#FAF6F0] py-12 sm:py-16 border-t border-[#EADBCA]/70 my-0">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section className="bg-[#FAF7F2] py-14 sm:py-20 border-t border-[#EADBCA]/70 my-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-1">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
-            Why Choose God Gift Arts
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+            Why Choose Us?
           </h2>
-          <p className="font-serif italic text-xs sm:text-sm text-stone-500 max-w-xl mx-auto">
-            Authentic devotional sculptures, oil paintings & pooja decor straight from Jaipur.
-          </p>
         </div>
 
-        {/* 4 Clean Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 4 Clean Centered Cards matching reference */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {pillars.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-5 sm:p-6 border border-[#EADBCA] shadow-2xs hover:shadow-md hover:border-amber-900/40 transition-all space-y-3 cursor-default"
+                className="bg-[#F8F4EE] hover:bg-white rounded-2xl p-6 sm:p-8 border border-[#E8DEC8] hover:border-amber-700/40 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col items-center text-center space-y-4 group"
               >
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-900 flex items-center justify-center font-bold">
-                  <Icon className="w-5 h-5" />
+                {/* Centered Minimal Icon */}
+                <div className="w-12 h-12 rounded-full bg-white group-hover:bg-amber-50 text-stone-800 group-hover:text-amber-900 flex items-center justify-center border border-stone-200/80 group-hover:border-amber-300 transition-colors shadow-2xs">
+                  <Icon className="w-5 h-5 stroke-[1.75]" />
                 </div>
 
-                <h3 className="font-serif font-bold text-stone-900 text-sm sm:text-base leading-snug">
+                {/* Centered Title */}
+                <h3 className="font-serif font-bold text-stone-900 text-base sm:text-lg leading-snug">
                   {item.title}
                 </h3>
 
-                <p className="text-xs text-stone-500 leading-relaxed font-normal">
+                {/* Centered Description */}
+                <p className="text-xs sm:text-[13px] text-stone-600 leading-relaxed font-sans font-normal">
                   {item.description}
                 </p>
               </div>

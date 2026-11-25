@@ -79,9 +79,9 @@ export default function CorporateGiftingSection() {
                 <div>
                   <label className="block text-stone-600 font-semibold mb-1">Est. Quantity</label>
                   <select className="w-full bg-stone-50 border border-stone-300 rounded-xl px-3.5 py-2.5 text-stone-800 focus:outline-none focus:border-primary">
-                    <option>50 - 100 Hampers</option>
-                    <option>100 - 500 Hampers</option>
-                    <option>500+ Hampers</option>
+                    <option>50 - 100 Pkts / Hampers</option>
+                    <option>100 - 500 Pkts / Hampers</option>
+                    <option>500+ Pkts (Enterprise Bulk)</option>
                   </select>
                 </div>
               </div>

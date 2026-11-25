@@ -84,6 +84,7 @@ export default function Footer({ onNavigate }) {
               <li><a href="#corporate-gifting" onClick={(e) => handleNav(e, 'corporate-gifting')} className="hover:text-amber-400 transition-colors">B2B Bulk Corporate</a></li>
               <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Candles</a></li>
               <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Diffusers</a></li>
+              <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Crinkle Shredded Paper</a></li>
               <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Christmas</a></li>
               <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">New Year Items</a></li>
               <li><a href="#shop" onClick={(e) => handleNav(e, 'shop')} className="hover:text-amber-400 transition-colors">Holi</a></li>
@@ -100,10 +101,10 @@ export default function Footer({ onNavigate }) {
             <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
               <li><a href="#about" onClick={(e) => handleNav(e, 'about')} className="hover:text-amber-400 transition-colors">About Our Legacy</a></li>
               <li><a href="#profile" onClick={(e) => handleNav(e, 'profile')} className="hover:text-amber-400 transition-colors">Track Order</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Pan-India Express Shipping</a></li>
+              <li className="text-stone-400 cursor-default select-none">Pan-India Express Shipping</li>
               <li><a href="#returns" onClick={(e) => handleNav(e, 'returns')} className="hover:text-amber-400 transition-colors">Easy Returns & Refunds</a></li>
               <li><a href="#terms" onClick={(e) => handleNav(e, 'terms')} className="hover:text-amber-400 transition-colors">Terms & Conditions</a></li>
-              <li><a href="#b2b-enquiry" onClick={(e) => handleNav(e, 'b2b-enquiry')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
+              <li><a href="#contact" onClick={(e) => handleNav(e, 'contact')} className="hover:text-amber-400 transition-colors">Contact Support</a></li>
             </ul>
           </div>
 

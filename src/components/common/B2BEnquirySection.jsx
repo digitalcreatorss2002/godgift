@@ -212,16 +212,16 @@ export default function B2BEnquirySection() {
                       onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                       className="w-full px-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900 cursor-pointer"
                     >
-                      <option value="25-50">25 to 50 Units</option>
-                      <option value="50-100">50 to 100 Units</option>
-                      <option value="100-250">100 to 250 Units</option>
-                      <option value="250-500">250 to 500 Units</option>
-                      <option value="500+">500+ Units (Enterprise Bulk)</option>
+                      <option value="25-50">25 to 50 Pkts</option>
+                      <option value="50-100">50 to 100 Pkts</option>
+                      <option value="100-250">100 to 250 Pkts</option>
+                      <option value="250-500">250 to 500 Pkts</option>
+                      <option value="500+">500+ Pkts (Enterprise Bulk)</option>
                     </select>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Target Budget per Item (₹)</label>
+                    <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Target Budget per Item / Pkt (₹)</label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
@@ -236,10 +236,26 @@ export default function B2BEnquirySection() {
                 </div>
 
                 <div className="space-y-1">
+                  <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Product / Packaging Category</label>
+                  <select
+                    value={formData.category || 'all'}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-semibold text-stone-900 cursor-pointer"
+                  >
+                    <option value="all">All Products / General Bulk Enquiry</option>
+                    <option value="crinkle-paper">Crinkle Shredded Paper (Gift & Hamper Packaging)</option>
+                    <option value="diyas">Diyas & Ghee Baati (Festive Collections)</option>
+                    <option value="candles">Candles & Diffusers</option>
+                    <option value="corporate-hampers">B2B Corporate Gift Hampers</option>
+                    <option value="seasonal">Seasonal (Holi, Rakhi, Diwali, Christmas)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
                   <label className="font-bold text-stone-700 block uppercase tracking-wider text-[10px]">Specific Requirements / Message</label>
                   <textarea
                     rows="3"
-                    placeholder="Mention custom logo engraving, delivery dates, or specific brass/copper items..."
+                    placeholder="Mention custom logo engraving, crinkle shredded paper packaging, delivery dates, or specific items..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     className="w-full p-4 bg-stone-50 rounded-xl border border-stone-200 outline-none focus:border-amber-800 text-xs font-medium text-stone-900"

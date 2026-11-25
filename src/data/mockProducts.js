@@ -886,5 +886,37 @@ export const MOCK_PRODUCTS = [
     inStock: true,
     material: "Pure Copper & Brass",
     weight: "1.4 kg"
+  },
+  {
+    id: 55,
+    name: "Premium Crinkle Cut Shredded Paper (Festive Gift Hamper Filler Packaging)",
+    category: "gifting",
+    price: 349,
+    originalPrice: 499,
+    discount: "30% OFF",
+    rating: 4.9,
+    reviewsCount: 210,
+    image: "/offer3.png",
+    badge: "Hamper Essential",
+    description: "High-grade zig-zag crinkle shredded paper for luxury gift hampers, festive packaging, and box filler cushioning. Available in Kraft, Gold, Red, and Pastel hues.",
+    inStock: true,
+    material: "Eco-Friendly Recyclable Kraft Paper",
+    weight: "500 grams (Pkt)"
+  },
+  {
+    id: 56,
+    name: "Golden Kraft Crinkle Shredded Paper Bulk Pack (1kg Pkts)",
+    category: "gifting",
+    price: 599,
+    originalPrice: 899,
+    discount: "33% OFF",
+    rating: 5.0,
+    reviewsCount: 145,
+    image: "/offer3.png",
+    badge: "Bulk Packaging",
+    description: "Wholesale bulk pack of decorative crinkle shredded filler paper, perfect for corporate Diwali boxes, wedding favors, and fragile item protection.",
+    inStock: true,
+    material: "Virgin Kraft Paper",
+    weight: "1 kg (Pkt)"
   }
 ];
