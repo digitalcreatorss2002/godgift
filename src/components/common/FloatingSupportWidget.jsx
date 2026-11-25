@@ -29,7 +29,7 @@ export default function FloatingSupportWidget() {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end font-sans">
+    <div className="fixed bottom-20 md:bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start font-sans">
       
       {/* Floating Menu Card */}
       {isOpen && (

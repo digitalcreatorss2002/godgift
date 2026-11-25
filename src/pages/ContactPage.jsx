@@ -300,3 +300,4 @@ export default function ContactPage({ onNavigate }) {
     </div>
   );
 }
+
