@@ -26,10 +26,14 @@ function InstagramIcon({ className = "w-4 h-4" }) {
 }
 
 export default function FloatingSupportWidget() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 md:bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start font-sans">
+    <div 
+      className="fixed bottom-20 md:bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start font-sans"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       
       {/* Floating Menu Card */}
       {isOpen && (
